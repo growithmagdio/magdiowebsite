@@ -57,7 +57,7 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <Link to="/" className="flex items-center group">
-            <MagdioLogo className="h-24 w-auto transition-opacity duration-300 group-hover:opacity-85" />
+            <MagdioLogo className="h-32 w-auto transition-opacity duration-300 group-hover:opacity-85" />
           </Link>
 
           {/* Desktop Nav */}

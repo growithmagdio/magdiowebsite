@@ -47,7 +47,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center mb-5 w-fit group">
-              <MagdioLogo className="h-24 w-auto transition-opacity duration-300 group-hover:opacity-85" />
+              <MagdioLogo className="h-32 w-auto transition-opacity duration-300 group-hover:opacity-85" />
             </Link>
             <p className="text-white/50 leading-relaxed mb-6 max-w-sm text-sm">
               We help businesses grow digitally through innovative AI-powered marketing strategies,
