@@ -1,0 +1,85 @@
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect } from 'react';
+import { lazy, Suspense } from 'react';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import PremiumBackground from './components/PremiumBackground';
+
+// Lazy load pages for fast initial page loading times
+const HomePage      = lazy(() => import('./pages/HomePage'));
+const ServicesPage  = lazy(() => import('./pages/ServicesPage'));
+const MissionPage   = lazy(() => import('./pages/MissionPage'));
+const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
+const AboutPage     = lazy(() => import('./pages/AboutPage'));
+const BlogPage      = lazy(() => import('./pages/BlogPage'));
+const AdminPage     = lazy(() => import('./pages/AdminPage'));
+const ContactPage   = lazy(() => import('./pages/ContactPage'));
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant' // Instant scroll resets view without scrolling animations
+    });
+  }, [pathname]);
+
+  return null;
+}
+
+const pageTransition = {
+  initial:  { opacity: 0, y: 20 },
+  animate:  { opacity: 1, y: 0 },
+  exit:     { opacity: 0, y: -20 },
+  transition: { duration: 0.4, ease: 'easeInOut' },
+};
+
+function PageLoader() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="relative w-12 h-12">
+        <div className="absolute inset-0 rounded-full border-4 border-white/5" />
+        <div className="absolute inset-0 rounded-full border-4 border-brand-yellow border-t-transparent animate-spin" />
+      </div>
+    </div>
+  );
+}
+
+function AnimatedRoutes() {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div key={location.pathname} {...pageTransition}>
+        <Suspense fallback={<PageLoader />}>
+          <Routes location={location}>
+            <Route path="/"          element={<HomePage />} />
+            <Route path="/services"  element={<ServicesPage />} />
+            <Route path="/mission"   element={<MissionPage />} />
+            <Route path="/portfolio" element={<PortfolioPage />} />
+            <Route path="/about"     element={<AboutPage />} />
+            <Route path="/blog"      element={<BlogPage />} />
+            <Route path="/admin"     element={<AdminPage />} />
+            <Route path="/contact"   element={<ContactPage />} />
+            <Route path="*"          element={<HomePage />} />
+          </Routes>
+        </Suspense>
+        <Footer />
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <ScrollToTop />
+      <PremiumBackground />
+      <Navbar />
+      <AnimatedRoutes />
+    </BrowserRouter>
+  );
+}
+
