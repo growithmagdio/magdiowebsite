@@ -377,3 +377,34 @@
   }
 }
 
+/* ===============================
+   ROCKET HERO RESPONSIVE SCALE
+================================ */
+.rocket-hero-container {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  height: 520px;
+  margin: 0 auto;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease, margin 0.3s ease;
+}
+
+@media (max-width: 640px) {
+  .rocket-hero-container {
+    transform: scale(0.75);
+    margin-top: -50px;
+    margin-bottom: -50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .rocket-hero-container {
+    transform: scale(0.55);
+    margin-top: -110px;
+    margin-bottom: -110px;
+  }
+}
+
+

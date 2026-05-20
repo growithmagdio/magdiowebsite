@@ -372,15 +372,7 @@ export default function RocketHero() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{
-        position: 'relative',
-        width: '100%',
-        maxWidth: '540px',
-        height: '520px',
-        margin: '0 auto',
-        perspective: 1200,
-        transformStyle: 'preserve-3d',
-      }}
+      className="rocket-hero-container"
     >
       {/* ── Background Cosmic Aura & Gradient Glows ── */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
