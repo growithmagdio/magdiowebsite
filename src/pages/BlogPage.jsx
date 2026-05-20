@@ -93,11 +93,6 @@ export default function BlogPage() {
           <p className="text-lg text-white/70">
             Thoughts, news, and perspectives on design, technology, and digital growth from the MAGDIO team.
           </p>
-          {usingMockData && !loading && (
-             <p className="mt-4 text-sm text-yellow-500/80 bg-yellow-500/10 inline-block px-4 py-2 rounded-full border border-yellow-500/20">
-               Note: Currently displaying sample blogs. Connect Firebase to view real posts.
-             </p>
-          )}
         </motion.div>
 
         {loading ? (
