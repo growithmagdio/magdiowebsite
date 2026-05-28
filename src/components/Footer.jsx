@@ -66,20 +66,6 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-6">
         
-        {/* Newsletter Section */}
-        <div className="glass-card-premium p-8 md:p-12 mb-16 flex flex-col md:flex-row items-center justify-between gap-8 border border-white/10 relative overflow-hidden">
-           <div className="absolute top-0 right-0 w-64 h-64 bg-brand-purple/20 rounded-full blur-3xl -z-10"></div>
-           <div className="md:w-1/2">
-             <h3 className="font-display font-black text-3xl text-white mb-2">Subscribe to our <span className="gradient-text-gold">Newsletter</span></h3>
-             <p className="text-white/60 text-sm">Get the latest AI growth strategies, digital marketing tips, and agency news directly to your inbox.</p>
-           </div>
-           <div className="md:w-1/2 w-full flex gap-2">
-             <input type="email" placeholder="Enter your email address" className="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-3 text-white placeholder-white/40 focus:outline-none focus:border-brand-purple/50 transition-colors" />
-             <button className="bg-brand-blue hover:bg-brand-purple text-white px-6 py-3 rounded-full font-bold transition-colors flex items-center gap-2 shrink-0">
-               Subscribe <FaArrowRight size={12} />
-             </button>
-           </div>
-        </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-16">
           {/* Brand Column */}
