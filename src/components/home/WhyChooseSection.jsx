@@ -36,11 +36,11 @@ const reasons = [
 
 export default function WhyChooseSection() {
   return (
-    <section className="py-24 relative overflow-hidden bg-black/20">
+    <section className="py-16 lg:py-24 relative overflow-hidden bg-black/20">
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand-blue/10 to-transparent pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           <div className="lg:col-span-4">
             <motion.div

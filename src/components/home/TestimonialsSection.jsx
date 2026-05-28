@@ -37,7 +37,7 @@ export default function TestimonialsSection() {
   }, []);
 
   return (
-    <section className="py-24 relative overflow-hidden bg-gradient-to-b from-[#03030b] to-[#06071a]">
+    <section className="py-16 lg:py-24 relative overflow-hidden bg-gradient-to-b from-[#03030b] to-[#06071a]">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

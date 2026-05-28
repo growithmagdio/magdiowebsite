@@ -168,7 +168,7 @@ export default function AboutPage() {
         </div>
 
         {/* ── Vision Section ── */}
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-24">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}

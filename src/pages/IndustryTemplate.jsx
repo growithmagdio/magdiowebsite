@@ -60,8 +60,8 @@ export default function IndustryTemplate() {
       </section>
 
       {/* ── OVERVIEW & SOLUTIONS ── */}
-      <section className="py-24 relative">
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+      <section className="py-16 lg:py-24 relative">
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div>
             <h2 className="font-display font-black text-4xl text-white mb-6">Industry <span className="gradient-text-yellow">Overview</span></h2>
             <p className="text-white/60 leading-relaxed text-lg mb-8">{industry.overview}</p>

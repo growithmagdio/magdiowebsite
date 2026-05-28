@@ -61,7 +61,7 @@ export default function MissionPage() {
         </motion.div>
 
         {/* ── Main Layout: Illustration + Features ── */}
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-24">
           {/* Left: Interactive Rocket Hero Scene */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}

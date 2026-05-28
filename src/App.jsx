@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import PremiumBackground from './components/PremiumBackground';
 import FloatingElements from './components/FloatingElements';
+import PointerGlow from './components/PointerGlow';
 
 // Lazy load pages for fast initial page loading times
 const HomePage        = lazy(() => import('./pages/HomePage'));
@@ -85,6 +86,7 @@ export default function App() {
       <ScrollToTop />
       <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col bg-[#03030b]">
         <PremiumBackground />
+        <PointerGlow />
         <Navbar />
         <FloatingElements />
         <AnimatedRoutes />

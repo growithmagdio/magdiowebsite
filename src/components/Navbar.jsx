@@ -206,14 +206,14 @@ export default function Navbar() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="absolute top-full left-0 right-0 w-full rounded-none border-t border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-40 hidden md:block"
-              style={{ background: 'rgba(10, 10, 25, 0.88)', backdropFilter: 'blur(24px)' }}
+              className="absolute top-full left-0 right-0 w-full rounded-none border-t border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] z-50 hidden md:block"
+              style={{ background: 'rgba(6, 7, 26, 0.98)', backdropFilter: 'blur(32px)' }}
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-10 flex gap-12">
                 
                 {/* Column 1: Parent Categories */}
-                <div className="w-1/4 flex flex-col gap-2 border-r border-white/5 pr-8">
+                <div className="w-1/4 flex flex-col gap-2 border-r border-white/10 pr-8">
                   {megaMenuData.services.map(category => {
                     const isActive = activeServiceCategory === category.id;
                     const Icon = category.icon;
@@ -221,15 +221,15 @@ export default function Navbar() {
                       <button 
                         key={category.id}
                         onMouseEnter={() => setActiveServiceCategory(category.id)}
-                        className={`w-full text-left flex items-center gap-4 px-4 py-4 rounded-xl transition-all duration-300 ${isActive ? 'bg-white/5 border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.03)]' : 'border border-transparent hover:bg-white/5'}`}
+                        className={`w-full text-left flex items-center gap-4 px-4 py-4 rounded-xl transition-all duration-300 ${isActive ? 'bg-white/10 border border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.05)]' : 'border border-transparent hover:bg-white/10'}`}
                       >
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors ${isActive ? 'bg-white/10 ' + category.color : 'bg-white/5 text-white/50'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors ${isActive ? 'bg-white/20 ' + category.color : 'bg-white/10 text-white/70'}`}>
                           <Icon size={18} />
                         </div>
                         <div>
-                          <h4 className={`font-display font-bold text-[15px] transition-colors ${isActive ? 'text-white' : 'text-white/60'}`}>{category.name}</h4>
+                          <h4 className={`font-display font-bold text-[15px] transition-colors ${isActive ? 'text-white' : 'text-white/80'}`}>{category.name}</h4>
                         </div>
-                        <FaArrowRight className={`ml-auto text-[10px] transition-all duration-300 ${isActive ? 'opacity-100 text-white/50 translate-x-0' : 'opacity-0 -translate-x-2'}`} />
+                        <FaArrowRight className={`ml-auto text-[10px] transition-all duration-300 ${isActive ? 'opacity-100 text-white/70 translate-x-0' : 'opacity-0 -translate-x-2'}`} />
                       </button>
                     );
                   })}
@@ -252,7 +252,7 @@ export default function Navbar() {
                          <Link 
                            to={link.path} 
                            key={link.name} 
-                           className={`group relative pl-4 border-l-2 border-white/10 ${parentCat.hoverBorder} py-2.5 text-white/60 hover:text-white transition-all duration-300 text-[15px] flex items-center justify-between hover:bg-white/5 rounded-r-lg`}
+                           className={`group relative pl-4 border-l-2 border-white/20 ${parentCat.hoverBorder} py-2.5 text-white/80 hover:text-white font-medium transition-all duration-300 text-[15px] flex items-center justify-between hover:bg-white/10 rounded-r-lg`}
                          >
                            <span className="group-hover:translate-x-1 transition-transform">{link.name}</span>
                          </Link>
@@ -263,10 +263,10 @@ export default function Navbar() {
                 </div>
 
                 {/* Column 3: CTA */}
-                <div className="w-1/4 pl-8 border-l border-white/5 flex flex-col justify-center">
-                    <div className="glass-card-premium p-6 text-center border border-white/10 hover:border-brand-yellow/30 transition-colors">
+                <div className="w-1/4 pl-8 border-l border-white/10 flex flex-col justify-center">
+                    <div className="glass-card-premium p-6 text-center border border-white/20 hover:border-brand-yellow/50 hover:bg-white/5 transition-all duration-300 shadow-lg">
                       <h4 className="font-display font-bold text-white mb-2">Need Help Choosing?</h4>
-                      <p className="text-white/50 text-xs mb-6 leading-relaxed">Let our AI and marketing experts build the perfect customized growth strategy for your business.</p>
+                      <p className="text-white/70 text-xs mb-6 leading-relaxed">Let our AI and marketing experts build the perfect customized growth strategy for your business.</p>
                       <Link to="/contact" className="btn-primary w-full py-3.5 text-sm flex justify-center items-center gap-2">Let's Talk <FaArrowRight size={12}/></Link>
                     </div>
                 </div>
@@ -274,9 +274,9 @@ export default function Navbar() {
               </div>
 
               {/* View All Services Bottom Bar */}
-              <div className="border-t border-white/5 bg-white/5">
+              <div className="border-t border-white/10 bg-white/10">
                 <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-4 flex items-center justify-between">
-                   <p className="text-white/60 text-sm">Ready to explore all our capabilities? We offer 25+ specialized services.</p>
+                   <p className="text-white/80 text-sm font-medium">Ready to explore all our capabilities? We offer 25+ specialized services.</p>
                    <Link to="/services" className="group flex items-center gap-2 px-6 py-2 rounded-full bg-brand-yellow/10 border border-brand-yellow/30 text-brand-yellow font-bold text-xs hover:bg-brand-yellow hover:text-black transition-all duration-300 hover:shadow-[0_0_20px_rgba(242,179,0,0.4)]">
                      View All Services <FaArrowRight size={10} className="group-hover:translate-x-1 transition-transform" />
                    </Link>
@@ -292,20 +292,20 @@ export default function Navbar() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="absolute top-full left-0 right-0 w-full rounded-none border-t border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-40 hidden md:block"
-              style={{ background: 'rgba(10, 10, 25, 0.88)', backdropFilter: 'blur(24px)' }}
+              className="absolute top-full left-0 right-0 w-full rounded-none border-t border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] z-50 hidden md:block"
+              style={{ background: 'rgba(6, 7, 26, 0.98)', backdropFilter: 'blur(32px)' }}
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 pt-12 pb-16">
-                <div className="flex items-center gap-2 mb-8 text-brand-lightblue border-b border-white/5 pb-3 w-fit">
+                <div className="flex items-center gap-2 mb-8 text-brand-lightblue border-b border-white/20 pb-3 w-fit">
                   <FaBuilding size={16} /> <h4 className="font-display font-bold uppercase tracking-widest text-sm">Industries We Serve</h4>
                 </div>
                 <div className="grid grid-cols-4 gap-6">
                   {megaMenuData.industries.map(link => (
                     <motion.div variants={itemVariants} key={link.name}>
-                      <Link to={link.path} className="group glass-card-premium p-6 border border-white/5 hover:border-brand-yellow/40 hover:bg-brand-yellow/5 hover:-translate-y-1 transition-all duration-300 block">
+                      <Link to={link.path} className="group glass-card-premium p-6 border border-white/10 hover:border-brand-yellow/50 hover:bg-brand-yellow/10 hover:-translate-y-1 transition-all duration-300 block shadow-lg">
                         <h5 className="text-white font-bold text-base mb-2 group-hover:text-brand-yellow transition-colors">{link.name}</h5>
-                        <p className="text-white/40 text-xs flex items-center gap-1 group-hover:text-white/70 transition-colors">
+                        <p className="text-white/70 text-xs flex items-center gap-1 group-hover:text-white/90 transition-colors">
                           Explore solutions <FaArrowRight size={10} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                         </p>
                       </Link>

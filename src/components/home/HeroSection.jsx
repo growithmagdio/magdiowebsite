@@ -59,12 +59,12 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.45 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto px-6 sm:px-0"
         >
-          <Link to="/contact" className="px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-brand-blue to-brand-purple shadow-[0_0_30px_rgba(26,34,184,0.4)] hover:shadow-[0_0_40px_rgba(138,43,226,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-2">
+          <Link to="/contact" className="w-full sm:w-auto justify-center px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-brand-blue to-brand-purple shadow-[0_0_30px_rgba(26,34,184,0.4)] hover:shadow-[0_0_40px_rgba(138,43,226,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-2">
             Get Started <FaArrowRight size={14} />
           </Link>
-          <Link to="/services" className="px-8 py-4 rounded-full font-bold text-white border border-white/20 hover:border-brand-yellow/50 hover:bg-brand-yellow/10 transition-all duration-300">
+          <Link to="/services" className="w-full sm:w-auto text-center px-8 py-4 rounded-full font-bold text-white border border-white/20 hover:border-brand-yellow/50 hover:bg-brand-yellow/10 transition-all duration-300">
             Explore Services
           </Link>
         </motion.div>

@@ -4,7 +4,7 @@ import { FaArrowRight } from 'react-icons/fa';
 
 export default function CTABanner() {
   return (
-    <section className="py-24 px-6 relative">
+    <section className="py-16 lg:py-24 px-6 relative">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -31,8 +31,8 @@ export default function CTABanner() {
             Join the visionary brands that are scaling faster and smarter with MAGDIO. Your transformation starts here.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/contact" className="px-10 py-5 rounded-full font-bold text-white bg-gradient-to-r from-brand-blue to-brand-purple shadow-[0_0_30px_rgba(26,34,184,0.5)] hover:shadow-[0_0_50px_rgba(138,43,226,0.8)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 text-lg">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+            <Link to="/contact" className="w-full sm:w-auto justify-center px-10 py-5 rounded-full font-bold text-white bg-gradient-to-r from-brand-blue to-brand-purple shadow-[0_0_30px_rgba(26,34,184,0.5)] hover:shadow-[0_0_50px_rgba(138,43,226,0.8)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 text-lg">
               Start Your Journey <FaArrowRight />
             </Link>
           </div>
