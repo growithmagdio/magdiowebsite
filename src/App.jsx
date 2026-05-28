@@ -5,16 +5,19 @@ import { lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import PremiumBackground from './components/PremiumBackground';
+import FloatingElements from './components/FloatingElements';
 
 // Lazy load pages for fast initial page loading times
-const HomePage      = lazy(() => import('./pages/HomePage'));
-const ServicesPage  = lazy(() => import('./pages/ServicesPage'));
-const MissionPage   = lazy(() => import('./pages/MissionPage'));
-const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
-const AboutPage     = lazy(() => import('./pages/AboutPage'));
-const BlogPage      = lazy(() => import('./pages/BlogPage'));
-const AdminPage     = lazy(() => import('./pages/AdminPage'));
-const ContactPage   = lazy(() => import('./pages/ContactPage'));
+const HomePage        = lazy(() => import('./pages/HomePage'));
+const ServicesPage    = lazy(() => import('./pages/ServicesPage'));
+const ServiceTemplate = lazy(() => import('./pages/ServiceTemplate'));
+const IndustryTemplate= lazy(() => import('./pages/IndustryTemplate'));
+const MissionPage     = lazy(() => import('./pages/MissionPage'));
+const PortfolioPage   = lazy(() => import('./pages/PortfolioPage'));
+const AboutPage       = lazy(() => import('./pages/AboutPage'));
+const BlogPage        = lazy(() => import('./pages/BlogPage'));
+const AdminPage       = lazy(() => import('./pages/AdminPage'));
+const ContactPage     = lazy(() => import('./pages/ContactPage'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -42,7 +45,7 @@ function PageLoader() {
     <div className="min-h-[60vh] flex items-center justify-center">
       <div className="relative w-12 h-12">
         <div className="absolute inset-0 rounded-full border-4 border-white/5" />
-        <div className="absolute inset-0 rounded-full border-4 border-brand-yellow border-t-transparent animate-spin" />
+        <div className="absolute inset-0 rounded-full border-4 border-brand-purple border-t-transparent animate-spin" />
       </div>
     </div>
   );
@@ -51,24 +54,28 @@ function PageLoader() {
 function AnimatedRoutes() {
   const location = useLocation();
   return (
-    <AnimatePresence mode="wait">
-      <motion.div key={location.pathname} {...pageTransition}>
-        <Suspense fallback={<PageLoader />}>
-          <Routes location={location}>
-            <Route path="/"          element={<HomePage />} />
-            <Route path="/services"  element={<ServicesPage />} />
-            <Route path="/mission"   element={<MissionPage />} />
-            <Route path="/portfolio" element={<PortfolioPage />} />
-            <Route path="/about"     element={<AboutPage />} />
-            <Route path="/blog"      element={<BlogPage />} />
-            <Route path="/admin"     element={<AdminPage />} />
-            <Route path="/contact"   element={<ContactPage />} />
-            <Route path="*"          element={<HomePage />} />
-          </Routes>
-        </Suspense>
-        <Footer />
-      </motion.div>
-    </AnimatePresence>
+    <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col">
+      <AnimatePresence mode="wait">
+        <motion.div key={location.pathname} {...pageTransition} className="flex-grow">
+          <Suspense fallback={<PageLoader />}>
+            <Routes location={location}>
+              <Route path="/"                      element={<HomePage />} />
+              <Route path="/services"              element={<ServicesPage />} />
+              <Route path="/services/:serviceId"   element={<ServiceTemplate />} />
+              <Route path="/industries/:industryId" element={<IndustryTemplate />} />
+              <Route path="/mission"               element={<MissionPage />} />
+              <Route path="/portfolio"             element={<PortfolioPage />} />
+              <Route path="/about"                 element={<AboutPage />} />
+              <Route path="/blog"                  element={<BlogPage />} />
+              <Route path="/admin"                 element={<AdminPage />} />
+              <Route path="/contact"               element={<ContactPage />} />
+              <Route path="*"                      element={<HomePage />} />
+            </Routes>
+          </Suspense>
+          <Footer />
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -76,10 +83,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <PremiumBackground />
-      <Navbar />
-      <AnimatedRoutes />
+      <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col bg-[#03030b]">
+        <PremiumBackground />
+        <Navbar />
+        <FloatingElements />
+        <AnimatedRoutes />
+      </div>
     </BrowserRouter>
   );
 }
-

@@ -9,10 +9,12 @@ export default {
       colors: {
         brand: {
           blue:    '#1A22B8',
+          purple:  '#8A2BE2',
           yellow:  '#F2B300',
           lavender:'#D9D7FF',
           lightblue:'#BFD7FF',
-          dark:    '#111111',
+          dark:    '#03030b',
+          darker:  '#020205',
           white:   '#FFFFFF',
         },
       },
@@ -22,9 +24,10 @@ export default {
       },
       backgroundImage: {
         'hero-gradient': 'linear-gradient(135deg, #0a0d3d 0%, #0e1255 40%, #1A22B8 100%)',
-        'card-gradient': 'linear-gradient(135deg, rgba(26,34,184,0.15) 0%, rgba(242,179,0,0.08) 100%)',
+        'card-gradient': 'linear-gradient(135deg, rgba(26,34,184,0.15) 0%, rgba(138,43,226,0.1) 50%, rgba(242,179,0,0.08) 100%)',
         'gold-gradient': 'linear-gradient(135deg, #F2B300 0%, #ffcd38 100%)',
         'blue-gradient': 'linear-gradient(135deg, #1A22B8 0%, #4a54e8 100%)',
+        'purple-gradient': 'linear-gradient(135deg, #1A22B8 0%, #8A2BE2 100%)',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

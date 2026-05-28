@@ -35,24 +35,57 @@ export default function ContactPage() {
     if (!validate()) return;
 
     setLoading(true);
+    
+    // 1. Send email via FormSubmit API (non-blocking)
     try {
-      await addDoc(collection(db, 'contacts'), {
+      fetch("https://formsubmit.co/ajax/contactus@magdio.com", {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            _subject: "New Lead from MAGDIO Website!",
+            Name: form.name,
+            Email: form.email,
+            Phone: form.phone || "Not provided",
+            Message: form.message
+        })
+      }).catch(err => console.error('FormSubmit Error:', err));
+    } catch(e) {
+      console.error("FormSubmit sync error:", e);
+    }
+
+    // 2. Save to Firebase as a backup (non-blocking)
+    try {
+      addDoc(collection(db, 'contacts'), {
         ...form,
         createdAt: serverTimestamp(),
         source: 'website',
-      });
-      setSuccess(true);
-      setForm(initialForm);
-      setTimeout(() => setSuccess(false), 5000);
-    } catch (err) {
-      console.error('Error submitting form:', err);
-      alert('Something went wrong. Please try again.');
+      }).catch(err => console.error('Firebase Async Error:', err));
+    } catch(e) {
+      console.error("Firebase Sync Error:", e);
     }
+    
+    // 3. Show Success & Trigger WhatsApp Forwarding
+    setSuccess(true);
+    
+    // Generate WhatsApp Link
+    const waText = `Hi Magdio Team!%0A%0A*New Website Lead*%0AName: ${form.name}%0AEmail: ${form.email}%0APhone: ${form.phone || 'N/A'}%0AMessage: ${form.message}`;
+    const waLink = `https://wa.me/918838887303?text=${waText}`;
+    
+    // Open WhatsApp in a new tab after a tiny delay so they see the success message
+    setTimeout(() => {
+      window.open(waLink, '_blank');
+    }, 800);
+
+    setForm(initialForm);
+    setTimeout(() => setSuccess(false), 5000);
     setLoading(false);
   };
 
   return (
-    <div className="page-bg min-h-screen pt-28 pb-20">
+    <div className="page-bg min-h-screen pt-24 pb-16 md:pt-28 md:pb-20">
       {/* Blobs */}
       <div className="blob w-96 h-96 top-10 -left-32" style={{ background: '#1A22B8' }} />
       <div className="blob w-72 h-72 bottom-20 -right-20 animation-delay-4000" style={{ background: '#F2B300' }} />
@@ -86,7 +119,6 @@ export default function ContactPage() {
               <h2 className="font-display font-bold text-white text-2xl mb-8">Get In Touch</h2>
               <div className="space-y-6">
                 {[
-                  { icon: FaMapMarkerAlt, label: 'Location', value: 'Chennai, Tamil Nadu, India', color: '#F2B300' },
                   { icon: FaEnvelope,     label: 'Email',    value: 'contactus@magdio.com',        color: '#BFD7FF', href: 'mailto:contactus@magdio.com' },
                   { icon: FaPhone,        label: 'Phone',    value: '+91 88388 87303',             color: '#D9D7FF', href: 'tel:+918838887303' },
                 ].map(({ icon: Icon, label, value, color, href }) => (

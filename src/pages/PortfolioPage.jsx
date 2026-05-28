@@ -119,7 +119,7 @@ export default function PortfolioPage() {
     : projects.filter(p => p.category === activeFilter);
 
   return (
-    <div className="page-bg min-h-screen pt-28 pb-20">
+    <div className="page-bg min-h-screen pt-24 pb-16 md:pt-28 md:pb-20">
       {/* Marquee keyframes */}
       <style>{`
         @keyframes mq-left  { from { transform: translateX(0); }    to { transform: translateX(-50%); } }

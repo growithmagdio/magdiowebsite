@@ -74,7 +74,7 @@ export default function BlogPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pt-32 pb-20">
+    <div className="min-h-screen pt-28 pb-16 md:pt-32 md:pb-20">
       {/* Background elements */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[20%] -left-[10%] w-[40rem] h-[40rem] bg-brand-blue/20 rounded-full blur-[120px]"></div>
@@ -87,7 +87,7 @@ export default function BlogPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
             Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-yellow to-brand-blue">Insights</span>
           </h1>
           <p className="text-lg text-white/70">

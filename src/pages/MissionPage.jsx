@@ -37,7 +37,7 @@ const pillars = [
 
 export default function MissionPage() {
   return (
-    <div className="page-bg min-h-screen pt-28 pb-20">
+    <div className="page-bg min-h-screen pt-24 pb-16 md:pt-28 md:pb-20">
       {/* Blobs */}
       <div className="blob w-96 h-96 top-10 -left-32" style={{ background: '#1A22B8' }} />
       <div className="blob w-72 h-72 bottom-20 -right-20 animation-delay-4000" style={{ background: '#F2B300' }} />

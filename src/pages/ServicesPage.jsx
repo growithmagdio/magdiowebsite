@@ -74,7 +74,7 @@ const cardVariants = {
 
 export default function ServicesPage() {
   return (
-    <div className="page-bg min-h-screen pt-28 pb-20">
+    <div className="page-bg min-h-screen pt-24 pb-16 md:pt-28 md:pb-20">
       {/* Blobs */}
       <div className="blob w-96 h-96 top-0 -right-40" style={{ background: '#1A22B8' }} />
       <div className="blob w-80 h-80 bottom-40 -left-20 animation-delay-4000" style={{ background: '#F2B300' }} />
@@ -113,40 +113,55 @@ export default function ServicesPage() {
           viewport={{ once: true, margin: '-50px' }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-20"
         >
-          {services.map((service) => (
-            <motion.div
-              key={service.title}
-              variants={cardVariants}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className="service-card group relative overflow-hidden"
-            >
-              {/* Hover glow bg */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
-                style={{ background: `radial-gradient(circle at 30% 30%, ${service.color}15, transparent 60%)` }}
-              />
+          {services.map((service) => {
+            // Map title to a path based on our servicesData
+            let path = '/services';
+            if (service.title === 'Social Media Marketing') path = '/services/social-media-marketing';
+            if (service.title === 'Lead Generation') path = '/services/marketing-automation';
+            if (service.title === 'Personal Branding') path = '/services/branding-services';
+            if (service.title === 'Web Development') path = '/services/web-development';
+            if (service.title === 'Email Marketing') path = '/services/digital-marketing';
+            if (service.title === 'Sales Funnel Development') path = '/services/ecommerce-development';
+            if (service.title === 'SEO Services') path = '/services/seo-services';
+            if (service.title === 'Content Marketing') path = '/services/digital-marketing';
+            if (service.title === 'Growth Consultation') path = '/services/business-consulting';
 
-              {/* Icon */}
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 relative z-10 transition-all duration-300 group-hover:scale-110"
-                style={{ background: `${service.color}20`, border: `1px solid ${service.color}30` }}
-              >
-                <service.icon size={24} style={{ color: service.color }} />
-              </div>
+            return (
+              <Link to={path} key={service.title} className="block">
+                <motion.div
+                  variants={cardVariants}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  className="service-card group relative overflow-hidden h-full flex flex-col"
+                >
+                  {/* Hover glow bg */}
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"
+                    style={{ background: `radial-gradient(circle at 30% 30%, ${service.color}15, transparent 60%)` }}
+                  />
 
-              <h3 className="font-display font-bold text-white text-xl mb-3 relative z-10 group-hover:text-brand-yellow transition-colors duration-300">
-                {service.title}
-              </h3>
-              <p className="text-white/50 text-sm leading-relaxed relative z-10">
-                {service.desc}
-              </p>
+                  {/* Icon */}
+                  <div
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 relative z-10 transition-all duration-300 group-hover:scale-110"
+                    style={{ background: `${service.color}20`, border: `1px solid ${service.color}30` }}
+                  >
+                    <service.icon size={24} style={{ color: service.color }} />
+                  </div>
 
-              {/* Arrow */}
-              <div className="mt-5 flex items-center gap-2 text-brand-yellow text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 relative z-10">
-                Learn More <FaArrowRight size={12} />
-              </div>
-            </motion.div>
-          ))}
+                  <h3 className="font-display font-bold text-white text-xl mb-3 relative z-10 group-hover:text-brand-yellow transition-colors duration-300">
+                    {service.title}
+                  </h3>
+                  <p className="text-white/50 text-sm leading-relaxed relative z-10 flex-grow">
+                    {service.desc}
+                  </p>
+
+                  {/* Arrow */}
+                  <div className="mt-5 flex items-center gap-2 text-brand-yellow text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 relative z-10">
+                    Learn More <FaArrowRight size={12} />
+                  </div>
+                </motion.div>
+              </Link>
+            );
+          })}
         </motion.div>
 
         {/* Bottom CTA Banner */}

@@ -27,7 +27,7 @@ const whyUs = [
 
 export default function AboutPage() {
   return (
-    <div className="page-bg min-h-screen pt-20 pb-20">
+    <div className="page-bg min-h-screen pt-24 pb-16 md:pt-20 md:pb-20">
       {/* Blobs */}
       <div className="blob w-96 h-96 top-10 -right-32" style={{ background: '#1A22B8' }} />
       <div className="blob w-80 h-80 bottom-40 -left-20 animation-delay-4000" style={{ background: '#F2B300' }} />
@@ -79,7 +79,7 @@ export default function AboutPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.7 }}
                 className="font-display font-black leading-[0.95] mb-8"
-                style={{ fontSize: 'clamp(52px, 8vw, 110px)' }}
+                style={{ fontSize: 'clamp(36px, 8vw, 110px)' }}
               >
                 <span className="text-white block">Your</span>
                 <span className="block" style={{
