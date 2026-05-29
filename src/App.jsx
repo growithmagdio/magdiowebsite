@@ -9,10 +9,11 @@ import FloatingElements from './components/FloatingElements';
 import PointerGlow from './components/PointerGlow';
 
 // Lazy load pages for fast initial page loading times
-const HomePage        = lazy(() => import('./pages/HomePage'));
-const ServicesPage    = lazy(() => import('./pages/ServicesPage'));
-const ServiceTemplate = lazy(() => import('./pages/ServiceTemplate'));
-const IndustryTemplate= lazy(() => import('./pages/IndustryTemplate'));
+const HomePage             = lazy(() => import('./pages/HomePage'));
+const ServicesPage         = lazy(() => import('./pages/ServicesPage'));
+const ServiceTemplate      = lazy(() => import('./pages/ServiceTemplate'));
+const DigitalMarketingPage = lazy(() => import('./pages/DigitalMarketingPage'));
+const IndustryTemplate     = lazy(() => import('./pages/IndustryTemplate'));
 const MissionPage     = lazy(() => import('./pages/MissionPage'));
 const PortfolioPage   = lazy(() => import('./pages/PortfolioPage'));
 const AboutPage       = lazy(() => import('./pages/AboutPage'));
@@ -62,6 +63,7 @@ function AnimatedRoutes() {
             <Routes location={location}>
               <Route path="/"                      element={<HomePage />} />
               <Route path="/services"              element={<ServicesPage />} />
+              <Route path="/services/digital-marketing" element={<DigitalMarketingPage />} />
               <Route path="/services/:serviceId"   element={<ServiceTemplate />} />
               <Route path="/industries/:industryId" element={<IndustryTemplate />} />
               <Route path="/mission"               element={<MissionPage />} />

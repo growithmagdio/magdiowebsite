@@ -23,8 +23,10 @@ export default function ClientsSection() {
         }
       `}</style>
       
-      <div className="max-w-7xl mx-auto px-6 mb-12 text-center">
-        <h2 className="text-white/40 text-sm uppercase tracking-widest font-bold">Trusted by industry leaders worldwide</h2>
+      <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight max-w-4xl mx-auto drop-shadow-[0_2px_10px_rgba(255,255,255,0.12)]">
+          We are grateful to work with incredible clients
+        </h2>
       </div>
 
       <div className="relative flex overflow-hidden">
@@ -38,12 +40,12 @@ export default function ClientsSection() {
             {[...imagesToDisplay, ...imagesToDisplay].map((image, i) => (
               <div
                 key={i}
-                className="mx-3 md:mx-4 w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 shrink-0 rounded-2xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] shadow-[inset_0_0_15px_rgba(255,255,255,0.05)] backdrop-blur-md border border-white/10 flex items-center justify-center p-2 overflow-hidden transition-all duration-300 cursor-pointer group hover:from-white/[0.12] hover:to-white/[0.05] hover:border-brand-yellow/40 hover:shadow-[0_0_30px_rgba(242,179,0,0.2),inset_0_0_20px_rgba(255,255,255,0.1)]"
+                className="mx-3 md:mx-4 w-40 h-24 sm:w-48 sm:h-28 md:w-56 md:h-32 lg:w-64 lg:h-36 shrink-0 rounded-2xl bg-white/[0.93] backdrop-blur-sm border border-white/10 flex items-center justify-center p-2.5 md:p-4 overflow-hidden transition-all duration-300 cursor-pointer group hover:bg-white hover:border-brand-purple/50 hover:scale-105 hover:shadow-[0_0_30px_rgba(138,43,226,0.25)]"
               >
                 <img 
                   src={`/banner images/${image}`} 
                   alt={`Trusted Client ${i}`}
-                  className="w-full h-full object-contain opacity-90 grayscale-[0.4] brightness-110 transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100 group-hover:brightness-125 group-hover:scale-110 pointer-events-none drop-shadow-[0_0_10px_rgba(255,255,255,0.15)]"
+                  className="w-full h-full object-contain pointer-events-none transition-all duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
               </div>

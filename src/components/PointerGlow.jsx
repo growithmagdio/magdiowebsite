@@ -71,19 +71,20 @@ export default function PointerGlow() {
       const speed = Math.sqrt(dx * dx + dy * dy);
       
       if (speed > 0 && mouse.isActive) {
-        const count = Math.min(8, Math.floor(speed * 0.4) + 1);
+        // Drastically reduce particles generated while moving
+        const count = Math.min(2, Math.floor(speed * 0.04) + 1);
         for (let i = 0; i < count; i++) {
           particles.push({
-            x: mouse.x + (Math.random() - 0.5) * 12,
-            y: mouse.y + (Math.random() - 0.5) * 12,
-            vx: (Math.random() - 0.5) * 1.5 - dx * 0.03,
-            vy: (Math.random() - 0.5) * 1.5 - dy * 0.03 + (Math.random() * 0.5), // slight gravity
-            size: Math.random() * 2 + 0.5,
+            x: mouse.x + (Math.random() - 0.5) * 8,
+            y: mouse.y + (Math.random() - 0.5) * 8,
+            vx: (Math.random() - 0.5) * 1.0 - dx * 0.02,
+            vy: (Math.random() - 0.5) * 1.0 - dy * 0.02 + 0.2, // slight gravity
+            size: Math.random() * 1.3 + 0.3, // smaller, more subtle particles
             life: 1,
-            decay: Math.random() * 0.015 + 0.01,
+            decay: Math.random() * 0.03 + 0.02, // double decay speed for shorter cleaner trails
             color: colors[Math.floor(Math.random() * colors.length)],
             rotation: Math.random() * Math.PI * 2,
-            rotSpeed: (Math.random() - 0.5) * 0.2
+            rotSpeed: (Math.random() - 0.5) * 0.15
           });
         }
       }
@@ -120,19 +121,19 @@ export default function PointerGlow() {
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Spawn extra particles if hovering over interactive element
-      if (mouse.isActive && isHoveredRef.current && Math.random() < 0.4) {
+      // Spawn extra particles if hovering over interactive element (reduced frequency)
+      if (mouse.isActive && isHoveredRef.current && Math.random() < 0.12) {
         particles.push({
-            x: mouse.x + (Math.random() - 0.5) * 40,
-            y: mouse.y + (Math.random() - 0.5) * 40,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5 - 0.5, // float up
-            size: Math.random() * 2.5 + 1.5,
+            x: mouse.x + (Math.random() - 0.5) * 30,
+            y: mouse.y + (Math.random() - 0.5) * 30,
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: (Math.random() - 0.5) * 0.3 - 0.3, // float up
+            size: Math.random() * 1.6 + 0.8, // subtle highlight particles
             life: 1,
-            decay: Math.random() * 0.02 + 0.01,
+            decay: Math.random() * 0.04 + 0.02, // fast fade
             color: colors[Math.floor(Math.random() * colors.length)],
             rotation: Math.random() * Math.PI * 2,
-            rotSpeed: (Math.random() - 0.5) * 0.1
+            rotSpeed: (Math.random() - 0.5) * 0.08
         });
       }
 
