@@ -53,7 +53,7 @@ export default function PointerGlow() {
     window.addEventListener('resize', setSize);
 
     let particles = [];
-    const colors = ['#F2B300', '#FFF', '#E2A300', '#FFFFFF', '#A855F7'];
+    const colors = ['#F2B300', '#FFFFFF', '#FFF8E7', '#A855F7', '#8A2BE2', '#00F2FE'];
 
     let mouse = { x: -1000, y: -1000, isActive: false };
     let lastMouse = { x: -1000, y: -1000 };
@@ -70,21 +70,31 @@ export default function PointerGlow() {
       const dy = mouse.y - lastMouse.y;
       const speed = Math.sqrt(dx * dx + dy * dy);
       
-      if (speed > 0 && mouse.isActive) {
-        // Drastically reduce particles generated while moving
-        const count = Math.min(2, Math.floor(speed * 0.04) + 1);
+      if (speed > 0.5 && mouse.isActive) {
+        // Spawn sparkles and dust proportional to mouse speed
+        const count = Math.min(5, Math.floor(speed * 0.12) + 1);
         for (let i = 0; i < count; i++) {
+          const isStar = Math.random() < 0.45; // 45% chance of beautiful star, 55% chance of dust
+          
+          // Organic distribution: expand outwards + inherit motion speed
+          const angle = Math.random() * Math.PI * 2;
+          const spreadSpeed = Math.random() * 1.4;
+          const vx = Math.cos(angle) * spreadSpeed + dx * 0.15;
+          const vy = Math.sin(angle) * spreadSpeed + dy * 0.15 - 0.2; // slight upward drift
+
           particles.push({
-            x: mouse.x + (Math.random() - 0.5) * 8,
-            y: mouse.y + (Math.random() - 0.5) * 8,
-            vx: (Math.random() - 0.5) * 1.0 - dx * 0.02,
-            vy: (Math.random() - 0.5) * 1.0 - dy * 0.02 + 0.2, // slight gravity
-            size: Math.random() * 1.3 + 0.3, // smaller, more subtle particles
-            life: 1,
-            decay: Math.random() * 0.03 + 0.02, // double decay speed for shorter cleaner trails
+            x: mouse.x + (Math.random() - 0.5) * 6,
+            y: mouse.y + (Math.random() - 0.5) * 6,
+            vx: vx,
+            vy: vy,
+            size: isStar ? (Math.random() * 4.0 + 2.5) : (Math.random() * 1.5 + 0.5),
+            isStar: isStar,
+            life: 1.0,
+            decay: isStar ? (Math.random() * 0.012 + 0.008) : (Math.random() * 0.025 + 0.015), // stars live longer
             color: colors[Math.floor(Math.random() * colors.length)],
             rotation: Math.random() * Math.PI * 2,
-            rotSpeed: (Math.random() - 0.5) * 0.15
+            rotSpeed: (Math.random() - 0.5) * 0.1,
+            twinkleOffset: Math.random() * Math.PI * 2
           });
         }
       }
@@ -110,7 +120,7 @@ export default function PointerGlow() {
       for (let i = 0; i < 4; i++) {
         ctx.lineTo(0, -radius);
         ctx.rotate(Math.PI / 4);
-        ctx.lineTo(0, -radius * 0.2);
+        ctx.lineTo(0, -radius * 0.22);
         ctx.rotate(Math.PI / 4);
       }
       ctx.closePath();
@@ -121,19 +131,21 @@ export default function PointerGlow() {
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Spawn extra particles if hovering over interactive element (reduced frequency)
-      if (mouse.isActive && isHoveredRef.current && Math.random() < 0.12) {
+      // Spawn extra sparkles if hovering over interactive elements
+      if (mouse.isActive && isHoveredRef.current && Math.random() < 0.22) {
         particles.push({
-            x: mouse.x + (Math.random() - 0.5) * 30,
-            y: mouse.y + (Math.random() - 0.5) * 30,
-            vx: (Math.random() - 0.5) * 0.3,
-            vy: (Math.random() - 0.5) * 0.3 - 0.3, // float up
-            size: Math.random() * 1.6 + 0.8, // subtle highlight particles
-            life: 1,
-            decay: Math.random() * 0.04 + 0.02, // fast fade
+            x: mouse.x + (Math.random() - 0.5) * 24,
+            y: mouse.y + (Math.random() - 0.5) * 24,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8 - 0.4, // float upwards like sparks
+            size: Math.random() * 3.5 + 2.0,
+            isStar: Math.random() < 0.6,
+            life: 1.0,
+            decay: Math.random() * 0.025 + 0.015,
             color: colors[Math.floor(Math.random() * colors.length)],
             rotation: Math.random() * Math.PI * 2,
-            rotSpeed: (Math.random() - 0.5) * 0.08
+            rotSpeed: (Math.random() - 0.5) * 0.08,
+            twinkleOffset: Math.random() * Math.PI * 2
         });
       }
 
@@ -155,6 +167,11 @@ export default function PointerGlow() {
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
+        
+        // Decelerate particles gently for smooth natural friction
+        p.vx *= 0.97;
+        p.vy *= 0.97;
+        
         p.life -= p.decay;
         p.rotation += p.rotSpeed;
         
@@ -164,18 +181,21 @@ export default function PointerGlow() {
         }
 
         ctx.globalAlpha = Math.max(0, p.life);
-        ctx.fillStyle = p.color;
         
-        // Draw stars for larger particles, dots for smaller
-        if (p.size > 1.8) {
-          drawStar(ctx, p.x, p.y, p.size * p.life * 2, p.rotation);
-          
-          // Add a little glow to stars
-          ctx.shadowBlur = 5;
+        if (p.isStar) {
+          ctx.fillStyle = p.color;
+          // Apply a glowing neon shadow blur to the stars
+          ctx.shadowBlur = 8;
           ctx.shadowColor = p.color;
-          drawStar(ctx, p.x, p.y, p.size * p.life * 1.5, p.rotation);
+          
+          // Twinkle logic using wave modulation
+          const pulse = Math.sin(p.life * Math.PI * 6 + p.twinkleOffset) * 0.28 + 0.72;
+          drawStar(ctx, p.x, p.y, p.size * p.life * pulse, p.rotation);
+          
+          // Reset shadow blur
           ctx.shadowBlur = 0;
         } else {
+          ctx.fillStyle = p.color;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
           ctx.fill();
