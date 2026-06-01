@@ -4,6 +4,7 @@ import {
   FaRocket, FaChartLine, FaHeart,
   FaCheck, FaArrowRight, FaTrophy
 } from 'react-icons/fa';
+import SEO from '../components/SEO';
 
 const metrics = [
   { value: '150+', label: 'Brands Grown',       icon: FaRocket },
@@ -28,6 +29,10 @@ const whyUs = [
 export default function AboutPage() {
   return (
     <div className="page-bg min-h-screen pt-24 pb-16 md:pt-20 md:pb-20">
+      <SEO 
+        title="About Us | Your Digital Marketing Experts | Magdio" 
+        description="We are passionate about helping businesses grow through innovative and data-driven digital marketing strategies. Learn more about our team and vision." 
+      />
       {/* Blobs */}
       <div className="blob w-96 h-96 top-10 -right-32" style={{ background: '#1A22B8' }} />
       <div className="blob w-80 h-80 bottom-40 -left-20 animation-delay-4000" style={{ background: '#F2B300' }} />

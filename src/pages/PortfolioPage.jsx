@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaExternalLinkAlt } from 'react-icons/fa';
+import SEO from '../components/SEO';
 
 const categories = ['All', 'Branding', 'Web Design', 'Marketing', 'SEO', 'Creative Campaigns'];
 
@@ -120,6 +121,10 @@ export default function PortfolioPage() {
 
   return (
     <div className="page-bg min-h-screen pt-24 pb-16 md:pt-28 md:pb-20">
+      <SEO 
+        title="Our Portfolio | Projects That Define Innovation | Magdio" 
+        description="Explore our collection of creative digital projects, branding campaigns, and modern website experiences that drive ROI." 
+      />
       {/* Marquee keyframes */}
       <style>{`
         @keyframes mq-left  { from { transform: translateX(0); }    to { transform: translateX(-50%); } }

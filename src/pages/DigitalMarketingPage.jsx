@@ -7,6 +7,7 @@ import {
 } from 'react-icons/fa';
 import FAQAccordion from '../components/FAQAccordion';
 import EnquirySection from '../components/home/EnquirySection';
+import SEO from '../components/SEO';
 
 // Dynamic data constants to keep the code extremely clean and structured
 const coreServicesList = [
@@ -126,6 +127,10 @@ export default function DigitalMarketingPage() {
 
   return (
     <div className="page-bg min-h-screen pt-0 pb-0">
+      <SEO 
+        title="Digital Marketing Agency in Tamil Nadu | Magdio" 
+        description="Complete digital marketing strategy to increase visibility, generate qualified leads, and improve conversions for modern businesses." 
+      />
       {/* ── 1. HERO SECTION ── */}
       <section className="relative pt-24 pb-32 md:pt-36 md:pb-44 overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 z-0">

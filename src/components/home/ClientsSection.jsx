@@ -25,7 +25,7 @@ export default function ClientsSection() {
       
       <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight max-w-4xl mx-auto drop-shadow-[0_2px_10px_rgba(255,255,255,0.12)]">
-          We are grateful to work with incredible clients
+          We are grateful to work with <span className="gradient-text-gold">incredible clients</span>
         </h2>
       </div>
 

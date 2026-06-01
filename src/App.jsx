@@ -20,6 +20,8 @@ const AboutPage       = lazy(() => import('./pages/AboutPage'));
 const BlogPage        = lazy(() => import('./pages/BlogPage'));
 const AdminPage       = lazy(() => import('./pages/AdminPage'));
 const ContactPage     = lazy(() => import('./pages/ContactPage'));
+const SeoServicesPage      = lazy(() => import('./pages/SeoServicesPage'));
+const SocialMediaMarketingPage = lazy(() => import('./pages/SocialMediaMarketingPage'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -64,6 +66,8 @@ function AnimatedRoutes() {
               <Route path="/"                      element={<HomePage />} />
               <Route path="/services"              element={<ServicesPage />} />
               <Route path="/services/digital-marketing" element={<DigitalMarketingPage />} />
+              <Route path="/services/seo-services" element={<SeoServicesPage />} />
+              <Route path="/services/social-media-marketing" element={<SocialMediaMarketingPage />} />
               <Route path="/services/:serviceId"   element={<ServiceTemplate />} />
               <Route path="/industries/:industryId" element={<IndustryTemplate />} />
               <Route path="/mission"               element={<MissionPage />} />

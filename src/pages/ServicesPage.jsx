@@ -4,6 +4,7 @@ import {
   FaInstagram, FaSearch, FaEnvelope, FaCode, FaFunnelDollar,
   FaChartLine, FaPenNib, FaUsers, FaLightbulb, FaArrowRight
 } from 'react-icons/fa';
+import SEO from '../components/SEO';
 
 const services = [
   {
@@ -75,6 +76,10 @@ const cardVariants = {
 export default function ServicesPage() {
   return (
     <div className="page-bg min-h-screen pt-24 pb-16 md:pt-28 md:pb-20">
+      <SEO 
+        title="Our Services | Digital Marketing & Growth Solutions | Magdio" 
+        description="We provide expert digital marketing and business growth solutions designed to help brands succeed in today's competitive online landscape." 
+      />
       {/* Blobs */}
       <div className="blob w-96 h-96 top-0 -right-40" style={{ background: '#1A22B8' }} />
       <div className="blob w-80 h-80 bottom-40 -left-20 animation-delay-4000" style={{ background: '#F2B300' }} />

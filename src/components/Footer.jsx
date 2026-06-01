@@ -59,12 +59,12 @@ export default function Footer() {
       />
       
       {/* Blobs */}
-      <div className="blob w-96 h-96 top-0 -left-20 opacity-10"
+      <div className="blob pointer-events-none w-96 h-96 top-0 -left-20 opacity-10"
         style={{ background: '#1A22B8', animationDelay: '0s' }} />
-      <div className="blob w-80 h-80 bottom-0 right-0 opacity-10"
+      <div className="blob pointer-events-none w-80 h-80 bottom-0 right-0 opacity-10"
         style={{ background: '#8A2BE2', animationDelay: '3s' }} />
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-16">
@@ -161,35 +161,35 @@ export default function Footer() {
               Contact
             </h4>
             <ul className="flex flex-col gap-3.5">
-              <li className="flex items-start gap-3 group/link">
-                <FaEnvelope size={12} className="text-brand-yellow mt-1.5 shrink-0 transition-transform group-hover/link:scale-110" />
+              <li className="group/link">
                 <a 
                   href="mailto:contactus@magdio.com" 
                   aria-label="Send email to contactus@magdio.com"
-                  className="text-white/50 hover:text-brand-yellow hover:translate-x-0.5 text-sm transition-all duration-300"
+                  className="flex items-start gap-3 text-white/50 hover:text-brand-yellow hover:translate-x-0.5 text-sm transition-all duration-300"
                 >
+                  <FaEnvelope size={12} className="text-brand-yellow mt-1.5 shrink-0 transition-transform group-hover/link:scale-110" />
                   contactus@magdio.com
                 </a>
               </li>
-              <li className="flex items-start gap-3 group/link">
-                <FaPhone size={12} className="text-brand-yellow mt-1.5 shrink-0 transition-transform group-hover/link:scale-110" />
+              <li className="group/link">
                 <a 
                   href="tel:+918838887303" 
                   aria-label="Call MAGDIO on +91 88388 87303"
-                  className="text-white/50 hover:text-brand-yellow hover:translate-x-0.5 text-sm transition-all duration-300 whitespace-nowrap"
+                  className="flex items-start gap-3 text-white/50 hover:text-brand-yellow hover:translate-x-0.5 text-sm transition-all duration-300 whitespace-nowrap"
                 >
+                  <FaPhone size={12} className="text-brand-yellow mt-1.5 shrink-0 transition-transform group-hover/link:scale-110" />
                   +91 88388 87303
                 </a>
               </li>
-              <li className="flex items-start gap-3 group/link">
-                <FaMapMarkerAlt size={12} className="text-brand-yellow mt-1.5 shrink-0 transition-transform group-hover/link:scale-110" />
+              <li className="group/link">
                 <a 
                   href="https://maps.google.com/?q=MAGDIO+AI+Chennai+Tamil+Nadu+India" 
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Open Google Maps to MAGDIO office Chennai, India"
-                  className="text-white/50 hover:text-brand-yellow hover:translate-x-0.5 text-sm transition-all duration-300"
+                  className="flex items-start gap-3 text-white/50 hover:text-brand-yellow hover:translate-x-0.5 text-sm transition-all duration-300"
                 >
+                  <FaMapMarkerAlt size={12} className="text-brand-yellow mt-1.5 shrink-0 transition-transform group-hover/link:scale-110" />
                   Chennai, Tamil Nadu, India
                 </a>
               </li>

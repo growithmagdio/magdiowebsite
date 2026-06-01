@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 import { FaCalendarAlt, FaUser } from 'react-icons/fa';
+import SEO from '../components/SEO';
 
 const mockBlogs = [
   {
@@ -75,6 +76,10 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen pt-28 pb-16 md:pt-32 md:pb-20">
+      <SEO 
+        title="Our Insights & Blog | Digital Marketing Resources | Magdio" 
+        description="Thoughts, news, and perspectives on design, technology, and digital growth from the experts at Magdio." 
+      />
       {/* Background elements */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[20%] -left-[10%] w-[40rem] h-[40rem] bg-brand-blue/20 rounded-full blur-[120px]"></div>
