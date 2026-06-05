@@ -15,7 +15,9 @@
 
   html, body {
     font-family: 'Inter', sans-serif;
-    background-color: #03030b;
+    background-color: #04081c;
+    background: linear-gradient(135deg, #04081c 0%, #03030b 50%, #0a0514 100%);
+    background-attachment: fixed;
     color: #FFFFFF;
     overflow-x: hidden;
     width: 100%;
@@ -41,12 +43,13 @@
   .glass-card {
     @apply backdrop-blur-md border border-white/10 rounded-2xl;
     background: rgba(26, 34, 184, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(138, 43, 226, 0.05), inset 0 0 15px rgba(255, 255, 255, 0.02);
   }
 
   .glass-card-premium {
     @apply backdrop-blur-xl border border-white/10 rounded-3xl relative overflow-hidden;
-    background: linear-gradient(135deg, rgba(26, 34, 184, 0.1) 0%, rgba(138, 43, 226, 0.05) 50%, rgba(255, 255, 255, 0.02) 100%);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.02);
+    background: linear-gradient(135deg, rgba(26, 34, 184, 0.12) 0%, rgba(138, 43, 226, 0.08) 50%, rgba(255, 255, 255, 0.03) 100%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(138, 43, 226, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.04);
   }
 
   .glass-card-light {

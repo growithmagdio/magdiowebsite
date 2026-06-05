@@ -139,7 +139,11 @@ export default function PremiumBackground() {
       time = timestamp;
 
       // 1. Draw base cinematic background
-      ctx.fillStyle = '#03030b';
+      const baseGrad = ctx.createLinearGradient(0, 0, width, height);
+      baseGrad.addColorStop(0, '#04081c'); // Deep dark blue
+      baseGrad.addColorStop(0.5, '#03030b'); // Very dark center
+      baseGrad.addColorStop(1, '#0a0514'); // Deep dark purple
+      ctx.fillStyle = baseGrad;
       ctx.fillRect(0, 0, width, height);
 
       // 2. Draw moving ambient blobs
@@ -149,8 +153,8 @@ export default function PremiumBackground() {
         const radius = Math.min(width, height) * blob.radiusFactor;
 
         const grad = ctx.createRadialGradient(bx, by, 0, bx, by, radius);
-        grad.addColorStop(0, `${blob.color}0.07)`);
-        grad.addColorStop(0.5, `${blob.color}0.02)`);
+        grad.addColorStop(0, `${blob.color}0.12)`); // Increased ambient opacity
+        grad.addColorStop(0.5, `${blob.color}0.04)`);
         grad.addColorStop(1, 'rgba(0,0,0,0)');
 
         ctx.fillStyle = grad;
@@ -563,7 +567,7 @@ export default function PremiumBackground() {
   }, [isHovered]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#03030b]">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-transparent">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
       <div className="noise-overlay" />
     </div>

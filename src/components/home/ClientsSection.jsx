@@ -40,7 +40,7 @@ export default function ClientsSection() {
             {[...imagesToDisplay, ...imagesToDisplay].map((image, i) => (
               <div
                 key={i}
-                className="mx-3 md:mx-4 w-40 h-24 sm:w-48 sm:h-28 md:w-56 md:h-32 lg:w-64 lg:h-36 shrink-0 rounded-2xl bg-white/[0.93] backdrop-blur-sm border border-white/10 flex items-center justify-center p-2.5 md:p-4 overflow-hidden transition-all duration-300 cursor-pointer group hover:bg-white hover:border-brand-purple/50 hover:scale-105 hover:shadow-[0_0_30px_rgba(138,43,226,0.25)]"
+                className="mx-3 md:mx-4 w-48 h-28 sm:w-56 sm:h-32 md:w-64 md:h-36 lg:w-72 lg:h-40 shrink-0 rounded-2xl bg-white/[0.93] backdrop-blur-sm border border-white/10 flex items-center justify-center p-2.5 md:p-4 overflow-hidden transition-all duration-300 cursor-pointer group hover:bg-white hover:border-brand-purple/50 hover:scale-105 hover:shadow-[0_0_30px_rgba(138,43,226,0.25)]"
               >
                 <img 
                   src={`/banner images/${image}`} 

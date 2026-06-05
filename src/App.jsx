@@ -22,6 +22,8 @@ const AdminPage       = lazy(() => import('./pages/AdminPage'));
 const ContactPage     = lazy(() => import('./pages/ContactPage'));
 const SeoServicesPage      = lazy(() => import('./pages/SeoServicesPage'));
 const SocialMediaMarketingPage = lazy(() => import('./pages/SocialMediaMarketingPage'));
+const GoogleAdsPage = lazy(() => import('./pages/GoogleAdsPage'));
+const PerformanceMarketingPage = lazy(() => import('./pages/PerformanceMarketingPage'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -68,6 +70,8 @@ function AnimatedRoutes() {
               <Route path="/services/digital-marketing" element={<DigitalMarketingPage />} />
               <Route path="/services/seo-services" element={<SeoServicesPage />} />
               <Route path="/services/social-media-marketing" element={<SocialMediaMarketingPage />} />
+              <Route path="/services/google-ads" element={<GoogleAdsPage />} />
+              <Route path="/services/performance-marketing" element={<PerformanceMarketingPage />} />
               <Route path="/services/:serviceId"   element={<ServiceTemplate />} />
               <Route path="/industries/:industryId" element={<IndustryTemplate />} />
               <Route path="/mission"               element={<MissionPage />} />
@@ -90,7 +94,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col bg-[#03030b]">
+      <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col bg-transparent">
         <PremiumBackground />
         <PointerGlow />
         <Navbar />

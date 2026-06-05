@@ -168,29 +168,6 @@ export const servicesData = [
     tools: ['Python', 'Docker', 'Kubernetes'],
   },
 
-  // AI SOLUTIONS
-  {
-    id: 'ai-agent-development',
-    category: 'AI Solutions',
-    title: 'AI Agent Development',
-    subtitle: 'Intelligent agents that automate your business 24/7.',
-    heroImage: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80',
-    overview: 'We build custom AI agents powered by advanced LLMs that can handle customer support, qualify leads, process data, and execute complex workflows without human intervention.',
-    features: ['LLM Integration', 'Custom Knowledge Bases', 'Voice/Chat Agents', 'Workflow Automation'],
-    benefits: ['Reduced Costs', '24/7 Operation', 'Instant Responses'],
-    tools: ['OpenAI', 'LangChain', 'Pinecone'],
-  },
-  {
-    id: 'marketing-automation',
-    category: 'AI Solutions',
-    title: 'Marketing Automation',
-    subtitle: 'Put your growth engine on autopilot.',
-    heroImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80',
-    overview: 'We design intelligent automation flows that nurture leads, trigger personalized emails, and sync data across your CRM, ensuring no opportunity slips through the cracks.',
-    features: ['Email Workflows', 'Lead Scoring', 'CRM Integration', 'Behavioral Triggers'],
-    benefits: ['Time Savings', 'Higher Conversion', 'Personalization at Scale'],
-    tools: ['Zapier', 'Make', 'ActiveCampaign'],
-  },
 
   // BRANDING
   {

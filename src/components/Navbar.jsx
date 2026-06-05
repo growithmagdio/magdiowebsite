@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   FaInstagram, FaLinkedinIn, FaWhatsapp,
   FaBars, FaTimes, FaChevronDown,
-  FaBullhorn, FaCode, FaRobot, FaBuilding, FaArrowRight
+  FaBullhorn, FaCode, FaBuilding, FaArrowRight
 } from 'react-icons/fa';
 import MagdioLogo from './MagdioLogo';
 
@@ -47,19 +47,6 @@ const megaMenuData = {
         { name: 'SaaS Application', path: '/services/saas-application-development' },
         { name: 'Mobile App Development', path: '/services/mobile-app-development' },
         { name: 'WordPress Development', path: '/services/wordpress-development' },
-      ]
-    },
-    {
-      id: 'ai',
-      name: 'AI Solutions',
-      icon: FaRobot,
-      color: 'text-brand-purple',
-      hoverBorder: 'hover:border-brand-purple',
-      items: [
-        { name: 'AI Agent Development', path: '/services/ai-agent-development' },
-        { name: 'Digital Transformation', path: '/services/digital-transformation' },
-        { name: 'Marketing Automation', path: '/services/marketing-automation' },
-        { name: 'AI Chatbot Solutions', path: '/services/ai-chatbot-solutions' },
       ]
     }
   ],

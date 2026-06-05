@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaBullhorn, FaCode, FaRobot, FaPaintBrush, FaChartPie, FaArrowRight } from 'react-icons/fa';
+import { FaBullhorn, FaCode, FaPaintBrush, FaChartPie, FaArrowRight } from 'react-icons/fa';
 
 const services = [
   {
@@ -20,15 +20,7 @@ const services = [
     path: '/services/web-development',
     color: 'text-blue-400',
     bg: 'bg-blue-500/10 border-blue-500/20'
-  },
-  {
-    category: 'AI Solutions',
-    icon: FaRobot,
-    title: 'AI Agent Development',
-    desc: 'Custom AI agents and automation to save hours of operational work.',
-    path: '/services/ai-agent-development',
-    color: 'text-purple-400',
-    bg: 'bg-purple-500/10 border-purple-500/20'
+
   },
   {
     category: 'Branding',
