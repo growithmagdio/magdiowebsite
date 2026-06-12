@@ -51,6 +51,17 @@ export default function GoogleAdsPage() {
       <SEO 
         title="Google Ads Agency in Tamil Nadu | Magdio" 
         description="Google Ads agency in Tamil Nadu offering Google Ads management, PPC advertising, search campaigns, lead generation and conversion rate optimization." 
+        canonicalUrl="https://www.magdio.com/google-ads-tamilnadu-magdio"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Google Ads Management",
+          "provider": {
+            "@type": "LocalBusiness",
+            "name": "Magdio"
+          },
+          "areaServed": "Tamil Nadu"
+        }}
       />
       
       {/* ── 1. HERO SECTION ── */}

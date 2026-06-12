@@ -6,7 +6,9 @@ export default function SEO({
   description = "Boost your online presence and accelerate your business growth with innovative AI-powered digital marketing strategies tailored for modern brands.",
   name = "Magdio",
   type = "website",
-  image = "/favicon.png?v=2"
+  image = "/favicon.png?v=2",
+  canonicalUrl,
+  jsonLd
 }) {
   return (
     <Helmet>
@@ -14,11 +16,14 @@ export default function SEO({
       <title>{title}</title>
       <meta name="description" content={description} />
       
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
       {/* Open Graph tags */}
       <meta property="og:type" content={type} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
+      {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
       
       {/* Twitter tags */}
       <meta name="twitter:creator" content={name} />
@@ -26,6 +31,13 @@ export default function SEO({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
+
+      {/* JSON-LD Structured Data */}
+      {jsonLd && (
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd)}
+        </script>
+      )}
     </Helmet>
   );
 }

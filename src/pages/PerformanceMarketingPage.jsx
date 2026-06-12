@@ -51,6 +51,17 @@ export default function PerformanceMarketingPage() {
       <SEO 
         title="Performance Marketing Agency in Tamil Nadu | Magdio" 
         description="Performance marketing agency in Tamil Nadu specializing in Instagram Ads, Facebook Ads, Meta Ads, lead generation and ROI-focused paid campaigns." 
+        canonicalUrl="https://www.magdio.com/performance-marketing-tamilnadu-magdio"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Performance Marketing",
+          "provider": {
+            "@type": "LocalBusiness",
+            "name": "Magdio"
+          },
+          "areaServed": "Tamil Nadu"
+        }}
       />
       
       {/* ── 1. HERO SECTION ── */}

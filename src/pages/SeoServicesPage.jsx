@@ -97,6 +97,17 @@ export default function SeoServicesPage() {
       <SEO 
         title="SEO Company in Tamil Nadu | SEO, AEO & GEO Services" 
         description="SEO company in Tamil Nadu providing search engine optimization services, AEO, GEO, local SEO, technical SEO & eCommerce SEO to rank higher on Google." 
+        canonicalUrl="https://www.magdio.com/seo-services-tamilnadu-magdio"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "SEO Services",
+          "provider": {
+            "@type": "LocalBusiness",
+            "name": "Magdio"
+          },
+          "areaServed": "Tamil Nadu"
+        }}
       />
       {/* ── 1. HERO SECTION ── */}
       <section className="relative pt-24 pb-32 md:pt-36 md:pb-44 overflow-hidden border-b border-white/10">

@@ -18,6 +18,20 @@ export default function HomePage() {
       <SEO 
         title="MAGDIO — The AI Growth Studio | Top Digital Marketing Agency" 
         description="Boost your online presence and accelerate business growth with innovative AI-powered digital marketing strategies tailored for modern brands." 
+        canonicalUrl="https://www.magdio.com/"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": ["Organization", "LocalBusiness"],
+          "name": "Magdio",
+          "url": "https://www.magdio.com/",
+          "logo": "https://www.magdio.com/logo.webp",
+          "description": "Premium AI-driven digital marketing and technology agency in Tamil Nadu.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Tamil Nadu",
+            "addressCountry": "IN"
+          }
+        }}
       />
       <HeroSection />
       <ServicesSection />

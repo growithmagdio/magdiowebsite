@@ -130,6 +130,17 @@ export default function DigitalMarketingPage() {
       <SEO 
         title="Digital Marketing Company in Tamil Nadu | Magdio" 
         description="Digital marketing company in Tamil Nadu offering SEO, Google Ads, social media marketing, AI automation, lead generation services to grow your business." 
+        canonicalUrl="https://www.magdio.com/digital-marketing-company-tamilnadu-magdio"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Digital Marketing",
+          "provider": {
+            "@type": "LocalBusiness",
+            "name": "Magdio"
+          },
+          "areaServed": "Tamil Nadu"
+        }}
       />
       {/* ── 1. HERO SECTION ── */}
       <section className="relative pt-24 pb-32 md:pt-36 md:pb-44 overflow-hidden border-b border-white/10">
