@@ -50,7 +50,7 @@ export default function GoogleAdsPage() {
     <div className="page-bg min-h-screen pt-0 pb-0">
       <SEO 
         title="Google Ads Agency in Tamil Nadu | Magdio" 
-        description="Magdio is a Google Ads Agency in Tamil Nadu helping businesses create high-performing Google Ads campaigns that drive measurable results." 
+        description="Google Ads agency in Tamil Nadu offering Google Ads management, PPC advertising, search campaigns, lead generation and conversion rate optimization." 
       />
       
       {/* ── 1. HERO SECTION ── */}

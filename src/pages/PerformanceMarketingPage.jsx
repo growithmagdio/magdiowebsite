@@ -49,8 +49,8 @@ export default function PerformanceMarketingPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0">
       <SEO 
-        title="Performance Marketing Agency | Magdio" 
-        description="Magdio is a performance marketing agency that helps businesses generate measurable results through Instagram Ads, Facebook Ads, Meta Ads, and full-funnel performance marketing services." 
+        title="Performance Marketing Agency in Tamil Nadu | Magdio" 
+        description="Performance marketing agency in Tamil Nadu specializing in Instagram Ads, Facebook Ads, Meta Ads, lead generation and ROI-focused paid campaigns." 
       />
       
       {/* ── 1. HERO SECTION ── */}

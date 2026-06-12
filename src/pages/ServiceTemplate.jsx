@@ -34,8 +34,9 @@ const defaultServiceFaqs = [
   }
 ];
 
-export default function ServiceTemplate() {
-  const { serviceId } = useParams();
+export default function ServiceTemplate({ serviceId: propServiceId }) {
+  const params = useParams();
+  const serviceId = propServiceId || params.serviceId;
   const service = servicesData.find(s => s.id === serviceId);
 
   // If service is not found, redirect to the main services catalog page

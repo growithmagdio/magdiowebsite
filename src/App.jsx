@@ -24,6 +24,9 @@ const SeoServicesPage      = lazy(() => import('./pages/SeoServicesPage'));
 const SocialMediaMarketingPage = lazy(() => import('./pages/SocialMediaMarketingPage'));
 const GoogleAdsPage = lazy(() => import('./pages/GoogleAdsPage'));
 const PerformanceMarketingPage = lazy(() => import('./pages/PerformanceMarketingPage'));
+const LinkedInAdsPage = lazy(() => import('./pages/LinkedInAdsPage'));
+const YouTubeAdsPage = lazy(() => import('./pages/YouTubeAdsPage'));
+const WhatsAppMarketingPage = lazy(() => import('./pages/WhatsAppMarketingPage'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -68,10 +71,21 @@ function AnimatedRoutes() {
               <Route path="/"                      element={<HomePage />} />
               <Route path="/services"              element={<ServicesPage />} />
               <Route path="/services/digital-marketing" element={<DigitalMarketingPage />} />
+              <Route path="/digital-marketing-company-tamilnadu-magdio" element={<DigitalMarketingPage />} />
               <Route path="/services/seo-services" element={<SeoServicesPage />} />
+              <Route path="/seo-services-tamilnadu-magdio" element={<SeoServicesPage />} />
               <Route path="/services/social-media-marketing" element={<SocialMediaMarketingPage />} />
+              <Route path="/social-media-marketing-tamilnadu-magdio" element={<SocialMediaMarketingPage />} />
               <Route path="/services/google-ads" element={<GoogleAdsPage />} />
+              <Route path="/google-ads-tamilnadu-magdio" element={<GoogleAdsPage />} />
               <Route path="/services/performance-marketing" element={<PerformanceMarketingPage />} />
+              <Route path="/performance-marketing-tamilnadu-magdio" element={<PerformanceMarketingPage />} />
+              <Route path="/services/linkedin-ads" element={<LinkedInAdsPage />} />
+              <Route path="/linkedin-ads-tamilnadu-magdio" element={<LinkedInAdsPage />} />
+              <Route path="/services/youtube-ads" element={<YouTubeAdsPage />} />
+              <Route path="/youtube-ads-tamilnadu-magdio" element={<YouTubeAdsPage />} />
+              <Route path="/services/whatsapp-marketing" element={<WhatsAppMarketingPage />} />
+              <Route path="/whatsapp-marketing-tamilnadu-magdio" element={<WhatsAppMarketingPage />} />
               <Route path="/services/:serviceId"   element={<ServiceTemplate />} />
               <Route path="/industries/:industryId" element={<IndustryTemplate />} />
               <Route path="/mission"               element={<MissionPage />} />

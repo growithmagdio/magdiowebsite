@@ -128,8 +128,8 @@ export default function DigitalMarketingPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0">
       <SEO 
-        title="Digital Marketing Agency in Tamil Nadu | Magdio" 
-        description="Complete digital marketing strategy to increase visibility, generate qualified leads, and improve conversions for modern businesses." 
+        title="Digital Marketing Company in Tamil Nadu | Magdio" 
+        description="Digital marketing company in Tamil Nadu offering SEO, Google Ads, social media marketing, AI automation, lead generation services to grow your business." 
       />
       {/* ── 1. HERO SECTION ── */}
       <section className="relative pt-24 pb-32 md:pt-36 md:pb-44 overflow-hidden border-b border-white/10">

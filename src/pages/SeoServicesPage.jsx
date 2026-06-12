@@ -95,8 +95,8 @@ export default function SeoServicesPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0">
       <SEO 
-        title="SEO Company in Tamil Nadu | Search Engine Optimization | Magdio" 
-        description="Improve Google rankings, increase organic traffic, and generate qualified leads with our advanced SEO, AEO, and GEO strategies." 
+        title="SEO Company in Tamil Nadu | SEO, AEO & GEO Services" 
+        description="SEO company in Tamil Nadu providing search engine optimization services, AEO, GEO, local SEO, technical SEO & eCommerce SEO to rank higher on Google." 
       />
       {/* ── 1. HERO SECTION ── */}
       <section className="relative pt-24 pb-32 md:pt-36 md:pb-44 overflow-hidden border-b border-white/10">

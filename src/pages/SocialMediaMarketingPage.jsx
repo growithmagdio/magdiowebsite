@@ -41,8 +41,8 @@ export default function SocialMediaMarketingPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0">
       <SEO 
-        title="Social Media Marketing Agency in Coimbatore for Brand Growth, Engagement & Lead Generation | Magdio" 
-        description="Magdio is a Social Media Marketing Agency in Coimbatore helping businesses create meaningful connections with their audience through strategic content, platform management, creative campaigns, and performance-driven social media marketing services." 
+        title="Social Media Marketing Agency in Tamil Nadu | Magdio" 
+        description="Social media marketing agency in Tamil Nadu helping businesses grow with content creation, social media management, influencer marketing & SMM services." 
       />
       
       {/* ── 1. HERO SECTION ── */}

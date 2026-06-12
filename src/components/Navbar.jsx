@@ -24,14 +24,14 @@ const megaMenuData = {
       color: 'text-brand-yellow',
       hoverBorder: 'hover:border-brand-yellow',
       items: [
-        { name: 'Digital Marketing', path: '/services/digital-marketing' },
-        { name: 'SEO Services', path: '/services/seo-services' },
-        { name: 'Google Ads', path: '/services/google-ads' },
+        { name: 'Digital Marketing', path: '/digital-marketing-company-tamilnadu-magdio' },
+        { name: 'SEO Services', path: '/seo-services-tamilnadu-magdio' },
+        { name: 'Google Ads', path: '/google-ads-tamilnadu-magdio' },
         { name: 'Meta/Facebook Ads', path: '/services/meta-ads' },
-        { name: 'Social Media Marketing', path: '/services/social-media-marketing' },
-        { name: 'WhatsApp Marketing', path: '/services/whatsapp-marketing' },
-        { name: 'YouTube Ads', path: '/services/youtube-ads' },
-        { name: 'LinkedIn Ads', path: '/services/linkedin-ads' },
+        { name: 'Social Media Marketing', path: '/social-media-marketing-tamilnadu-magdio' },
+        { name: 'WhatsApp Marketing', path: '/whatsapp-marketing-tamilnadu-magdio' },
+        { name: 'YouTube Ads', path: '/youtube-ads-tamilnadu-magdio' },
+        { name: 'LinkedIn Ads', path: '/linkedin-ads-tamilnadu-magdio' },
       ]
     },
     {
