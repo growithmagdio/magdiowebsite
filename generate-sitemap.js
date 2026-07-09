@@ -10,14 +10,14 @@ const BASE_URL = 'https://www.magdio.com';
 
 // Define explicit custom slugs for SEO
 const customServiceSlugs = {
-  'digital-marketing': '/digital-marketing-company-tamilnadu-magdio',
-  'seo-services': '/seo-services-tamilnadu-magdio',
-  'social-media-marketing': '/social-media-marketing-tamilnadu-magdio',
-  'google-ads': '/google-ads-tamilnadu-magdio',
-  'performance-marketing': '/performance-marketing-tamilnadu-magdio',
-  'linkedin-ads': '/linkedin-ads-tamilnadu-magdio',
-  'youtube-ads': '/youtube-ads-tamilnadu-magdio',
-  'whatsapp-marketing': '/whatsapp-marketing-tamilnadu-magdio'
+  'digital-marketing': '/digital-marketing-company-in-chennai-magdio',
+  'seo-services': '/seo-company-in-chennai-magdio',
+  'social-media-marketing': '/social-media-marketing-agency-in-chennai-magdio',
+  'google-ads': '/google-ads-agency-chennai-magdio',
+  'performance-marketing': '/best-performance-marketing-agency-in-chennai-magdio',
+  'linkedin-ads': '/linkedin-marketing-b2b-marketing-in-chennai-magdio',
+  'youtube-ads': '/youtube-marketing-agency-in-chennai-magdio',
+  'whatsapp-marketing': '/whatsapp-marketing-services-in-chennai-magdio'
 };
 
 const staticRoutes = [
@@ -25,6 +25,14 @@ const staticRoutes = [
   '/about',
   '/contact',
   '/portfolio',
+  '/portfolio/haber-living-seo-growth',
+  '/portfolio/automobile-ecommerce-seo-growth',
+  '/portfolio/dreamzil-meta-ads-growth',
+  '/portfolio/odoo-erp-lead-generation',
+  '/portfolio/bitty-clicks-seo-case-study',
+  '/portfolio/badie-studio-seo-case-study',
+  '/portfolio/namma-markt-seo-case-study',
+  '/portfolio/sasvitha-home-finance-seo-case-study',
   '/services',
   '/blog',
   '/mission'
@@ -49,6 +57,9 @@ async function generateSitemap() {
     const priority = route === '/' ? '1.0' : '0.8';
     addUrl(route, priority);
   });
+
+  // Add performance marketing page (handled as custom route)
+  addUrl('/best-performance-marketing-agency-in-chennai-magdio', '0.9');
 
   // Add dynamic service pages
   servicesData.forEach(service => {

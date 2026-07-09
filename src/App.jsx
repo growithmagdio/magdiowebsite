@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { lazy, Suspense } from 'react';
@@ -27,6 +27,17 @@ const PerformanceMarketingPage = lazy(() => import('./pages/PerformanceMarketing
 const LinkedInAdsPage = lazy(() => import('./pages/LinkedInAdsPage'));
 const YouTubeAdsPage = lazy(() => import('./pages/YouTubeAdsPage'));
 const WhatsAppMarketingPage = lazy(() => import('./pages/WhatsAppMarketingPage'));
+
+// Detailed Case Studies lazy loads
+const HaberLivingCaseStudy = lazy(() => import('./pages/case-studies/HaberLivingCaseStudy'));
+const AutomobileEcommerceCaseStudy = lazy(() => import('./pages/case-studies/AutomobileEcommerceCaseStudy'));
+const DreamzilCaseStudy = lazy(() => import('./pages/case-studies/DreamzilCaseStudy'));
+const OdooERPCaseStudy = lazy(() => import('./pages/case-studies/OdooERPCaseStudy'));
+const BittyClicksCaseStudy = lazy(() => import('./pages/case-studies/BittyClicksCaseStudy'));
+const BadieStudioCaseStudy = lazy(() => import('./pages/case-studies/BadieStudioCaseStudy'));
+const NammaMarktCaseStudy = lazy(() => import('./pages/case-studies/NammaMarktCaseStudy'));
+const SasvithaHomeFinanceCaseStudy = lazy(() => import('./pages/case-studies/SasvithaHomeFinanceCaseStudy'));
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -70,26 +81,62 @@ function AnimatedRoutes() {
             <Routes location={location}>
               <Route path="/"                      element={<HomePage />} />
               <Route path="/services"              element={<ServicesPage />} />
-              <Route path="/services/digital-marketing" element={<DigitalMarketingPage />} />
-              <Route path="/digital-marketing-company-tamilnadu-magdio" element={<DigitalMarketingPage />} />
-              <Route path="/services/seo-services" element={<SeoServicesPage />} />
-              <Route path="/seo-services-tamilnadu-magdio" element={<SeoServicesPage />} />
-              <Route path="/services/social-media-marketing" element={<SocialMediaMarketingPage />} />
-              <Route path="/social-media-marketing-tamilnadu-magdio" element={<SocialMediaMarketingPage />} />
-              <Route path="/services/google-ads" element={<GoogleAdsPage />} />
-              <Route path="/google-ads-tamilnadu-magdio" element={<GoogleAdsPage />} />
-              <Route path="/services/performance-marketing" element={<PerformanceMarketingPage />} />
-              <Route path="/performance-marketing-tamilnadu-magdio" element={<PerformanceMarketingPage />} />
-              <Route path="/services/linkedin-ads" element={<LinkedInAdsPage />} />
-              <Route path="/linkedin-ads-tamilnadu-magdio" element={<LinkedInAdsPage />} />
-              <Route path="/services/youtube-ads" element={<YouTubeAdsPage />} />
-              <Route path="/youtube-ads-tamilnadu-magdio" element={<YouTubeAdsPage />} />
-              <Route path="/services/whatsapp-marketing" element={<WhatsAppMarketingPage />} />
-              <Route path="/whatsapp-marketing-tamilnadu-magdio" element={<WhatsAppMarketingPage />} />
+              
+              {/* Digital Marketing Services */}
+              <Route path="/digital-marketing-company-in-chennai-magdio" element={<DigitalMarketingPage />} />
+              <Route path="/services/digital-marketing" element={<Navigate to="/digital-marketing-company-in-chennai-magdio" replace />} />
+              <Route path="/digital-marketing-company-tamilnadu-magdio" element={<Navigate to="/digital-marketing-company-in-chennai-magdio" replace />} />
+              
+              {/* SEO Services */}
+              <Route path="/seo-company-in-chennai-magdio" element={<SeoServicesPage />} />
+              <Route path="/services/seo-services" element={<Navigate to="/seo-company-in-chennai-magdio" replace />} />
+              <Route path="/seo-services-tamilnadu-magdio" element={<Navigate to="/seo-company-in-chennai-magdio" replace />} />
+              
+              {/* Social Media Marketing Services */}
+              <Route path="/social-media-marketing-agency-in-chennai-magdio" element={<SocialMediaMarketingPage />} />
+              <Route path="/services/social-media-marketing" element={<Navigate to="/social-media-marketing-agency-in-chennai-magdio" replace />} />
+              <Route path="/social-media-marketing-tamilnadu-magdio" element={<Navigate to="/social-media-marketing-agency-in-chennai-magdio" replace />} />
+              
+              {/* Google Ads Services */}
+              <Route path="/google-ads-agency-chennai-magdio" element={<GoogleAdsPage />} />
+              <Route path="/services/google-ads" element={<Navigate to="/google-ads-agency-chennai-magdio" replace />} />
+              <Route path="/google-ads-tamilnadu-magdio" element={<Navigate to="/google-ads-agency-chennai-magdio" replace />} />
+              
+              {/* Performance Marketing Services */}
+              <Route path="/best-performance-marketing-agency-in-chennai-magdio" element={<PerformanceMarketingPage />} />
+              <Route path="/services/performance-marketing" element={<Navigate to="/best-performance-marketing-agency-in-chennai-magdio" replace />} />
+              <Route path="/performance-marketing-tamilnadu-magdio" element={<Navigate to="/best-performance-marketing-agency-in-chennai-magdio" replace />} />
+              
+              {/* LinkedIn Ads Services */}
+              <Route path="/linkedin-marketing-b2b-marketing-in-chennai-magdio" element={<LinkedInAdsPage />} />
+              <Route path="/services/linkedin-ads" element={<Navigate to="/linkedin-marketing-b2b-marketing-in-chennai-magdio" replace />} />
+              <Route path="/linkedin-ads-tamilnadu-magdio" element={<Navigate to="/linkedin-marketing-b2b-marketing-in-chennai-magdio" replace />} />
+              
+              {/* YouTube Ads Services */}
+              <Route path="/youtube-marketing-agency-in-chennai-magdio" element={<YouTubeAdsPage />} />
+              <Route path="/services/youtube-ads" element={<Navigate to="/youtube-marketing-agency-in-chennai-magdio" replace />} />
+              <Route path="/youtube-ads-tamilnadu-magdio" element={<Navigate to="/youtube-marketing-agency-in-chennai-magdio" replace />} />
+              
+              {/* WhatsApp Marketing Services */}
+              <Route path="/whatsapp-marketing-services-in-chennai-magdio" element={<WhatsAppMarketingPage />} />
+              <Route path="/services/whatsapp-marketing" element={<Navigate to="/whatsapp-marketing-services-in-chennai-magdio" replace />} />
+              <Route path="/whatsapp-marketing-tamilnadu-magdio" element={<Navigate to="/whatsapp-marketing-services-in-chennai-magdio" replace />} />
+
               <Route path="/services/:serviceId"   element={<ServiceTemplate />} />
               <Route path="/industries/:industryId" element={<IndustryTemplate />} />
               <Route path="/mission"               element={<MissionPage />} />
               <Route path="/portfolio"             element={<PortfolioPage />} />
+              
+              {/* Case study routes */}
+              <Route path="/portfolio/haber-living-seo-growth" element={<HaberLivingCaseStudy />} />
+              <Route path="/portfolio/automobile-ecommerce-seo-growth" element={<AutomobileEcommerceCaseStudy />} />
+              <Route path="/portfolio/dreamzil-meta-ads-growth" element={<DreamzilCaseStudy />} />
+              <Route path="/portfolio/odoo-erp-lead-generation" element={<OdooERPCaseStudy />} />
+              <Route path="/portfolio/bitty-clicks-seo-case-study" element={<BittyClicksCaseStudy />} />
+              <Route path="/portfolio/badie-studio-seo-case-study" element={<BadieStudioCaseStudy />} />
+              <Route path="/portfolio/namma-markt-seo-case-study" element={<NammaMarktCaseStudy />} />
+              <Route path="/portfolio/sasvitha-home-finance-seo-case-study" element={<SasvithaHomeFinanceCaseStudy />} />
+              
               <Route path="/about"                 element={<AboutPage />} />
               <Route path="/blog"                  element={<BlogPage />} />
               <Route path="/admin"                 element={<AdminPage />} />

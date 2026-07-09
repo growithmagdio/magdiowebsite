@@ -95,9 +95,9 @@ export default function SeoServicesPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0">
       <SEO 
-        title="SEO Company in Tamil Nadu | SEO, AEO & GEO Services" 
-        description="SEO company in Tamil Nadu providing search engine optimization services, AEO, GEO, local SEO, technical SEO & eCommerce SEO to rank higher on Google." 
-        canonicalUrl="https://www.magdio.com/seo-services-tamilnadu-magdio"
+        title="Best SEO Company in Chennai | SEO Agency in Chennai | MAGDIO" 
+        description="Boost your business visibility with the best SEO services in Chennai from Magdio. We use SEO, AEO, and GEO strategies to drive leads and online conversions." 
+        canonicalUrl="https://www.magdio.com/seo-company-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",

@@ -6,9 +6,9 @@ export default function LinkedInAdsPage() {
   return (
     <>
       <SEO 
-        title="LinkedIn Ads Agency in Tamil Nadu | Magdio" 
-        description="LinkedIn Ads agency in Tamil Nadu offering B2B lead generation, account-based marketing, and professional LinkedIn advertising services." 
-        canonicalUrl="https://www.magdio.com/linkedin-ads-tamilnadu-magdio"
+        title="Linkedin B2B Marketing Agency in Chennai | MAGDIO" 
+        description="Build stronger business connections with Magdio's LinkedIn marketing services in Chennai, delivering targeted campaigns, B2B leads and engagement growth." 
+        canonicalUrl="https://www.magdio.com/linkedin-marketing-b2b-marketing-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",

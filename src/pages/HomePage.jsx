@@ -16,8 +16,8 @@ export default function HomePage() {
   return (
     <div className="page-bg min-h-screen bg-[#03030b]">
       <SEO 
-        title="MAGDIO — The AI Growth Studio | Top Digital Marketing Agency" 
-        description="Boost your online presence and accelerate business growth with innovative AI-powered digital marketing strategies tailored for modern brands." 
+        title="Best Digital Marketing Agency in Chennai | MAGDIO" 
+        description="Magdio is the best digital marketing agency in Chennai helping brands grow online with result-driven strategies.Explore our services and grow with us today." 
         canonicalUrl="https://www.magdio.com/"
         jsonLd={{
           "@context": "https://schema.org",

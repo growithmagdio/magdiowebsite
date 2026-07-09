@@ -30,8 +30,9 @@ export default function AboutPage() {
   return (
     <div className="page-bg min-h-screen pt-24 pb-16 md:pt-20 md:pb-20">
       <SEO 
-        title="About Us | Your Digital Marketing Experts | Magdio" 
-        description="We are passionate about helping businesses grow through innovative and data-driven digital marketing strategies. Learn more about our team and vision." 
+        title="Digital Marketing Expert in Chennai | About Us - MAGDIO" 
+        description="Get to know MAGDIO - The AI Growth Studio, recognized as the best digital marketer in Chennai, helping businesses grow with smarter digital strategies." 
+        canonicalUrl="https://www.magdio.com/about"
       />
       {/* Blobs */}
       <div className="blob w-96 h-96 top-10 -right-32" style={{ background: '#1A22B8' }} />

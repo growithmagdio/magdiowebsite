@@ -1,92 +1,115 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaExternalLinkAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
-const categories = ['All', 'Branding', 'Web Design', 'Marketing', 'SEO', 'Creative Campaigns'];
+// Import local images from root casestudy 1
+import HaberLivingImage from '../../casestudy 1/Picture1.png';
+import AutomobileImage from '../../casestudy 1/Picture3.png';
+import DreamzilImage from '../../casestudy 1/Picture4png.png';
+import OdooImage from '../../casestudy 1/Picture6.png';
+
+// Import local images from root Casestudy 2
+import BittyClicksImage from '../../Casestudy 2/Picture1.png';
+import BadieStudioImage from '../../Casestudy 2/Picture2.png';
+import NammaMarktImage from '../../Casestudy 2/Picture6.png';
+import SasvithaImage from '../../Casestudy 2/Picture10.png';
+
+const categories = ['All', 'SEO', 'Ecommerce SEO', 'Marketing', 'Local Search'];
 
 const projects = [
   {
-    id: 1,
-    title: 'NovaBrand Identity',
-    category: 'Branding',
-    tag: 'Brand Identity',
+    id: 'haber-living',
+    title: 'Haber Living SEO Growth',
+    category: 'SEO',
+    tag: 'Ecommerce & Tech SEO',
     color: '#1A22B8',
     size: 'large',
-    image: '/p-branding.webp',
-    desc: 'Complete brand overhaul with logo, color system, typography and visual guidelines.',
+    image: HaberLivingImage,
+    desc: 'Luxury home brand scaled from low search presence to Google #1 rankings and 503K+ search impressions.',
+    link: '/portfolio/haber-living-seo-growth'
   },
   {
-    id: 2,
-    title: 'EcoShop E-Commerce',
-    category: 'Web Design',
-    tag: 'Web Design',
+    id: 'automobile-ecommerce',
+    title: 'Automobile E-Commerce Brand',
+    category: 'Ecommerce SEO',
+    tag: 'SEO, AEO & GEO',
     color: '#F2B300',
-    size: 'small',
-    image: '/p-ecommerce.webp',
-    desc: 'Conversion-optimized e-commerce platform with seamless UX.',
+    size: 'large',
+    image: AutomobileImage,
+    desc: 'From launching with zero domain authority to ₹1 Crore+ in sales and ₹2.75 Lakhs+ revenue from AI search (ChatGPT).',
+    link: '/portfolio/automobile-ecommerce-seo-growth'
   },
   {
-    id: 3,
-    title: 'ViralReach Campaign',
+    id: 'dreamzil',
+    title: 'Dreamzil Meta Ads Campaign',
     category: 'Marketing',
-    tag: 'Social Media',
+    tag: 'Meta Ads & Lead Gen',
     color: '#D9D7FF',
-    size: 'small',
-    image: '/p-social.webp',
-    desc: '10x engagement social campaign reaching 1M+ impressions.',
+    size: 'large',
+    image: DreamzilImage,
+    desc: 'Generated 472+ qualified corporate leads and ₹5 Lakhs+ in sales with less than ₹2,600 ad spend using targeting funnels.',
+    link: '/portfolio/dreamzil-meta-ads-growth'
   },
   {
-    id: 4,
-    title: 'RankMaster SEO',
-    category: 'SEO',
-    tag: 'SEO',
+    id: 'odoo-erp',
+    title: 'Odoo Gold Partner Leads',
+    category: 'Marketing',
+    tag: 'B2B Lead Gen',
     color: '#4CAF50',
     size: 'large',
-    image: '/p-seo.webp',
-    desc: 'Technical SEO audit and implementation resulting in 300% organic traffic growth.',
+    image: OdooImage,
+    desc: 'Generated 680+ highly qualified leads for enterprise ERP installations while reducing B2B acquisition costs.',
+    link: '/portfolio/odoo-erp-lead-generation'
   },
   {
-    id: 5,
-    title: 'StoryTell Creative',
-    category: 'Creative Campaigns',
-    tag: 'Creative',
-    color: '#FF6B6B',
-    size: 'small',
-    image: '/p-creative.webp',
-    desc: 'Storytelling-driven brand campaign that went viral across platforms.',
+    id: 'bitty-clicks',
+    title: 'Bitty Clicks SEO Growth',
+    category: 'SEO',
+    tag: 'SEO & AI Overview',
+    color: '#1A22B8',
+    size: 'large',
+    image: BittyClicksImage,
+    desc: 'Scaled product & food photography search discoverability with top #1 Google ranks and Google AI Overview placement in Chennai.',
+    link: '/portfolio/bitty-clicks-seo-case-study'
   },
   {
-    id: 6,
-    title: 'TechFlow SaaS Web',
-    category: 'Web Design',
-    tag: 'Web Design',
-    color: '#BFD7FF',
-    size: 'small',
-    image: '/p-saas.webp',
-    desc: 'Modern SaaS landing page with interactive demos and lead capture.',
-  },
-  {
-    id: 7,
-    title: 'PulseMedia Growth',
-    category: 'Marketing',
-    tag: 'Growth Marketing',
+    id: 'badie-studio',
+    title: 'Badie Studio & Stores',
+    category: 'Ecommerce SEO',
+    tag: 'Ecommerce SEO & GEO',
     color: '#F2B300',
     size: 'large',
-    image: '/p-growth.webp',
-    desc: 'Full-funnel growth marketing strategy achieving 4x ROI in 90 days.',
+    image: BadieStudioImage,
+    desc: 'Grew organic search impressions to 92.8K+ and acquired 5K+ organic users for Qatar’s oldest premium musical instrument store.',
+    link: '/portfolio/badie-studio-seo-case-study'
   },
   {
-    id: 8,
-    title: 'ZenSpace Branding',
-    category: 'Branding',
-    tag: 'Branding',
-    color: '#1A22B8',
-    size: 'small',
-    image: '/p-wellness.webp',
-    desc: 'Minimalist wellness brand identity with premium design system.',
+    id: 'namma-markt',
+    title: 'Namma Markt Grocery Store',
+    category: 'Ecommerce SEO',
+    tag: 'Migration & Authority Recovery',
+    color: '#4CAF50',
+    size: 'large',
+    image: NammaMarktImage,
+    desc: 'Rebuilt domain authority to 14% and recovered organic search impressions to page #1 for Germany’s Indian grocery store.',
+    link: '/portfolio/namma-markt-seo-case-study'
   },
+  {
+    id: 'sasvitha-home-finance',
+    title: 'Sasvitha Home Finance',
+    category: 'Local Search',
+    tag: 'Local SEO & Leads',
+    color: '#FF6B6B',
+    size: 'large',
+    image: SasvithaImage,
+    desc: 'Grew organic inquiry leads and established top Google ranks for competitive regional home loan searches in Tamil Nadu.',
+    link: '/portfolio/sasvitha-home-finance-seo-case-study'
+  }
 ];
+
+
 
 // ── Marquee card data ──
 const row1Cards = [
@@ -199,58 +222,70 @@ export default function PortfolioPage() {
             transition={{ duration: 0.4 }}
             className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6"
           >
-            {filtered.map((project, i) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.07, duration: 0.4 }}
-                onHoverStart={() => setHoveredId(project.id)}
-                onHoverEnd={() => setHoveredId(null)}
-                className="break-inside-avoid glass-card overflow-hidden cursor-pointer group relative mb-6"
-                whileHover={{ y: -4 }}
-              >
-                <div
-                  className={`relative ${project.size === 'large' ? 'h-56' : 'h-44'} overflow-hidden`}
+            {filtered.map((project, i) => {
+              const isLink = project.link && project.link !== '#';
+              const cardContent = (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.07, duration: 0.4 }}
+                  onHoverStart={() => setHoveredId(project.id)}
+                  onHoverEnd={() => setHoveredId(null)}
+                  className="break-inside-avoid glass-card overflow-hidden cursor-pointer group relative mb-6 bg-white/5"
+                  whileHover={{ y: -4 }}
                 >
-                  {/* Cover image */}
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 brightness-[0.88] saturate-[1.05] contrast-[1.05] group-hover:brightness-100 group-hover:saturate-100 group-hover:contrast-100"
-                  />
-                  {/* Subtle dark overlay always visible */}
-                  <div className="absolute inset-0 bg-black/20" />
-
-                  {/* Hover overlay with icon */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: hoveredId === project.id ? 1 : 0 }}
-                    className="absolute inset-0 flex items-center justify-center"
-                    style={{ background: `${project.color}bb`, backdropFilter: 'blur(3px)' }}
-                  >
-                    <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center border border-white/40">
-                      <FaExternalLinkAlt size={18} className="text-white" />
-                    </div>
-                  </motion.div>
-
-                  {/* Tag badge */}
                   <div
-                    className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white"
-                    style={{ background: `${project.color}cc`, backdropFilter: 'blur(10px)' }}
+                    className={`relative ${project.size === 'large' ? 'h-56' : 'h-44'} overflow-hidden`}
                   >
-                    {project.tag}
+                    {/* Cover image */}
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 brightness-[0.88] saturate-[1.05] contrast-[1.05] group-hover:brightness-100 group-hover:saturate-100 group-hover:contrast-100"
+                    />
+                    {/* Subtle dark overlay always visible */}
+                    <div className="absolute inset-0 bg-black/20" />
+
+                    {/* Hover overlay with icon */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: hoveredId === project.id ? 1 : 0 }}
+                      className="absolute inset-0 flex items-center justify-center"
+                      style={{ background: `${project.color}bb`, backdropFilter: 'blur(3px)' }}
+                    >
+                      <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center border border-white/40">
+                        <FaExternalLinkAlt size={18} className="text-white" />
+                      </div>
+                    </motion.div>
+
+                    {/* Tag badge */}
+                    <div
+                      className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white"
+                      style={{ background: `${project.color}cc`, backdropFilter: 'blur(10px)' }}
+                    >
+                      {project.tag}
+                    </div>
                   </div>
+                  <div className="p-5">
+                    <h3 className="font-display font-bold text-white text-lg mb-2 group-hover:text-brand-yellow transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-white/50 text-sm leading-relaxed">{project.desc}</p>
+                  </div>
+                </motion.div>
+              );
+
+              return isLink ? (
+                <Link to={project.link} key={project.id} className="block no-underline">
+                  {cardContent}
+                </Link>
+              ) : (
+                <div key={project.id} className="block cursor-default">
+                  {cardContent}
                 </div>
-                <div className="p-5">
-                  <h3 className="font-display font-bold text-white text-lg mb-2 group-hover:text-brand-yellow transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{project.desc}</p>
-                </div>
-              </motion.div>
-            ))}
+              );
+            })}
           </motion.div>
         </AnimatePresence>
       </div>

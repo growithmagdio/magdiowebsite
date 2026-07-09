@@ -41,9 +41,9 @@ export default function SocialMediaMarketingPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0">
       <SEO 
-        title="Social Media Marketing Agency in Tamil Nadu | Magdio" 
-        description="Social media marketing agency in Tamil Nadu helping businesses grow with content creation, social media management, influencer marketing & SMM services." 
-        canonicalUrl="https://www.magdio.com/social-media-marketing-tamilnadu-magdio"
+        title="Top Social Media Marketing Agency in Chennai | MAGDIO" 
+        description="Magdio is a leading social media marketing company in Chennai offering creative campaigns, brand growth, audience engagement and lead generation services." 
+        canonicalUrl="https://www.magdio.com/social-media-marketing-agency-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",

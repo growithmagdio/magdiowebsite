@@ -128,9 +128,9 @@ export default function DigitalMarketingPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0">
       <SEO 
-        title="Digital Marketing Company in Tamil Nadu | Magdio" 
-        description="Digital marketing company in Tamil Nadu offering SEO, Google Ads, social media marketing, AI automation, lead generation services to grow your business." 
-        canonicalUrl="https://www.magdio.com/digital-marketing-company-tamilnadu-magdio"
+        title="Best Digital Marketing Company In Chennai | MAGDIO" 
+        description="Magdio offers result-driven digital marketing services in Chennai, including SEO, Google Ads, branding and social media marketing strategies for online growth." 
+        canonicalUrl="https://www.magdio.com/digital-marketing-company-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
