@@ -864,46 +864,10 @@ export default function DigitalMarketingPage() {
         </div>
       </section>
 
-      {/* ── 12. LET'S BUILD YOUR BUSINESS GROWTH SYSTEM (FORM) ── */}
-      <section id="enquiry" className="py-16 lg:py-24 relative overflow-hidden bg-black/40 border-t border-white/5">
-        {/* Background glow overlay */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[300px] bg-brand-purple/10 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            {/* Left Col: Conversion Prompt */}
-            <div className="lg:col-span-5 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-yellow/30 bg-brand-yellow/10 text-brand-yellow text-xs font-bold uppercase tracking-widest">
-                ✦ Grow Smarter & Faster
-              </div>
-              <h2 className="font-display font-black text-3xl sm:text-4xl md:text-5xl text-white leading-tight">
-                Let's Build Your <br />
-                <span className="gradient-text">Business Growth System</span>
-              </h2>
-              <p className="text-white/60 text-sm sm:text-base leading-relaxed">
-                Digital marketing today requires more than basic advertising or random content creation. Businesses need strategic planning, audience understanding, performance tracking, SEO optimization, AI-powered marketing systems, and conversion-focused execution to compete effectively online.
-              </p>
-              <p className="text-white/50 text-sm sm:text-base leading-relaxed">
-                If you are looking for a digital marketing agency in Coimbatore, Chennai, or Madurai that focuses on business growth, lead generation, SEO, paid advertising, social media marketing, and AI-powered digital strategies, our team is ready to help.
-              </p>
-              <div className="h-px bg-white/10" />
-              <div className="space-y-3">
-                {['Generating more quality leads', 'Increasing online search visibility', 'Improving organic search rankings', 'Scaling active paid campaigns', 'Building absolute brand authority', 'Optimizing conversions'].map((target, idx) => (
-                  <div key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-white/70">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-yellow shrink-0 mt-1.5" />
-                    <span>{target}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Col: Interactive Form Container */}
-            <div className="lg:col-span-7">
-              <EnquirySection />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── 12. ENQUIRY SECTION ── */}
+      <div id="enquiry">
+        <EnquirySection />
+      </div>
     </div>
   );
 }
