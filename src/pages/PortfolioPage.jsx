@@ -4,18 +4,6 @@ import { FaExternalLinkAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
-// Import local images from root casestudy 1
-import HaberLivingImage from '../../casestudy 1/Picture1.png';
-import AutomobileImage from '../../casestudy 1/Picture3.png';
-import DreamzilImage from '../../casestudy 1/Picture4png.png';
-import OdooImage from '../../casestudy 1/Picture6.png';
-
-// Import local images from root Casestudy 2
-import BittyClicksImage from '../../Casestudy 2/Picture1.png';
-import BadieStudioImage from '../../Casestudy 2/Picture2.png';
-import NammaMarktImage from '../../Casestudy 2/Picture6.png';
-import SasvithaImage from '../../Casestudy 2/Picture10.png';
-
 const categories = ['All', 'SEO', 'Ecommerce SEO', 'Marketing', 'Local Search'];
 
 const projects = [
@@ -26,7 +14,7 @@ const projects = [
     tag: 'Ecommerce & Tech SEO',
     color: '#1A22B8',
     size: 'large',
-    image: HaberLivingImage,
+    image: '/portfolio-covers/haber_living.png',
     desc: 'Luxury home brand scaled from low search presence to Google #1 rankings and 503K+ search impressions.',
     link: '/portfolio/haber-living-seo-growth'
   },
@@ -37,7 +25,7 @@ const projects = [
     tag: 'SEO, AEO & GEO',
     color: '#F2B300',
     size: 'large',
-    image: AutomobileImage,
+    image: '/portfolio-covers/automobile_seo.png',
     desc: 'From launching with zero domain authority to ₹1 Crore+ in sales and ₹2.75 Lakhs+ revenue from AI search (ChatGPT).',
     link: '/portfolio/automobile-ecommerce-seo-growth'
   },
@@ -48,7 +36,7 @@ const projects = [
     tag: 'Meta Ads & Lead Gen',
     color: '#D9D7FF',
     size: 'large',
-    image: DreamzilImage,
+    image: '/portfolio-covers/dreamzil_marketing.png',
     desc: 'Generated 472+ qualified corporate leads and ₹5 Lakhs+ in sales with less than ₹2,600 ad spend using targeting funnels.',
     link: '/portfolio/dreamzil-meta-ads-growth'
   },
@@ -59,7 +47,7 @@ const projects = [
     tag: 'B2B Lead Gen',
     color: '#4CAF50',
     size: 'large',
-    image: OdooImage,
+    image: '/portfolio-covers/odoo_leads.png',
     desc: 'Generated 680+ highly qualified leads for enterprise ERP installations while reducing B2B acquisition costs.',
     link: '/portfolio/odoo-erp-lead-generation'
   },
@@ -70,7 +58,7 @@ const projects = [
     tag: 'SEO & AI Overview',
     color: '#1A22B8',
     size: 'large',
-    image: BittyClicksImage,
+    image: '/portfolio-covers/bitty_clicks.png',
     desc: 'Scaled product & food photography search discoverability with top #1 Google ranks and Google AI Overview placement in Chennai.',
     link: '/portfolio/bitty-clicks-seo-case-study'
   },
@@ -81,7 +69,7 @@ const projects = [
     tag: 'Ecommerce SEO & GEO',
     color: '#F2B300',
     size: 'large',
-    image: BadieStudioImage,
+    image: '/portfolio-covers/badie_studio.png',
     desc: 'Grew organic search impressions to 92.8K+ and acquired 5K+ organic users for Qatar’s oldest premium musical instrument store.',
     link: '/portfolio/badie-studio-seo-case-study'
   },
@@ -92,7 +80,7 @@ const projects = [
     tag: 'Migration & Authority Recovery',
     color: '#4CAF50',
     size: 'large',
-    image: NammaMarktImage,
+    image: '/portfolio-covers/namma_markt.png',
     desc: 'Rebuilt domain authority to 14% and recovered organic search impressions to page #1 for Germany’s Indian grocery store.',
     link: '/portfolio/namma-markt-seo-case-study'
   },
@@ -103,7 +91,7 @@ const projects = [
     tag: 'Local SEO & Leads',
     color: '#FF6B6B',
     size: 'large',
-    image: SasvithaImage,
+    image: '/portfolio-covers/sasvitha_finance.png',
     desc: 'Grew organic inquiry leads and established top Google ranks for competitive regional home loan searches in Tamil Nadu.',
     link: '/portfolio/sasvitha-home-finance-seo-case-study'
   }

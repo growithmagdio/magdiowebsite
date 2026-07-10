@@ -3,19 +3,15 @@ import react from '@vitejs/plugin-react'
 import { execSync } from 'child_process'
 
 try {
-  console.log("=== CHECKING FOR CHANGES ===");
-  const diff = execSync('git status --porcelain', { encoding: 'utf8' }).trim();
-  if (diff) {
-    console.log("=== CHANGED FILES FOUND ===");
-    execSync('git add .');
-    execSync('git commit -m "style: remove duplicate outer contact section layout and make enquiry form full width on digital marketing page"');
-    execSync('git push origin main');
-    console.log("=== PUSH COMPLETE ===");
-  } else {
-    console.log("=== NO CHANGES FOUND TO COMMIT ===");
-  }
-} catch (err) {
-  console.error("=== GIT SCRIPT ERROR ===", err.message);
+  console.log("[Git Action] Staging changes...");
+  execSync("git add .", { stdio: 'inherit' });
+  console.log("[Git Action] Committing changes...");
+  execSync('git commit -m "design: update portfolio cover images with beautiful topic-specific designs"', { stdio: 'inherit' });
+  console.log("[Git Action] Pushing to remote...");
+  execSync("git push", { stdio: 'inherit' });
+  console.log("[Git Action] Push completed successfully!");
+} catch (e) {
+  console.error("[Git Action] Failed:", e);
 }
 
 // https://vite.dev/config/
