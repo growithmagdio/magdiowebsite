@@ -18,6 +18,7 @@ const MissionPage     = lazy(() => import('./pages/MissionPage'));
 const PortfolioPage   = lazy(() => import('./pages/PortfolioPage'));
 const AboutPage       = lazy(() => import('./pages/AboutPage'));
 const BlogPage        = lazy(() => import('./pages/BlogPage'));
+const BlogDetailPage  = lazy(() => import('./pages/BlogDetailPage'));
 const AdminPage       = lazy(() => import('./pages/AdminPage'));
 const ContactPage     = lazy(() => import('./pages/ContactPage'));
 const SeoServicesPage      = lazy(() => import('./pages/SeoServicesPage'));
@@ -139,6 +140,7 @@ function AnimatedRoutes() {
               
               <Route path="/about"                 element={<AboutPage />} />
               <Route path="/blog"                  element={<BlogPage />} />
+              <Route path="/blog/:id"              element={<BlogDetailPage />} />
               <Route path="/admin"                 element={<AdminPage />} />
               <Route path="/contact"               element={<ContactPage />} />
               <Route path="*"                      element={<HomePage />} />

@@ -1,0 +1,334 @@
+import { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { motion, useScroll } from 'framer-motion';
+import { FaCalendarAlt, FaUser, FaArrowLeft, FaClock, FaShareAlt, FaLinkedin, FaTwitter, FaFacebook } from 'react-icons/fa';
+import { fetchBlogById } from '../utils/blogService';
+import SEO from '../components/SEO';
+
+export default function BlogDetailPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [blog, setBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [shareTooltip, setShareTooltip] = useState(false);
+
+  // Monitor scroll progress for the top loading bar
+  const { scrollYProgress } = useScroll();
+
+  useEffect(() => {
+    const getBlog = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchBlogById(id);
+        setBlog(data);
+      } catch (err) {
+        console.error('Error loading blog details:', err);
+        setError(err.message || 'Article not found');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getBlog();
+  }, [id]);
+
+  const handleShare = (platform) => {
+    const url = window.location.href;
+    const text = blog ? blog.title : 'Check out this article!';
+    
+    if (platform === 'copy') {
+      navigator.clipboard.writeText(url);
+      setShareTooltip(true);
+      setTimeout(() => setShareTooltip(false), 2000);
+      return;
+    }
+
+    let shareUrl = '';
+    if (platform === 'twitter') {
+      shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+    } else if (platform === 'linkedin') {
+      shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+    } else if (platform === 'facebook') {
+      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  // Safe dynamic renderer for Markdown-like syntax (### Headings, list items, paragraphs)
+  const renderContent = (content) => {
+    if (!content) return null;
+    
+    // Split by paragraph blocks
+    const paragraphs = content.split('\n\n');
+    
+    return paragraphs.map((block, index) => {
+      const trimmedBlock = block.trim();
+      
+      // H3 Heading
+      if (trimmedBlock.startsWith('###')) {
+        return (
+          <h3 key={index} className="text-2xl md:text-3xl font-bold font-display text-white mt-10 mb-4 first:mt-0 leading-tight">
+            {trimmedBlock.replace(/^###\s*/, '')}
+          </h3>
+        );
+      }
+      
+      // H4 Heading
+      if (trimmedBlock.startsWith('####')) {
+        return (
+          <h4 key={index} className="text-xl md:text-2xl font-bold font-display text-brand-yellow mt-8 mb-3 leading-tight">
+            {trimmedBlock.replace(/^####\s*/, '')}
+          </h4>
+        );
+      }
+
+      // Blockquote
+      if (trimmedBlock.startsWith('>')) {
+        return (
+          <blockquote key={index} className="border-l-4 border-brand-yellow bg-white/5 rounded-r-xl px-6 py-4 my-8 text-white/90 italic text-lg leading-relaxed">
+            {trimmedBlock.replace(/^>\s*/, '')}
+          </blockquote>
+        );
+      }
+
+      // Ordered or Unordered Lists
+      if (trimmedBlock.startsWith('-') || trimmedBlock.startsWith('*') || /^\d+\.\s/.test(trimmedBlock)) {
+        const items = trimmedBlock.split('\n');
+        const isOrdered = /^\d+\.\s/.test(items[0]);
+        
+        const listContent = items.map((item, itemIdx) => {
+          const cleanItem = item.replace(/^(-\s*|\*\s*|\d+\.\s*)/, '');
+          
+          // Bold matches inside list items
+          return (
+            <li key={itemIdx} className="mb-2 leading-relaxed pl-1 text-white/70">
+              {renderInlineStyles(cleanItem)}
+            </li>
+          );
+        });
+
+        return isOrdered ? (
+          <ol key={index} className="list-decimal list-inside pl-4 mb-6 space-y-2 text-lg text-white/70">
+            {listContent}
+          </ol>
+        ) : (
+          <ul key={index} className="list-disc list-inside pl-4 mb-6 space-y-2 text-lg text-white/70">
+            {listContent}
+          </ul>
+        );
+      }
+
+      // Default paragraph
+      return (
+        <p key={index} className="text-white/70 text-lg md:text-xl leading-relaxed mb-6 font-light">
+          {renderInlineStyles(trimmedBlock)}
+        </p>
+      );
+    });
+  };
+
+  // Parse basic inline styles like **bold**
+  const renderInlineStyles = (text) => {
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={i} className="font-bold text-white">{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-brand-dark">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-brand-yellow/30 border-t-brand-yellow rounded-full animate-spin"></div>
+          <p className="text-white/60 text-sm animate-pulse">Loading article...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !blog) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-brand-dark px-6">
+        <div className="text-center max-w-md">
+          <div className="w-16 h-16 bg-red-500/10 border border-red-500/20 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold font-display text-white mb-2">Article Not Found</h2>
+          <p className="text-white/60 mb-8">{error || 'We could not find the blog post you are looking for.'}</p>
+          <Link 
+            to="/blog" 
+            className="inline-flex items-center gap-2 bg-brand-blue text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-yellow hover:text-black transition-all"
+          >
+            <FaArrowLeft /> Back to Insights
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-brand-dark text-white relative pt-28 pb-20 md:pt-32">
+      <SEO 
+        title={`${blog.title} | Blog & Insights | Magdio`}
+        description={blog.excerpt}
+      />
+
+      {/* Top scroll progress indicator bar */}
+      <motion.div 
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-yellow via-brand-purple to-brand-blue z-50 origin-left"
+        style={{ scaleX: scrollYProgress }}
+      />
+
+      {/* Decorative premium glows */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[10%] -left-[10%] w-[35rem] h-[35rem] bg-brand-blue/15 rounded-full blur-[110px]"></div>
+        <div className="absolute top-[40%] right-[5%] w-[30rem] h-[30rem] bg-brand-purple/10 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[20%] -left-[5%] w-[25rem] h-[25rem] bg-brand-yellow/5 rounded-full blur-[90px]"></div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-6 relative z-10">
+        
+        {/* Back Link */}
+        <div className="mb-8">
+          <Link 
+            to="/blog"
+            className="inline-flex items-center gap-2 text-white/60 hover:text-brand-yellow text-sm font-semibold transition-colors group"
+          >
+            <FaArrowLeft className="group-hover:-translate-x-1.5 transition-transform" />
+            Back to Insights
+          </Link>
+        </div>
+
+        {/* Article Meta / Title Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          {blog.category && (
+            <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-brand-yellow bg-brand-yellow/10 border border-brand-yellow/20 rounded-full mb-4 uppercase">
+              {blog.category}
+            </span>
+          )}
+
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold font-display text-white leading-tight mb-6">
+            {blog.title}
+          </h1>
+
+          <div className="flex flex-wrap items-center gap-6 text-sm text-white/50 border-y border-white/10 py-4">
+            <span className="flex items-center gap-2">
+              <FaUser className="text-brand-yellow" /> By <strong className="text-white/80">{blog.author}</strong>
+            </span>
+            <span className="flex items-center gap-2">
+              <FaCalendarAlt className="text-brand-purple" /> {blog.date}
+            </span>
+            <span className="flex items-center gap-2">
+              <FaClock className="text-brand-blue" /> {blog.readTime || '5 min read'}
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Feature Header Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="relative h-[250px] md:h-[450px] rounded-3xl overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(3,3,11,0.5)] mb-12"
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent z-10" />
+          <img 
+            src={blog.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200'} 
+            alt={blog.title}
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+
+        {/* Main Grid Content / Side Share tools */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          
+          {/* Sidebar Share Controls - Sticks on Desktop */}
+          <div className="lg:col-span-1 lg:block flex justify-start items-center gap-4 lg:sticky lg:top-36 h-fit order-2 lg:order-1 pt-2 lg:pt-0 border-t lg:border-t-0 border-white/10">
+            <p className="text-xs text-white/40 uppercase font-semibold tracking-wider lg:rotate-270 lg:origin-center lg:mb-12 lg:whitespace-nowrap flex items-center gap-2">
+              <FaShareAlt className="inline lg:hidden text-brand-yellow" /> Share
+            </p>
+            <div className="flex lg:flex-col gap-3">
+              <button 
+                onClick={() => handleShare('linkedin')}
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:border-brand-blue hover:text-brand-blue hover:bg-brand-blue/10 flex items-center justify-center transition-all duration-300 text-lg hover:shadow-[0_0_15px_rgba(26,34,184,0.3)]"
+                title="Share on LinkedIn"
+              >
+                <FaLinkedin />
+              </button>
+              <button 
+                onClick={() => handleShare('twitter')}
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:border-brand-yellow hover:text-brand-yellow hover:bg-brand-yellow/10 flex items-center justify-center transition-all duration-300 text-lg hover:shadow-[0_0_15px_rgba(242,179,0,0.3)]"
+                title="Share on Twitter"
+              >
+                <FaTwitter />
+              </button>
+              <button 
+                onClick={() => handleShare('facebook')}
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:border-brand-purple hover:text-brand-purple hover:bg-brand-purple/10 flex items-center justify-center transition-all duration-300 text-lg hover:shadow-[0_0_15px_rgba(138,43,226,0.3)]"
+                title="Share on Facebook"
+              >
+                <FaFacebook />
+              </button>
+              <div className="relative">
+                <button 
+                  onClick={() => handleShare('copy')}
+                  className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:border-white hover:text-white hover:bg-white/10 flex items-center justify-center transition-all duration-300 text-sm font-semibold"
+                  title="Copy Link"
+                >
+                  URL
+                </button>
+                {shareTooltip && (
+                  <div className="absolute left-1/2 lg:left-full bottom-full lg:bottom-1/2 transform -translate-x-1/2 lg:translate-x-3 translate-y-[-10px] lg:translate-y-1/2 bg-brand-yellow text-black text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap z-25">
+                    Link Copied!
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Article Text Content */}
+          <motion.article 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-11 prose prose-invert max-w-none order-1 lg:order-2"
+          >
+            <div className="text-white/80 font-sans tracking-wide space-y-6">
+              {renderContent(blog.content)}
+            </div>
+            
+            {/* CTA at the bottom of the blog */}
+            <div className="mt-16 p-8 md:p-10 rounded-3xl bg-card-gradient border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden">
+              <div className="absolute -top-[50%] -left-[20%] w-[300px] h-[300px] bg-brand-blue/10 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="relative z-10 max-w-lg">
+                <h4 className="text-2xl font-bold font-display text-white mb-2">Ready to transform your digital presence?</h4>
+                <p className="text-sm text-white/70">Let Magdio's team of design, technology, and marketing experts accelerate your business growth.</p>
+              </div>
+              <Link 
+                to="/contact" 
+                className="relative z-10 shrink-0 bg-gradient-to-r from-brand-yellow to-brand-blue text-white hover:shadow-glow-yellow px-8 py-4 rounded-xl font-bold transition-all duration-300 hover:scale-105 inline-block text-center w-full md:w-auto"
+              >
+                Work With Us
+              </Link>
+            </div>
+          </motion.article>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}

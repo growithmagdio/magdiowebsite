@@ -1,77 +1,28 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { db } from '../firebase';
-import { FaCalendarAlt, FaUser } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { fetchBlogs } from '../utils/blogService';
+import { FaCalendarAlt, FaUser, FaClock } from 'react-icons/fa';
 import SEO from '../components/SEO';
-
-const mockBlogs = [
-  {
-    id: 'mock1',
-    title: 'The Future of AI in Digital Marketing',
-    excerpt: 'Discover how artificial intelligence is reshaping the landscape of digital marketing and what it means for your brand.',
-    content: 'Full content goes here...',
-    author: 'Admin',
-    date: 'Oct 24, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    id: 'mock2',
-    title: 'Design Trends to Watch in 2027',
-    excerpt: 'From glassmorphism to dark mode, explore the UI/UX design trends that are dominating the web right now.',
-    content: 'Full content goes here...',
-    author: 'Designer',
-    date: 'Oct 20, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    id: 'mock3',
-    title: 'Why Your Business Needs a Custom Web App',
-    excerpt: 'Off-the-shelf solutions can only take you so far. Learn why investing in a custom web application is crucial for scaling.',
-    content: 'Full content goes here...',
-    author: 'Developer',
-    date: 'Oct 15, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800'
-  }
-];
 
 export default function BlogPage() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [usingMockData, setUsingMockData] = useState(false);
 
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const loadBlogs = async () => {
       try {
-        const blogsRef = collection(db, 'blogs');
-        const q = query(blogsRef, orderBy('createdAt', 'desc'));
-        const querySnapshot = await getDocs(q);
-        
-        const fetchedBlogs = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          date: doc.data().createdAt ? new Date(doc.data().createdAt.toDate()).toLocaleDateString('en-US', {
-            month: 'short', day: 'numeric', year: 'numeric'
-          }) : 'Unknown Date'
-        }));
-
-        if (fetchedBlogs.length > 0) {
-          setBlogs(fetchedBlogs);
-        } else {
-          setBlogs(mockBlogs);
-          setUsingMockData(true);
-        }
+        setLoading(true);
+        const data = await fetchBlogs();
+        setBlogs(data);
       } catch (error) {
-        console.error('Error fetching blogs from Firebase:', error);
-        // Fallback to mock data if Firebase is not configured
-        setBlogs(mockBlogs);
-        setUsingMockData(true);
+        console.error('Error fetching blogs:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBlogs();
+    loadBlogs();
   }, []);
 
   return (
@@ -80,6 +31,7 @@ export default function BlogPage() {
         title="Our Insights & Blog | Digital Marketing Resources | Magdio" 
         description="Thoughts, news, and perspectives on design, technology, and digital growth from the experts at Magdio." 
       />
+      
       {/* Background elements */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[20%] -left-[10%] w-[40rem] h-[40rem] bg-brand-blue/20 rounded-full blur-[120px]"></div>
@@ -104,6 +56,16 @@ export default function BlogPage() {
           <div className="flex justify-center items-center h-64">
             <div className="w-12 h-12 border-4 border-brand-yellow/30 border-t-brand-yellow rounded-full animate-spin"></div>
           </div>
+        ) : blogs.length === 0 ? (
+          <div className="text-center py-20 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-md">
+            <p className="text-white/60 text-lg mb-4">No articles published yet.</p>
+            <Link 
+              to="/admin" 
+              className="bg-brand-blue text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-yellow hover:text-black transition-colors"
+            >
+              Post First Blog
+            </Link>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog, i) => (
@@ -114,40 +76,59 @@ export default function BlogPage() {
                 transition={{ delay: i * 0.1 }}
                 className="group rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-brand-blue/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(26,34,184,0.3)] flex flex-col h-full"
               >
-                <div className="relative h-56 overflow-hidden">
+                {/* Image linked to details */}
+                <Link to={`/blog/${blog.id}`} className="relative h-56 overflow-hidden block">
                   <div className="absolute inset-0 bg-brand-blue/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                  {blog.category && (
+                    <span className="absolute top-4 left-4 z-20 px-3 py-1 text-[10px] font-bold tracking-wider text-black bg-brand-yellow rounded-full uppercase">
+                      {blog.category}
+                    </span>
+                  )}
                   <img 
                     src={blog.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800'} 
                     alt={blog.title}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                    loading="lazy"
                   />
-                </div>
+                </Link>
                 
                 <div className="p-6 flex flex-col flex-grow">
-                  <div className="flex items-center gap-4 text-xs text-white/50 mb-4">
+                  {/* Meta items */}
+                  <div className="flex items-center justify-between text-xs text-white/50 mb-4 border-b border-white/5 pb-3">
                     <span className="flex items-center gap-1.5">
-                      <FaCalendarAlt /> {blog.date}
+                      <FaCalendarAlt className="text-brand-yellow" /> {blog.date}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <FaUser /> {blog.author}
+                      <FaClock className="text-brand-blue" /> {blog.readTime || '5 min read'}
                     </span>
                   </div>
                   
+                  {/* Title linked to details */}
                   <h3 className="text-xl font-bold font-display mb-3 group-hover:text-brand-yellow transition-colors line-clamp-2">
-                    {blog.title}
+                    <Link to={`/blog/${blog.id}`}>
+                      {blog.title}
+                    </Link>
                   </h3>
                   
-                  <p className="text-white/60 text-sm mb-6 line-clamp-3 flex-grow">
+                  <p className="text-white/60 text-sm mb-6 line-clamp-3 flex-grow font-light">
                     {blog.excerpt}
                   </p>
                   
-                  <div className="mt-auto pt-4 border-t border-white/10">
-                    <button className="text-brand-blue font-semibold text-sm flex items-center gap-2 group-hover:text-brand-yellow transition-colors">
+                  {/* Footer metadata & Action link */}
+                  <div className="mt-auto pt-4 border-t border-white/10 flex items-center justify-between">
+                    <span className="flex items-center gap-1.5 text-xs text-white/50">
+                      <FaUser className="text-brand-purple" /> {blog.author}
+                    </span>
+                    
+                    <Link 
+                      to={`/blog/${blog.id}`}
+                      className="text-brand-blue font-semibold text-sm flex items-center gap-2 group-hover:text-brand-yellow transition-colors"
+                    >
                       Read Article
                       <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </motion.div>
@@ -158,3 +139,4 @@ export default function BlogPage() {
     </div>
   );
 }
+
