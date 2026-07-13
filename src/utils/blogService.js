@@ -324,8 +324,8 @@ export const loginAdmin = async (email, password) => {
   if (auth) {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      // Store flag in sessionStorage to maintain session info
-      sessionStorage.setItem('magdio_admin_logged', 'true');
+      // Store flag in localStorage to maintain session info
+      localStorage.setItem('magdio_admin_logged', 'true');
       return userCredential.user;
     } catch (error) {
       console.error('Firebase authentication failed:', error);
@@ -334,13 +334,12 @@ export const loginAdmin = async (email, password) => {
   }
 
   // Fallback Local Auth check
-  const fallbackEmail = 'admin';
-  const fallbackPassword = 'admin123';
+  const fallbackEmail = 'growithmagdio@gmail.com';
+  const fallbackPassword = 'magdio123';
   
-  // Also accept admin@magdio.com as default
-  if ((email === fallbackEmail || email === 'admin@magdio.com') && password === fallbackPassword) {
-    const user = { email: 'admin@magdio.com', uid: 'local_admin' };
-    sessionStorage.setItem('magdio_admin_logged', 'true');
+  if (email === fallbackEmail && password === fallbackPassword) {
+    const user = { email: 'growithmagdio@gmail.com', uid: 'local_admin' };
+    localStorage.setItem('magdio_admin_logged', 'true');
     return user;
   } else {
     throw new Error('Invalid administrator credentials.');
@@ -349,7 +348,7 @@ export const loginAdmin = async (email, password) => {
 
 // Log out admin
 export const logoutAdmin = async () => {
-  sessionStorage.removeItem('magdio_admin_logged');
+  localStorage.removeItem('magdio_admin_logged');
   if (auth) {
     try {
       await signOut(auth);
@@ -362,24 +361,24 @@ export const logoutAdmin = async () => {
 
 // Check if currently authenticated
 export const checkAdminAuth = (callback) => {
-  // First check sessionStorage
-  const isLogged = sessionStorage.getItem('magdio_admin_logged') === 'true';
+  // First check localStorage
+  const isLogged = localStorage.getItem('magdio_admin_logged') === 'true';
 
   if (auth) {
     // If firebase auth is active, listen to state changes
     return onAuthStateChanged(auth, (user) => {
       if (user) {
-        sessionStorage.setItem('magdio_admin_logged', 'true');
+        localStorage.setItem('magdio_admin_logged', 'true');
         callback(user);
       } else {
-        sessionStorage.removeItem('magdio_admin_logged');
+        localStorage.removeItem('magdio_admin_logged');
         callback(null);
       }
     });
   } else {
-    // If fallback, resolve based on sessionStorage state
+    // If fallback, resolve based on localStorage state
     if (isLogged) {
-      callback({ email: 'admin@magdio.com', uid: 'local_admin' });
+      callback({ email: 'growithmagdio@gmail.com', uid: 'local_admin' });
     } else {
       callback(null);
     }

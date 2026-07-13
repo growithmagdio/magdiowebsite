@@ -338,7 +338,7 @@ export default function AdminPage() {
             </span>
             {!db && (
               <p className="text-[10px] text-white/40 mt-2 leading-relaxed">
-                Use fallback credentials <strong className="text-white/60">admin / admin123</strong> to login.<br/>
+                Use fallback credentials <strong className="text-white/60">growithmagdio@gmail.com / magdio123</strong> to login.<br/>
                 Add Firebase credentials to <code className="text-brand-yellow">.env</code> to enable server storage.
               </p>
             )}
