@@ -337,7 +337,9 @@ export const loginAdmin = async (email, password) => {
   const fallbackEmail = 'growithmagdio@gmail.com';
   const fallbackPassword = 'magdio123';
   
-  if (email === fallbackEmail && password === fallbackPassword) {
+  const normalizedEmail = (email || '').trim().toLowerCase();
+  
+  if (normalizedEmail === fallbackEmail && password === fallbackPassword) {
     const user = { email: 'growithmagdio@gmail.com', uid: 'local_admin' };
     localStorage.setItem('magdio_admin_logged', 'true');
     return user;
