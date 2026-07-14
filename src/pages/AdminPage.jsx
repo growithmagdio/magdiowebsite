@@ -78,6 +78,16 @@ export default function AdminPage() {
     return () => unsubscribe();
   }, []);
 
+  // Disable smooth scrolling on the Admin page to remove scroll animations
+  useEffect(() => {
+    const html = document.documentElement;
+    const originalScrollBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+    return () => {
+      html.style.scrollBehavior = originalScrollBehavior;
+    };
+  }, []);
+
   // Fetch blogs when switching to 'manage' tab
   useEffect(() => {
     if (isAuthenticated && activeTab === 'manage') {
@@ -102,7 +112,9 @@ export default function AdminPage() {
     setIsLoggingIn(true);
     setAuthError('');
     try {
-      await loginAdmin(loginEmail, loginPassword);
+      const loggedUser = await loginAdmin(loginEmail, loginPassword);
+      setIsAuthenticated(true);
+      setUser(loggedUser);
       setLoginEmail('');
       setLoginPassword('');
     } catch (error) {
@@ -116,6 +128,8 @@ export default function AdminPage() {
   const handleLogout = async () => {
     try {
       await logoutAdmin();
+      setIsAuthenticated(false);
+      setUser(null);
     } catch (error) {
       console.error('Error logging out:', error);
     }
@@ -133,7 +147,9 @@ export default function AdminPage() {
     try {
       setIsUploadingImage(true);
       setStatus({ type: '', message: '' });
-      const uploadedUrl = await uploadImageFile(file);
+      // Compress the image file client-side before uploading
+      const compressedFile = await compressImageFile(file);
+      const uploadedUrl = await uploadImageFile(compressedFile);
       setFormData(prev => ({ ...prev, imageUrl: uploadedUrl }));
       setStatus({
         type: 'success',
@@ -361,7 +377,7 @@ export default function AdminPage() {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Admin Header */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-white/10 pb-8 mb-10">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-white/10 pb-8 mb-10">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-brand-yellow">Magdio Portal</span>
             <h1 className="text-4xl md:text-5xl font-display font-bold text-white mt-1">
@@ -369,8 +385,8 @@ export default function AdminPage() {
             </h1>
           </div>
           
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-white/50 shrink-0 bg-white/5 px-4 py-2 rounded-xl border border-white/5 flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+            <span className="text-xs text-white/50 bg-white/5 px-4 py-2 rounded-xl border border-white/5 flex items-center gap-2">
               <span className={`w-2 h-2 rounded-full ${db ? 'bg-green-500' : 'bg-brand-yellow'} animate-pulse`} />
               {db ? 'Database: Live' : 'Database: Local Sandbox'}
             </span>
@@ -384,10 +400,10 @@ export default function AdminPage() {
         </div>
 
         {/* Dashboard Tabs Navigation */}
-        <div className="flex gap-4 mb-8">
+        <div className="flex gap-3 md:gap-4 mb-8 w-full">
           <button
             onClick={() => setActiveTab('compose')}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all ${
+            className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all ${
               activeTab === 'compose'
                 ? 'bg-brand-blue text-white shadow-glow-blue'
                 : 'bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10'
@@ -397,7 +413,7 @@ export default function AdminPage() {
           </button>
           <button
             onClick={() => setActiveTab('manage')}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all ${
+            className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all ${
               activeTab === 'manage'
                 ? 'bg-brand-blue text-white shadow-glow-blue'
                 : 'bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10'
@@ -595,12 +611,12 @@ export default function AdminPage() {
                   ></textarea>
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                   {editingId && (
                     <button
                       type="button"
                       onClick={cancelEdit}
-                      className="px-6 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-xl text-sm transition-all"
+                      className="w-full sm:w-auto px-6 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-xl text-sm transition-all text-center"
                     >
                       Cancel Edit
                     </button>
@@ -724,104 +740,183 @@ export default function AdminPage() {
                 <p className="text-white/60 text-sm">No blogs exist in local memory or database yet.</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="border-b border-white/10 text-xs font-semibold tracking-wider text-white/40 uppercase">
-                      <th className="py-4 px-4">Article</th>
-                      <th className="py-4 px-4 hidden md:table-cell">Author</th>
-                      <th className="py-4 px-4 hidden sm:table-cell">Category</th>
-                      <th className="py-4 px-4">Date</th>
-                      <th className="py-4 px-4 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5 text-sm text-white/70">
-                    {blogs.map((blog) => (
-                      <tr key={blog.id} className="hover:bg-white/5 transition-colors group">
-                        <td className="py-4 px-4">
-                          <div className="flex items-center gap-3">
-                            <img 
-                              src={blog.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=100'} 
-                              alt=""
-                              className="w-10 h-10 rounded-lg object-cover bg-white/5 border border-white/10 shrink-0" 
-                            />
-                            <div>
-                              <p className="font-bold text-white group-hover:text-brand-yellow transition-colors line-clamp-1">
-                                {blog.title}
-                              </p>
-                              <span className="text-[10px] text-white/40 block md:hidden">
-                                By {blog.author} &bull; {blog.category}
-                              </span>
+              <div>
+                {/* Mobile View: Stacked Cards for smaller screens */}
+                <div className="block sm:hidden space-y-4">
+                  {blogs.map((blog) => (
+                    <div key={blog.id} className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        <img 
+                          src={blog.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=100'} 
+                          alt=""
+                          className="w-12 h-12 rounded-lg object-cover bg-white/5 border border-white/10 shrink-0" 
+                        />
+                        <div className="min-w-0 flex-grow">
+                          <p className="font-bold text-white text-sm truncate leading-snug">
+                            {blog.title}
+                          </p>
+                          <p className="text-[10px] text-white/40 mt-0.5">
+                            By {blog.author} &bull; {blog.date}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
+                        <span className="text-[10px] font-semibold text-brand-yellow bg-brand-yellow/10 border border-brand-yellow/20 px-2.5 py-0.5 rounded-full uppercase">
+                          {blog.category || 'Technology'}
+                        </span>
+                        
+                        <div className="flex items-center gap-2">
+                          {deletingId === blog.id ? (
+                            <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/25 p-1 rounded-lg">
+                              <span className="text-[10px] text-red-400 font-bold px-1.5">Delete?</span>
+                              <button
+                                onClick={() => handleDelete(blog.id)}
+                                className="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-[10px] font-bold transition-all"
+                              >
+                                Yes
+                              </button>
+                              <button
+                                onClick={() => setDeletingId(null)}
+                                className="px-2.5 py-1 bg-white/10 hover:bg-white/20 text-white rounded text-[10px] font-bold transition-all"
+                              >
+                                No
+                              </button>
                             </div>
-                          </div>
-                        </td>
-                        
-                        <td className="py-4 px-4 hidden md:table-cell font-light text-white/60">
-                          {blog.author}
-                        </td>
-                        
-                        <td className="py-4 px-4 hidden sm:table-cell">
-                          <span className="text-[11px] font-semibold text-brand-yellow bg-brand-yellow/10 border border-brand-yellow/20 px-2 py-0.5 rounded-full uppercase">
-                            {blog.category || 'Technology'}
-                          </span>
-                        </td>
-                        
-                        <td className="py-4 px-4 text-xs font-light text-white/50">
-                          {blog.date}
-                        </td>
-                        
-                        <td className="py-4 px-4 text-right">
-                          <div className="flex items-center justify-end gap-2.5">
-                            {deletingId === blog.id ? (
-                              <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/25 p-1 rounded-lg">
-                                <span className="text-[10px] text-red-400 font-bold px-1.5">Delete?</span>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => startEdit(blog)}
+                                className="p-2 bg-white/5 hover:bg-brand-blue/20 hover:text-brand-blue border border-white/5 rounded-lg text-white/60 transition-all"
+                                title="Edit Post"
+                              >
+                                <FaEdit className="text-xs" />
+                              </button>
+                              {blog.id.startsWith('mock') ? (
                                 <button
-                                  onClick={() => handleDelete(blog.id)}
-                                  className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-[10px] font-bold transition-all"
+                                  className="p-2 bg-white/5 border border-white/5 rounded-lg text-white/20 cursor-not-allowed"
+                                  title="Default mock articles cannot be deleted"
+                                  disabled
                                 >
-                                  Yes
+                                  <FaTrash className="text-xs" />
                                 </button>
+                              ) : (
                                 <button
-                                  onClick={() => setDeletingId(null)}
-                                  className="px-2 py-1 bg-white/10 hover:bg-white/20 text-white rounded text-[10px] font-bold transition-all"
+                                  onClick={() => setDeletingId(blog.id)}
+                                  className="p-2 bg-white/5 hover:bg-red-500/20 hover:text-red-500 border border-white/5 rounded-lg text-white/60 transition-all"
+                                  title="Delete Post"
                                 >
-                                  No
+                                  <FaTrash className="text-xs" />
                                 </button>
-                              </div>
-                            ) : (
-                              <>
-                                <button
-                                  onClick={() => startEdit(blog)}
-                                  className="p-2 bg-white/5 hover:bg-brand-blue/20 hover:text-brand-blue border border-white/5 rounded-lg text-white/60 transition-all"
-                                  title="Edit Post"
-                                >
-                                  <FaEdit className="text-xs" />
-                                </button>
-                                {blog.id.startsWith('mock') ? (
-                                  <button
-                                    className="p-2 bg-white/5 border border-white/5 rounded-lg text-white/20 cursor-not-allowed"
-                                    title="Default mock articles cannot be deleted"
-                                    disabled
-                                  >
-                                    <FaTrash className="text-xs" />
-                                  </button>
-                                ) : (
-                                  <button
-                                    onClick={() => setDeletingId(blog.id)}
-                                    className="p-2 bg-white/5 hover:bg-red-500/20 hover:text-red-500 border border-white/5 rounded-lg text-white/60 transition-all"
-                                    title="Delete Post"
-                                  >
-                                    <FaTrash className="text-xs" />
-                                  </button>
-                                )}
-                              </>
-                            )}
-                          </div>
-                        </td>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop View: Table for larger screens */}
+                <div className="hidden sm:block overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10 text-xs font-semibold tracking-wider text-white/40 uppercase">
+                        <th className="py-4 px-4">Article</th>
+                        <th className="py-4 px-4 hidden md:table-cell">Author</th>
+                        <th className="py-4 px-4 hidden sm:table-cell">Category</th>
+                        <th className="py-4 px-4">Date</th>
+                        <th className="py-4 px-4 text-right">Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-white/5 text-sm text-white/70">
+                      {blogs.map((blog) => (
+                        <tr key={blog.id} className="hover:bg-white/5 transition-colors group">
+                          <td className="py-4 px-4">
+                            <div className="flex items-center gap-3">
+                              <img 
+                                src={blog.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=100'} 
+                                alt=""
+                                className="w-10 h-10 rounded-lg object-cover bg-white/5 border border-white/10 shrink-0" 
+                              />
+                              <div>
+                                <p className="font-bold text-white group-hover:text-brand-yellow transition-colors line-clamp-1">
+                                  {blog.title}
+                                </p>
+                                <span className="text-[10px] text-white/40 block md:hidden">
+                                  By {blog.author} &bull; {blog.category}
+                                </span>
+                              </div>
+                            </div>
+                          </td>
+                          
+                          <td className="py-4 px-4 hidden md:table-cell font-light text-white/60">
+                            {blog.author}
+                          </td>
+                          
+                          <td className="py-4 px-4 hidden sm:table-cell">
+                            <span className="text-[11px] font-semibold text-brand-yellow bg-brand-yellow/10 border border-brand-yellow/20 px-2 py-0.5 rounded-full uppercase">
+                              {blog.category || 'Technology'}
+                            </span>
+                          </td>
+                          
+                          <td className="py-4 px-4 text-xs font-light text-white/50">
+                            {blog.date}
+                          </td>
+                          
+                          <td className="py-4 px-4 text-right">
+                            <div className="flex items-center justify-end gap-2.5">
+                              {deletingId === blog.id ? (
+                                <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/25 p-1 rounded-lg">
+                                  <span className="text-[10px] text-red-400 font-bold px-1.5">Delete?</span>
+                                  <button
+                                    onClick={() => handleDelete(blog.id)}
+                                    className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-[10px] font-bold transition-all"
+                                  >
+                                    Yes
+                                  </button>
+                                  <button
+                                    onClick={() => setDeletingId(null)}
+                                    className="px-2 py-1 bg-white/10 hover:bg-white/20 text-white rounded text-[10px] font-bold transition-all"
+                                  >
+                                    No
+                                  </button>
+                                </div>
+                              ) : (
+                                <>
+                                  <button
+                                    onClick={() => startEdit(blog)}
+                                    className="p-2 bg-white/5 hover:bg-brand-blue/20 hover:text-brand-blue border border-white/5 rounded-lg text-white/60 transition-all"
+                                    title="Edit Post"
+                                  >
+                                    <FaEdit className="text-xs" />
+                                  </button>
+                                  {blog.id.startsWith('mock') ? (
+                                    <button
+                                      className="p-2 bg-white/5 border border-white/5 rounded-lg text-white/20 cursor-not-allowed"
+                                      title="Default mock articles cannot be deleted"
+                                      disabled
+                                    >
+                                      <FaTrash className="text-xs" />
+                                    </button>
+                                  ) : (
+                                    <button
+                                      onClick={() => setDeletingId(blog.id)}
+                                      className="p-2 bg-white/5 hover:bg-red-500/20 hover:text-red-500 border border-white/5 rounded-lg text-white/60 transition-all"
+                                      title="Delete Post"
+                                    >
+                                      <FaTrash className="text-xs" />
+                                    </button>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>
@@ -831,4 +926,111 @@ export default function AdminPage() {
     </div>
   );
 }
+
+// Utility function to compress image files client-side using Canvas
+const compressImageFile = (file, maxWidth = 1200, maxHeight = 1200, quality = 0.7) => {
+  return new Promise((resolve) => {
+    if (!file.type.startsWith('image/')) {
+      resolve(file);
+      return;
+    }
+
+    // Failsafe timeout to prevent hanging if decoder or canvas crashes
+    const timeoutId = setTimeout(() => {
+      console.warn('Image compression timed out. Falling back to original file.');
+      resolve(file);
+    }, 4000);
+
+    try {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const img = new Image();
+          img.onload = () => {
+            try {
+              clearTimeout(timeoutId);
+              const canvas = document.createElement('canvas');
+              let width = img.width;
+              let height = img.height;
+
+              if (width === 0 || height === 0) {
+                resolve(file);
+                return;
+              }
+
+              if (width > height) {
+                if (width > maxWidth) {
+                  height = Math.round((height * maxWidth) / width);
+                  width = maxWidth;
+                }
+              } else {
+                if (height > maxHeight) {
+                  width = Math.round((width * maxHeight) / height);
+                  height = maxHeight;
+                }
+              }
+
+              canvas.width = width;
+              canvas.height = height;
+
+              const ctx = canvas.getContext('2d');
+              if (!ctx) {
+                resolve(file);
+                return;
+              }
+              ctx.drawImage(img, 0, 0, width, height);
+
+              canvas.toBlob(
+                (blob) => {
+                  try {
+                    if (!blob) {
+                      resolve(file);
+                      return;
+                    }
+                    const compressedFile = new File([blob], file.name, {
+                      type: 'image/jpeg',
+                      lastModified: Date.now(),
+                    });
+                    console.log(`Original size: ${(file.size / 1024).toFixed(1)}KB, Compressed size: ${(compressedFile.size / 1024).toFixed(1)}KB`);
+                    resolve(compressedFile);
+                  } catch (err) {
+                    console.error('Blob creation error:', err);
+                    resolve(file);
+                  }
+                },
+                'image/jpeg',
+                quality
+              );
+            } catch (err) {
+              console.error('Canvas processing error:', err);
+              resolve(file);
+            }
+          };
+          
+          img.onerror = () => {
+            clearTimeout(timeoutId);
+            resolve(file);
+          };
+          
+          img.src = event.target.result;
+        } catch (err) {
+          clearTimeout(timeoutId);
+          console.error('Image loading error:', err);
+          resolve(file);
+        }
+      };
+      
+      reader.onerror = () => {
+        clearTimeout(timeoutId);
+        resolve(file);
+      };
+      
+      reader.readAsDataURL(file);
+    } catch (err) {
+      clearTimeout(timeoutId);
+      console.error('FileReader start error:', err);
+      resolve(file);
+    }
+  });
+};
 

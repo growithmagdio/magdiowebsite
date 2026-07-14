@@ -29,24 +29,37 @@ export const uploadImageFile = async (file) => {
       const uniqueName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       const storageRef = ref(storage, `blog-images/${uniqueName}`);
       
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      return downloadURL;
+      // 8-second timeout to prevent hanging uploads
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Firebase Storage upload timed out.')), 8000);
+      });
+
+      const uploadPromise = (async () => {
+        const snapshot = await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        return downloadURL;
+      })();
+
+      return await Promise.race([uploadPromise, timeoutPromise]);
     } catch (error) {
-      console.error('Error uploading image to Firebase Storage:', error);
-      throw error;
+      console.warn('Firebase Storage upload failed or timed out. Falling back to local Base64.', error);
     }
   }
 
   // Local fallback (Base64 encoding)
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => {
-      console.error('Error reading local file:', error);
-      reject(error);
-    };
+  return new Promise((resolve) => {
+    try {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => {
+        console.error('Error reading local file:', error);
+        resolve('');
+      };
+      reader.readAsDataURL(file);
+    } catch (e) {
+      console.error('FileReader execution error:', e);
+      resolve('');
+    }
   });
 };
 
@@ -321,6 +334,17 @@ export const deleteBlogPost = async (id) => {
 
 // Log in admin
 export const loginAdmin = async (email, password) => {
+  // Fallback Local Auth check (check first to bypass network delay)
+  const fallbackEmail = 'growithmagdio@gmail.com';
+  const fallbackPassword = 'magdio123';
+  const normalizedEmail = (email || '').trim().toLowerCase();
+  
+  if (normalizedEmail === fallbackEmail && password === fallbackPassword) {
+    const user = { email: 'growithmagdio@gmail.com', uid: 'local_admin' };
+    localStorage.setItem('magdio_admin_logged', 'true');
+    return user;
+  }
+
   if (auth) {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -333,19 +357,7 @@ export const loginAdmin = async (email, password) => {
     }
   }
 
-  // Fallback Local Auth check
-  const fallbackEmail = 'growithmagdio@gmail.com';
-  const fallbackPassword = 'magdio123';
-  
-  const normalizedEmail = (email || '').trim().toLowerCase();
-  
-  if (normalizedEmail === fallbackEmail && password === fallbackPassword) {
-    const user = { email: 'growithmagdio@gmail.com', uid: 'local_admin' };
-    localStorage.setItem('magdio_admin_logged', 'true');
-    return user;
-  } else {
-    throw new Error('Invalid administrator credentials.');
-  }
+  throw new Error('Invalid administrator credentials.');
 };
 
 // Log out admin

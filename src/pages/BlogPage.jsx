@@ -86,9 +86,12 @@ export default function BlogPage() {
                   )}
                   <img 
                     src={blog.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800'} 
-                    alt={blog.title}
+                    alt=""
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
                     loading="lazy"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800';
+                    }}
                   />
                 </Link>
                 

@@ -74,10 +74,20 @@ function PageLoader() {
 
 function AnimatedRoutes() {
   const location = useLocation();
+  const isAdmin = location.pathname === '/admin';
+  const activePageTransition = isAdmin
+    ? {
+        initial: { opacity: 1, y: 0 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 1, y: 0 },
+        transition: { duration: 0 }
+      }
+    : pageTransition;
+
   return (
     <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col">
       <AnimatePresence mode="wait">
-        <motion.div key={location.pathname} {...pageTransition} className="flex-grow">
+        <motion.div key={location.pathname} {...activePageTransition} className="flex-grow">
           <Suspense fallback={<PageLoader />}>
             <Routes location={location}>
               <Route path="/"                      element={<HomePage />} />
