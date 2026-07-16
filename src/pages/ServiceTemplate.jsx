@@ -95,7 +95,7 @@ export default function ServiceTemplate({ serviceId: propServiceId }) {
       <ServiceCTA service={service} />
 
       {/* 11. Enquiry Form Section */}
-      <div id="enquiry" className="relative z-10 bg-black/40">
+      <div className="relative z-10 bg-black/40">
         <EnquirySection />
       </div>
     </div>

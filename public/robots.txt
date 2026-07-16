@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /*?*v=
+Disallow: /*?v=*
+Disallow: /*?*version=
+Disallow: /*?version=*
 
 Sitemap: https://www.magdio.com/sitemap.xml

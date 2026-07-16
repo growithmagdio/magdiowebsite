@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import PremiumBackground from './components/PremiumBackground';
 import FloatingElements from './components/FloatingElements';
 import PointerGlow from './components/PointerGlow';
+import useQueryStringGuard from './hooks/useQueryStringGuard';
 
 // Lazy load pages for fast initial page loading times
 const HomePage             = lazy(() => import('./pages/HomePage'));
@@ -42,6 +43,7 @@ const SasvithaHomeFinanceCaseStudy = lazy(() => import('./pages/case-studies/Sas
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+  useQueryStringGuard();
 
   useEffect(() => {
     window.scrollTo({

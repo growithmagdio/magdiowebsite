@@ -10,20 +10,24 @@ export default function SEO({
   canonicalUrl,
   jsonLd
 }) {
+  const cleanCanonical = typeof window !== 'undefined'
+    ? window.location.origin + window.location.pathname
+    : canonicalUrl;
+
   return (
     <Helmet>
       {/* Standard metadata tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
       
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      {cleanCanonical && <link rel="canonical" href={cleanCanonical} />}
 
       {/* Open Graph tags */}
       <meta property="og:type" content={type} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
-      {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+      {cleanCanonical && <meta property="og:url" content={cleanCanonical} />}
       
       {/* Twitter tags */}
       <meta name="twitter:creator" content={name} />

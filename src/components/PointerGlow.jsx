@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export default function PointerGlow() {
+  const location = useLocation();
+  const isAdmin = location.pathname === '/admin';
+
+  if (isAdmin) return null;
   const [isHovered, setIsHovered] = useState(false);
   const isHoveredRef = useRef(false);
   const canvasRef = useRef(null);

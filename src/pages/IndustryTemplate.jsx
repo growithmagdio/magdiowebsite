@@ -115,10 +115,7 @@ export default function IndustryTemplate() {
       {/* ── FAQ & CONTACT ── */}
       <FAQSection />
       
-      <div id="enquiry">
-        <EnquirySection />
-      </div>
-
+      <EnquirySection />
     </div>
   );
 }

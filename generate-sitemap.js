@@ -85,6 +85,10 @@ async function generateSitemap() {
   // Write robots.txt
   const robotsTxt = `User-agent: *
 Allow: /
+Disallow: /*?*v=
+Disallow: /*?v=*
+Disallow: /*?*version=
+Disallow: /*?version=*
 
 Sitemap: ${BASE_URL}/sitemap.xml
 `;
