@@ -29,6 +29,7 @@ const PerformanceMarketingPage = lazy(() => import('./pages/PerformanceMarketing
 const LinkedInAdsPage = lazy(() => import('./pages/LinkedInAdsPage'));
 const YouTubeAdsPage = lazy(() => import('./pages/YouTubeAdsPage'));
 const WhatsAppMarketingPage = lazy(() => import('./pages/WhatsAppMarketingPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Detailed Case Studies lazy loads
 const HaberLivingCaseStudy = lazy(() => import('./pages/case-studies/HaberLivingCaseStudy'));
@@ -155,7 +156,7 @@ function AnimatedRoutes() {
               <Route path="/blog/:id"              element={<BlogDetailPage />} />
               <Route path="/admin"                 element={<AdminPage />} />
               <Route path="/contact"               element={<ContactPage />} />
-              <Route path="*"                      element={<HomePage />} />
+              <Route path="*"                      element={<NotFoundPage />} />
             </Routes>
           </Suspense>
           <Footer />

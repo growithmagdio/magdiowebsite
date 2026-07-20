@@ -13,22 +13,21 @@ export default function useQueryStringGuard() {
       const url = new URL(window.location.href);
       let isPolluted = false;
 
-      // Check and remove 'v' parameter
-      if (url.searchParams.has('v')) {
-        url.searchParams.delete('v');
-        isPolluted = true;
-      }
+      // Define cache-busting parameters to check and remove
+      const cacheBustingParams = ['v', 'version', 'cache', 'timestamp', 'random', 'cachebuster'];
 
-      // Check and remove 'version' parameter
-      if (url.searchParams.has('version')) {
-        url.searchParams.delete('version');
-        isPolluted = true;
-      }
+      cacheBustingParams.forEach(param => {
+        if (url.searchParams.has(param)) {
+          url.searchParams.delete(param);
+          isPolluted = true;
+        }
+      });
 
       if (isPolluted) {
-        // Construct the clean relative URL to replace state
+        // Construct the clean relative URL
         const cleanUrl = url.pathname + url.search + url.hash;
-        window.history.replaceState(null, '', cleanUrl);
+        // Redirect to the clean URL (helps bots recognize the redirection)
+        window.location.replace(cleanUrl);
       }
     }
   }, [location.pathname, location.search]);

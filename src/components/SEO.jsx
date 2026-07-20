@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 export default function SEO({ 
   title = "MAGDIO — The AI Growth Studio", 
@@ -8,11 +9,13 @@ export default function SEO({
   type = "website",
   image = "/favicon.png?v=2",
   canonicalUrl,
+  noindex = false,
   jsonLd
 }) {
-  const cleanCanonical = typeof window !== 'undefined'
-    ? window.location.origin + window.location.pathname
-    : canonicalUrl;
+  const location = useLocation();
+  const cleanCanonical = !noindex
+    ? (canonicalUrl || `https://www.magdio.com${location.pathname === '/' ? '/' : location.pathname}`)
+    : null;
 
   return (
     <Helmet>
@@ -20,6 +23,7 @@ export default function SEO({
       <title>{title}</title>
       <meta name="description" content={description} />
       
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
       {cleanCanonical && <link rel="canonical" href={cleanCanonical} />}
 
       {/* Open Graph tags */}
