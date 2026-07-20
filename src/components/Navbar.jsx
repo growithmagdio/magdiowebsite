@@ -24,14 +24,14 @@ const megaMenuData = {
       color: 'text-brand-yellow',
       hoverBorder: 'hover:border-brand-yellow',
       items: [
-        { name: 'Digital Marketing', path: '/digital-marketing-company-in-chennai-magdio' },
-        { name: 'SEO Services', path: '/seo-company-in-chennai-magdio' },
-        { name: 'Google Ads', path: '/google-ads-agency-chennai-magdio' },
+        { name: 'Digital Marketing', path: '/services/digital-marketing' },
+        { name: 'SEO Services', path: '/services/seo-services' },
+        { name: 'Google Ads', path: '/services/google-ads' },
         { name: 'Meta/Facebook Ads', path: '/services/meta-ads' },
-        { name: 'Social Media Marketing', path: '/social-media-marketing-agency-in-chennai-magdio' },
-        { name: 'WhatsApp Marketing', path: '/whatsapp-marketing-services-in-chennai-magdio' },
-        { name: 'YouTube Ads', path: '/youtube-marketing-agency-in-chennai-magdio' },
-        { name: 'LinkedIn Ads', path: '/linkedin-marketing-b2b-marketing-in-chennai-magdio' },
+        { name: 'Social Media Marketing', path: '/services/social-media-marketing' },
+        { name: 'WhatsApp Marketing', path: '/services/whatsapp-marketing' },
+        { name: 'YouTube Ads', path: '/services/youtube-ads' },
+        { name: 'LinkedIn Ads', path: '/services/linkedin-ads' },
       ]
     },
     {

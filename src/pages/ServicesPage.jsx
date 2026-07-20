@@ -121,14 +121,14 @@ export default function ServicesPage() {
           {services.map((service) => {
             // Map title to a path based on our servicesData
             let path = '/services';
-            if (service.title === 'Social Media Marketing') path = '/social-media-marketing-agency-in-chennai-magdio';
-            if (service.title === 'Lead Generation') path = '/services/marketing-automation';
+            if (service.title === 'Social Media Marketing') path = '/services/social-media-marketing';
+            if (service.title === 'Lead Generation') path = '/services/digital-marketing';
             if (service.title === 'Personal Branding') path = '/services/branding-services';
             if (service.title === 'Web Development') path = '/services/web-development';
-            if (service.title === 'Email Marketing') path = '/digital-marketing-company-in-chennai-magdio';
+            if (service.title === 'Email Marketing') path = '/services/digital-marketing';
             if (service.title === 'Sales Funnel Development') path = '/services/ecommerce-development';
-            if (service.title === 'SEO Services') path = '/seo-company-in-chennai-magdio';
-            if (service.title === 'Content Marketing') path = '/digital-marketing-company-in-chennai-magdio';
+            if (service.title === 'SEO Services') path = '/services/seo-services';
+            if (service.title === 'Content Marketing') path = '/services/digital-marketing';
             if (service.title === 'Growth Consultation') path = '/services/business-consulting';
 
             return (

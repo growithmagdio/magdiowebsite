@@ -8,7 +8,7 @@ export default function WhatsAppMarketingPage() {
       <SEO 
         title="Bulk WhatsApp Marketing Services in Chennai | MAGDIO" 
         description="Reach Magdio, a bulk WhatsApp marketing service provider delivering promotional messages, alerts, customer updates and business communication solutions." 
-        canonicalUrl="https://www.magdio.com/whatsapp-marketing-services-in-chennai-magdio"
+        canonicalUrl="https://www.magdio.com/services/whatsapp-marketing"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",

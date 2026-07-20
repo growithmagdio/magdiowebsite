@@ -97,7 +97,7 @@ export default function SeoServicesPage() {
       <SEO 
         title="Best SEO Company in Chennai | SEO Agency in Chennai | MAGDIO" 
         description="Boost your business visibility with the best SEO services in Chennai from Magdio. We use SEO, AEO, and GEO strategies to drive leads and online conversions." 
-        canonicalUrl="https://www.magdio.com/seo-company-in-chennai-magdio"
+        canonicalUrl="https://www.magdio.com/services/seo-services"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
