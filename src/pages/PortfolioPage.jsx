@@ -14,7 +14,7 @@ const projects = [
     tag: 'Ecommerce & Tech SEO',
     color: '#1A22B8',
     size: 'large',
-    image: '/portfolio-covers/haber_living.png',
+    image: '/portfolio-covers/haber_living.webp',
     desc: 'Luxury home brand scaled from low search presence to Google #1 rankings and 503K+ search impressions.',
     link: '/portfolio/haber-living-seo-growth'
   },
@@ -25,7 +25,7 @@ const projects = [
     tag: 'SEO, AEO & GEO',
     color: '#F2B300',
     size: 'large',
-    image: '/portfolio-covers/automobile_seo.png',
+    image: '/portfolio-covers/automobile_seo.webp',
     desc: 'From launching with zero domain authority to ₹1 Crore+ in sales and ₹2.75 Lakhs+ revenue from AI search (ChatGPT).',
     link: '/portfolio/automobile-ecommerce-seo-growth'
   },
@@ -36,7 +36,7 @@ const projects = [
     tag: 'Meta Ads & Lead Gen',
     color: '#D9D7FF',
     size: 'large',
-    image: '/portfolio-covers/dreamzil_marketing.png',
+    image: '/portfolio-covers/dreamzil_marketing.webp',
     desc: 'Generated 472+ qualified corporate leads and ₹5 Lakhs+ in sales with less than ₹2,600 ad spend using targeting funnels.',
     link: '/portfolio/dreamzil-meta-ads-growth'
   },
@@ -47,7 +47,7 @@ const projects = [
     tag: 'B2B Lead Gen',
     color: '#4CAF50',
     size: 'large',
-    image: '/portfolio-covers/odoo_leads.png',
+    image: '/portfolio-covers/odoo_leads.webp',
     desc: 'Generated 680+ highly qualified leads for enterprise ERP installations while reducing B2B acquisition costs.',
     link: '/portfolio/odoo-erp-lead-generation'
   },
@@ -58,7 +58,7 @@ const projects = [
     tag: 'SEO & AI Overview',
     color: '#1A22B8',
     size: 'large',
-    image: '/portfolio-covers/bitty_clicks.png',
+    image: '/portfolio-covers/bitty_clicks.webp',
     desc: 'Scaled product & food photography search discoverability with top #1 Google ranks and Google AI Overview placement in Chennai.',
     link: '/portfolio/bitty-clicks-seo-case-study'
   },
@@ -69,7 +69,7 @@ const projects = [
     tag: 'Ecommerce SEO & GEO',
     color: '#F2B300',
     size: 'large',
-    image: '/portfolio-covers/badie_studio.png',
+    image: '/portfolio-covers/badie_studio.webp',
     desc: 'Grew organic search impressions to 92.8K+ and acquired 5K+ organic users for Qatar’s oldest premium musical instrument store.',
     link: '/portfolio/badie-studio-seo-case-study'
   },
@@ -80,7 +80,7 @@ const projects = [
     tag: 'Migration & Authority Recovery',
     color: '#4CAF50',
     size: 'large',
-    image: '/portfolio-covers/namma_markt.png',
+    image: '/portfolio-covers/namma_markt.webp',
     desc: 'Rebuilt domain authority to 14% and recovered organic search impressions to page #1 for Germany’s Indian grocery store.',
     link: '/portfolio/namma-markt-seo-case-study'
   },
@@ -91,7 +91,7 @@ const projects = [
     tag: 'Local SEO & Leads',
     color: '#FF6B6B',
     size: 'large',
-    image: '/portfolio-covers/sasvitha_finance.png',
+    image: '/portfolio-covers/sasvitha_finance.webp',
     desc: 'Grew organic inquiry leads and established top Google ranks for competitive regional home loan searches in Tamil Nadu.',
     link: '/portfolio/sasvitha-home-finance-seo-case-study'
   }
