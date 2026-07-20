@@ -26,6 +26,7 @@ const megaMenuData = {
       items: [
         { name: 'Digital Marketing', path: '/services/digital-marketing' },
         { name: 'SEO Services', path: '/services/seo-services' },
+        { name: 'GEO Services', path: '/services/geo-services' },
         { name: 'Google Ads', path: '/services/google-ads' },
         { name: 'Meta/Facebook Ads', path: '/services/meta-ads' },
         { name: 'Social Media Marketing', path: '/services/social-media-marketing' },

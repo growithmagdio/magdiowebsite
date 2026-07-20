@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { 
-  FaCheckCircle, FaChartLine, FaUsers, FaCamera, FaAd,
-  FaInstagram, FaFacebookF, FaLinkedinIn, FaYoutube, FaWhatsapp, FaShareAlt
+  FaArrowRight, FaCheckCircle, FaChartLine, FaUsers, FaCamera, FaAd,
+  FaInstagram, FaFacebookF, FaLinkedinIn, FaYoutube, FaWhatsapp, FaShareAlt,
+  FaBuilding, FaCheck
 } from 'react-icons/fa';
 import FAQAccordion from '../components/FAQAccordion';
 import EnquirySection from '../components/home/EnquirySection';
@@ -25,7 +26,7 @@ const smmFaqs = [
     a: 'Organic social media marketing typically requires consistent effort over several months, while paid advertising can generate results faster. Magdio focuses on building sustainable growth rather than short-term spikes.'
   },
   {
-    q: 'Why choose Magdio as your Social Media Marketing Agency in Coimbatore?',
+    q: 'Why choose Magdio as your Social Media Marketing Agency in Chennai?',
     a: 'Magdio combines social media marketing strategy, content creation, branding, audience growth, lead generation, and advertising into a complete growth system designed to help businesses build visibility, engagement, and long-term success.'
   }
 ];
@@ -39,20 +40,20 @@ export default function SocialMediaMarketingPage() {
   };
 
   return (
-    <div className="page-bg min-h-screen pt-0 pb-0">
+    <div className="page-bg min-h-screen pt-0 pb-0 bg-[#03030b]">
       <SEO 
-        title="Top Social Media Marketing Agency in Chennai | MAGDIO" 
-        description="Magdio is a leading social media marketing company in Chennai offering creative campaigns, brand growth, audience engagement and lead generation services." 
+        title="Social Media Marketing Agency in Chennai | Brand Growth | MAGDIO" 
+        description="Magdio is the best social media marketing agency in Chennai offering creative campaigns, reels strategy, audience growth and paid ads lead generation services." 
         canonicalUrl="https://www.magdio.com/services/social-media-marketing"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
-          "name": "Social Media Marketing",
+          "name": "Social Media Marketing Services",
           "provider": {
             "@type": "LocalBusiness",
-            "name": "Magdio"
+            "name": "MAGDIO"
           },
-          "areaServed": "Tamil Nadu"
+          "areaServed": ["Chennai", "Coimbatore", "Madurai", "Tamil Nadu"]
         }}
       />
       
@@ -78,12 +79,20 @@ export default function SocialMediaMarketingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.7 }}
-            className="font-display font-black text-4xl sm:text-5xl md:text-6xl text-white leading-tight mb-6 tracking-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+            className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-white leading-tight mb-6 tracking-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
           >
-            Social Media Marketing Agency <br className="hidden sm:inline" />
-            <span className="gradient-text-purple">in Coimbatore</span>
-            <span className="block text-xl sm:text-2xl mt-6 font-bold text-white/90">for Brand Growth, Engagement & Lead Generation</span>
+            Social Media Marketing Agency <span className="gradient-text-purple">in Chennai</span>
+            <span className="block text-lg sm:text-2xl mt-4 font-bold text-white/90">for Brand Growth, Engagement & Lead Generation</span>
           </motion.h1>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.6 }}
+            className="text-xl sm:text-2xl font-bold text-white/90 mb-6 max-w-4xl mx-auto font-display"
+          >
+            Social Media Marketing Services That Help Businesses Build Visibility, Trust & Sales
+          </motion.h2>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -92,7 +101,7 @@ export default function SocialMediaMarketingPage() {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 mb-8"
           >
             <button onClick={scrollToEnquiry} className="btn-primary w-full sm:w-auto text-base sm:text-lg px-8 py-3.5">
-              Get a Free Social Strategy
+              Get Your Social Growth Plan
             </button>
             <a href="https://wa.me/918838887303?text=Hi%20Magdio!%20I%27d%20like%20to%20talk%20to%20your%20social%20media%20experts." target="_blank" rel="noreferrer" className="btn-secondary w-full sm:w-auto text-base sm:text-lg px-8 py-3 flex items-center justify-center gap-2">
               <FaWhatsapp size={18} /> Talk To Our Experts
@@ -104,21 +113,18 @@ export default function SocialMediaMarketingPage() {
       {/* ── 1.5 INTRO SECTION ── */}
       <section className="py-16 lg:py-24 relative bg-black/5">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white mb-8 leading-tight">
-            Social Media Marketing Services That Help Businesses Build Visibility, Trust & Sales
-          </h2>
           <div className="space-y-6 text-white/70 text-base sm:text-lg leading-relaxed text-left glass-card p-8 border border-white/5 shadow-xl">
             <p>
               In today's digital world, customers spend a significant amount of time on social media platforms before making purchasing decisions. Businesses that consistently invest in social media marketing build stronger brand awareness, generate more engagement, and create more opportunities for lead generation and sales.
             </p>
             <p>
-              Magdio is a Social Media Marketing Agency in Coimbatore helping businesses create meaningful connections with their audience through strategic content, platform management, creative campaigns, and performance-driven social media marketing services. As a modern social media marketing company, we help businesses move beyond random posting and build systems that support long-term business growth.
+              Magdio is a Social Media Marketing Agency in Chennai helping businesses create meaningful connections with their audience through strategic content, platform management, creative campaigns, and performance-driven social media marketing services. As a modern social media marketing company, we help businesses move beyond random posting and build systems that support long-term business growth.
             </p>
             <p>
               Whether you are a startup, local business, ecommerce brand, SaaS company, personal brand, consultant, or service-based business, our social media marketing strategy focuses on attracting the right audience, increasing engagement, improving visibility, and generating business opportunities.
             </p>
             <p>
-              If you are looking for social media marketing in Coimbatore, a trusted social media marketing company, or a social media marketing agency that understands both branding and lead generation, Magdio provides customized solutions designed around your business goals.
+              If you are looking for social media marketing in Chennai, a trusted social media marketing company, or a social media marketing agency that understands both branding and lead generation, Magdio provides customized solutions designed around your business goals.
             </p>
           </div>
         </div>
@@ -147,7 +153,7 @@ export default function SocialMediaMarketingPage() {
                 <div className="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center shrink-0 border border-pink-500/30">
                   <FaShareAlt size={18} />
                 </div>
-                <p className="text-white/70 text-sm sm:text-base leading-relaxed">
+                <p className="text-white/70 text-sm leading-relaxed">
                   Social media marketing is the process of using social media platforms such as Instagram, Facebook, LinkedIn, YouTube, and other digital channels to promote a business, engage with audiences, build brand awareness, and generate leads.
                 </p>
               </div>
@@ -156,7 +162,7 @@ export default function SocialMediaMarketingPage() {
                 <div className="w-10 h-10 rounded-xl bg-brand-yellow/10 text-brand-yellow flex items-center justify-center shrink-0 border border-brand-yellow/20">
                   <FaUsers size={18} />
                 </div>
-                <p className="text-white/70 text-sm sm:text-base leading-relaxed">
+                <p className="text-white/70 text-sm leading-relaxed">
                   Businesses use social media marketing services to connect with potential customers where they spend their time online. A successful social media marketing strategy combines content creation, audience engagement, social media advertising, community building, and performance analysis to achieve measurable business outcomes.
                 </p>
               </div>
@@ -173,18 +179,18 @@ export default function SocialMediaMarketingPage() {
               <h3 className="font-display font-bold text-xl sm:text-2xl text-white mb-6 flex items-center gap-2">
                 <FaCheckCircle className="text-pink-400" /> Systems over Trends
               </h3>
-              <p className="text-white/70 text-sm sm:text-base leading-relaxed mb-6">
-                At Magdio, our social media marketing services focus on creating valuable content, increasing audience engagement, strengthening brand positioning, and helping businesses convert attention into inquiries and sales. As a leading Social Media Marketing Company in Coimbatore, we help businesses develop sustainable social media systems rather than relying on short-term trends alone.
+              <p className="text-white/70 text-sm leading-relaxed mb-6">
+                At Magdio, our social media marketing services focus on creating valuable content, increasing audience engagement, strengthening brand positioning, and helping businesses convert attention into inquiries and sales. As a leading Social Media Marketing Company in Chennai, we help businesses develop sustainable social media systems rather than relying on short-term trends alone.
               </p>
               <div className="h-px bg-white/10 mb-6" />
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                  <h4 className="font-display font-black text-white text-xl sm:text-2xl mb-1">Attention</h4>
-                  <p className="text-white/40 text-xs sm:text-sm">Capture Target Eyes</p>
+                  <h4 className="font-display font-black text-white text-xl mb-1">Attention</h4>
+                  <p className="text-white/40 text-xs">Capture Target Eyes</p>
                 </div>
                 <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                  <h4 className="font-display font-black text-pink-400 text-xl sm:text-2xl mb-1">Conversion</h4>
-                  <p className="text-white/40 text-xs sm:text-sm">Turn Views to Leads</p>
+                  <h4 className="font-display font-black text-pink-400 text-xl mb-1">Conversion</h4>
+                  <p className="text-white/40 text-xs">Turn Views to Leads</p>
                 </div>
               </div>
             </motion.div>
@@ -212,7 +218,7 @@ export default function SocialMediaMarketingPage() {
                   'Increase website traffic', 'Strengthen online reputation', 
                   'Improve customer retention', 'Support long-term business growth'
                 ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-white/80 text-lg">
+                  <li key={i} className="flex items-center gap-3 text-white/85 text-base">
                     <FaCheckCircle className="text-emerald-400 shrink-0" size={18} />
                     {item}
                   </li>
@@ -221,9 +227,9 @@ export default function SocialMediaMarketingPage() {
             </div>
             
             <div className="glass-card p-6 border-l-4 border-pink-500 text-left">
-              <p className="text-white/80 text-base sm:text-lg leading-relaxed">
+              <p className="text-white/80 text-base leading-relaxed">
                 A well-planned social media marketing strategy allows businesses to stay visible throughout the customer journey, from discovery to purchase.<br/><br/>
-                As a Social Media Marketing Agency in Coimbatore, Magdio helps businesses create social media systems that consistently attract attention, build credibility, and drive business results.
+                As a Best Social Media Marketing Agency in Chennai, Magdio helps businesses create social media systems that consistently attract attention, build credibility, and drive business results.
               </p>
             </div>
          </div>
@@ -343,7 +349,7 @@ export default function SocialMediaMarketingPage() {
               Platforms <span className="gradient-text-purple">We Manage</span>
             </h2>
             <p className="section-subtitle max-w-2xl mx-auto text-sm sm:text-base">
-              As a Social Media Marketing Agency in Coimbatore, we help businesses grow across multiple platforms.
+              As a Social Media Marketing Agency in Chennai, we help businesses grow across multiple platforms.
             </p>
           </motion.div>
 
@@ -380,8 +386,75 @@ export default function SocialMediaMarketingPage() {
         </div>
       </section>
 
-      {/* ── 6. WHY CHOOSE MAGDIO AS YOUR SMM COMPANY ── */}
+      {/* ── 5.5 ORGANIC VS PAID SMM ── */}
       <section className="py-16 lg:py-24 relative overflow-hidden bg-black/10 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-yellow/30 bg-brand-yellow/10 text-brand-yellow text-xs font-bold uppercase tracking-widest mb-4">
+              ✦ Strategic Balance
+            </div>
+            <h2 className="section-title mb-4">
+              Organic Social Media <span className="gradient-text-gold">vs Paid Social Media</span>
+            </h2>
+            <p className="section-subtitle max-w-2xl mx-auto">
+              Both organic content and paid advertising play an important role in a successful social media strategy. The right balance depends on your business objectives, competition, and growth stage.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="overflow-x-auto glass-card border border-white/5 rounded-2xl p-2 sm:p-6 max-w-4xl mx-auto"
+          >
+            <table className="w-full text-left border-collapse min-w-[500px]">
+              <thead>
+                <tr className="border-b border-white/10 text-white font-display font-bold text-sm uppercase">
+                  <th className="py-4 px-4 text-pink-400">Organic Social Media</th>
+                  <th className="py-4 px-4 text-brand-yellow">Paid Social Media Advertising</th>
+                </tr>
+              </thead>
+              <tbody className="text-white/70 text-sm">
+                <tr className="border-b border-white/5 hover:bg-white/[0.01]">
+                  <td className="py-4 px-4 flex items-center gap-2"><FaCheck className="text-pink-400 shrink-0" size={12}/> Builds long-term brand trust</td>
+                  <td className="py-4 px-4"><FaCheck className="text-brand-yellow shrink-0" size={12}/> Generates faster visibility</td>
+                </tr>
+                <tr className="border-b border-white/5 hover:bg-white/[0.01]">
+                  <td className="py-4 px-4 flex items-center gap-2"><FaCheck className="text-pink-400 shrink-0" size={12}/> Improves audience engagement</td>
+                  <td className="py-4 px-4"><FaCheck className="text-brand-yellow shrink-0" size={12}/> Reaches highly targeted audiences</td>
+                </tr>
+                <tr className="border-b border-white/5 hover:bg-white/[0.01]">
+                  <td className="py-4 px-4 flex items-center gap-2"><FaCheck className="text-pink-400 shrink-0" size={12}/> Strengthens customer relationships</td>
+                  <td className="py-4 px-4"><FaCheck className="text-brand-yellow shrink-0" size={12}/> Supports lead generation campaigns</td>
+                </tr>
+                <tr className="border-b border-white/5 hover:bg-white/[0.01]">
+                  <td className="py-4 px-4 flex items-center gap-2"><FaCheck className="text-pink-400 shrink-0" size={12}/> Increases community growth</td>
+                  <td className="py-4 px-4"><FaCheck className="text-brand-yellow shrink-0" size={12}/> Delivers measurable ROI quickly</td>
+                </tr>
+                <tr className="hover:bg-white/[0.01]">
+                  <td className="py-4 px-4 flex items-center gap-2"><FaCheck className="text-pink-400 shrink-0" size={12}/> Compounds over time</td>
+                  <td className="py-4 px-4"><FaCheck className="text-brand-yellow shrink-0" size={12}/> Produces immediate campaign results</td>
+                </tr>
+              </tbody>
+            </table>
+          </motion.div>
+
+          <div className="mt-8 text-center max-w-3xl mx-auto">
+            <p className="text-white/50 text-sm leading-relaxed">
+              At MAGDIO, we often recommend combining both approaches so businesses can achieve immediate results through advertising while simultaneously building long-term brand authority through consistent organic content.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 6. WHY CHOOSE MAGDIO AS YOUR SMM COMPANY ── */}
+      <section className="py-16 lg:py-24 relative overflow-hidden bg-black/20 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -407,11 +480,11 @@ export default function SocialMediaMarketingPage() {
                         <li key={i} className="flex items-center gap-2 text-white/80 text-base">
                            <FaCheckCircle className="text-pink-400 shrink-0" size={16}/> {item}
                         </li>
-                     ))}
+                      ))}
                   </ul>
                </div>
                <p className="text-white/70 text-lg leading-relaxed">
-                  Whether you need social media marketing in Coimbatore or support for a national brand, our approach focuses on measurable business outcomes rather than vanity metrics.
+                  Whether you need social media marketing in Chennai or support for a national brand, our approach focuses on measurable business outcomes rather than vanity metrics.
                </p>
             </div>
             <div className="relative mt-8 lg:mt-0">
@@ -428,7 +501,7 @@ export default function SocialMediaMarketingPage() {
                         'Coaches & Consultants', 'Local Businesses', 'Service-Based Companies'
                      ].map((item, i) => (
                         <li key={i} className="flex items-center gap-3 text-white/80 text-base font-medium bg-black/20 p-3 rounded-xl border border-white/5">
-                           <span className="w-2 h-2 bg-brand-yellow rounded-full shrink-0" /> {item}
+                           <span className="w-2.5 h-2.5 bg-brand-yellow rounded-full shrink-0 animate-pulse" /> {item}
                         </li>
                      ))}
                   </ul>
@@ -444,31 +517,93 @@ export default function SocialMediaMarketingPage() {
       </section>
 
       {/* ── 7. LOCATIONS ── */}
-      <section className="py-16 lg:py-24 relative overflow-hidden bg-black/20 border-t border-white/5">
+      <section className="py-16 lg:py-24 relative overflow-hidden bg-black/10 border-t border-white/5">
          <div className="max-w-4xl mx-auto px-6 text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-yellow/30 bg-brand-yellow/10 text-brand-yellow text-xs font-bold uppercase tracking-widest mb-6">
               ✦ Service Areas
             </div>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-white mb-8 leading-tight">
                Social Media Marketing Services in <br className="hidden sm:inline" /> 
-               <span className="gradient-text-gold">Coimbatore, Chennai & Tamil Nadu</span>
+               <span className="gradient-text-gold">Chennai, Coimbatore & Tamil Nadu</span>
             </h2>
             <div className="glass-card p-8 sm:p-10 border border-white/5 shadow-xl text-left space-y-6">
-              <p className="text-white/80 text-lg leading-relaxed">
-                 Magdio provides social media marketing services for businesses in Coimbatore, Chennai, Madurai, and across Tamil Nadu. We also work remotely with businesses throughout India and international clients.
+              <p className="text-white/80 text-base sm:text-lg leading-relaxed">
+                 Magdio provides social media marketing services for businesses in Chennai, Coimbatore, Madurai, and across Tamil Nadu. We also work remotely with businesses throughout India and international clients.
               </p>
-              <p className="text-white/80 text-lg leading-relaxed">
+              <p className="text-white/80 text-base sm:text-lg leading-relaxed">
                  Our remote-first workflow allows us to create, manage, optimize, and scale social media marketing campaigns regardless of location while maintaining consistent communication and reporting.
               </p>
-              <p className="text-white/80 text-lg leading-relaxed font-semibold">
-                 Whether you are searching for a Social Media Marketing Agency in Coimbatore, a Social Media Marketing Company in Tamil Nadu, or a team to manage your social media growth, Magdio can help.
+              <p className="text-white/80 text-base sm:text-lg leading-relaxed font-semibold">
+                 Whether you are searching for a Social Media Marketing Agency in Chennai, a Social Media Marketing Company in Tamil Nadu, or a team to manage your social media growth, Magdio can help.
               </p>
             </div>
          </div>
       </section>
 
+      {/* ── 7.5 CASE STUDIES ── */}
+      <section className="py-16 lg:py-24 relative overflow-hidden bg-black/20 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-purple/30 bg-brand-purple/10 text-brand-lightblue text-xs font-bold uppercase tracking-widest mb-4">
+              ✦ Verified Growth Results
+            </div>
+            <h2 className="section-title mb-4">
+              Real Results from Our <span className="gradient-text-purple">Social Media Campaigns</span>
+            </h2>
+            <p className="section-subtitle max-w-2xl mx-auto">
+              At MAGDIO, we measure success by business outcomes—not vanity metrics. Every campaign is built around clear objectives and data-driven optimization.
+            </p>
+          </motion.div>
+
+          <div className="glass-card p-8 border border-white/5 max-w-4xl mx-auto space-y-6">
+            <div className="flex flex-col md:flex-row items-start justify-between gap-4">
+              <div>
+                <span className="inline-block px-3 py-1 rounded-full bg-brand-purple/10 text-brand-lightblue text-xs font-bold uppercase tracking-widest mb-3">
+                  E-commerce & Lead Generation
+                </span>
+                <h3 className="font-display font-black text-2xl text-white">Results Achieved for Dreamzil Through Meta Ads</h3>
+              </div>
+              <a
+                href="/portfolio/dreamzil-meta-ads-growth"
+                className="text-brand-yellow hover:text-white inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase transition-colors shrink-0 mt-2"
+              >
+                Read Case Study <FaArrowRight size={12} />
+              </a>
+            </div>
+            <div className="h-px bg-white/5 my-4" />
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="p-4 rounded-xl bg-white/5 border border-white/5">
+                <h3 className="font-display font-black text-2xl text-brand-yellow">470+</h3>
+                <h4 className="text-white font-bold text-xs uppercase tracking-widest mt-1">Qualified Leads</h4>
+                <p className="text-white/40 text-xs mt-1">Generated through targeted Meta Ads campaigns.</p>
+              </div>
+              <div className="p-4 rounded-xl bg-white/5 border border-white/5">
+                <h3 className="font-display font-black text-2xl text-brand-yellow">₹5 Lakhs+</h3>
+                <h4 className="text-white font-bold text-xs uppercase tracking-widest mt-1">Sales Generated</h4>
+                <p className="text-white/40 text-xs mt-1">Achieved through conversion-focused social media advertising.</p>
+              </div>
+              <div className="p-4 rounded-xl bg-white/5 border border-white/5">
+                <h3 className="font-display font-black text-2xl text-brand-yellow">2,917</h3>
+                <h4 className="text-white font-bold text-xs uppercase tracking-widest mt-1">New Followers</h4>
+                <p className="text-white/40 text-xs mt-1">Gained, strengthening the brand's online community and organic reach.</p>
+              </div>
+            </div>
+            <div className="p-4 rounded-xl bg-white/[0.01] border border-white/5">
+              <p className="text-white/60 text-xs sm:text-sm leading-relaxed text-center">
+                This campaign highlights how a strategic combination of creative content, audience targeting, and data-driven advertising can transform social media into a consistent growth channel for businesses.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── 8. GET STARTED CTA ── */}
-      <section className="py-20 lg:py-32 relative overflow-hidden">
+      <section className="py-20 lg:py-32 relative overflow-hidden border-t border-white/5">
         <div className="absolute inset-0 bg-brand-purple/5" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[500px] bg-pink-500/10 blur-[120px] rounded-full pointer-events-none" />
         
@@ -486,9 +621,9 @@ export default function SocialMediaMarketingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-white/70 text-lg mb-10 max-w-2xl mx-auto"
+            className="text-white/70 text-base sm:text-lg mb-10 max-w-2xl mx-auto"
           >
-            Whether you need social media marketing in Coimbatore or support for a national brand, Magdio is your trusted partner for organic and paid growth.
+            Whether you need social media marketing in Chennai or support for a national brand, Magdio is your trusted partner for organic and paid growth.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -498,7 +633,7 @@ export default function SocialMediaMarketingPage() {
           >
             <button
               onClick={scrollToEnquiry}
-              className="btn-primary text-lg px-10 py-4 shadow-[0_0_40px_rgba(225,48,108,0.3)] hover:shadow-[0_0_60px_rgba(225,48,108,0.5)]"
+              className="btn-primary text-base sm:text-lg px-10 py-4 shadow-[0_0_40px_rgba(225,48,108,0.3)] hover:shadow-[0_0_60px_rgba(225,48,108,0.5)]"
             >
               Get Your Social Growth Plan
             </button>
@@ -507,7 +642,7 @@ export default function SocialMediaMarketingPage() {
       </section>
 
       {/* ── 9. FAQ SECTION ── */}
-      <section className="py-16 lg:py-24 relative bg-[#03030b]">
+      <section className="py-16 lg:py-24 relative bg-[#03030b] border-t border-white/5">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="font-display font-black text-3xl sm:text-4xl text-white mb-4">
@@ -520,7 +655,9 @@ export default function SocialMediaMarketingPage() {
       </section>
 
       {/* ── 10. ENQUIRY SECTION ── */}
-      <EnquirySection />
+      <div id="enquiry">
+        <EnquirySection />
+      </div>
     </div>
   );
 }

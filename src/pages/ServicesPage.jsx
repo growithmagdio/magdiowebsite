@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   FaInstagram, FaSearch, FaEnvelope, FaCode, FaFunnelDollar,
-  FaChartLine, FaPenNib, FaUsers, FaLightbulb, FaArrowRight
+  FaChartLine, FaPenNib, FaUsers, FaLightbulb, FaArrowRight, FaGlobe
 } from 'react-icons/fa';
 import SEO from '../components/SEO';
 
@@ -48,6 +48,12 @@ const services = [
     title: 'SEO Services',
     desc: 'Dominate search rankings with technical SEO, content strategy, and link building.',
     color: '#4CAF50',
+  },
+  {
+    icon: FaGlobe,
+    title: 'GEO Services',
+    desc: 'Get your business recommended by ChatGPT, Gemini, Claude, and Perplexity with AI optimization.',
+    color: '#8A2BE2',
   },
   {
     icon: FaPenNib,
@@ -128,6 +134,7 @@ export default function ServicesPage() {
             if (service.title === 'Email Marketing') path = '/services/digital-marketing';
             if (service.title === 'Sales Funnel Development') path = '/services/ecommerce-development';
             if (service.title === 'SEO Services') path = '/services/seo-services';
+            if (service.title === 'GEO Services') path = '/services/geo-services';
             if (service.title === 'Content Marketing') path = '/services/digital-marketing';
             if (service.title === 'Growth Consultation') path = '/services/business-consulting';
 

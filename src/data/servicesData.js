@@ -23,6 +23,17 @@ export const servicesData = [
     tools: ['Ahrefs', 'Search Console', 'Screaming Frog'],
   },
   {
+    id: 'geo-services',
+    category: 'Marketing',
+    title: 'GEO Services',
+    subtitle: 'Get your business recommended by ChatGPT, Google Gemini, Claude, and Perplexity.',
+    heroImage: 'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&q=80',
+    overview: 'Generative Engine Optimization (GEO) ensures your brand is visible, trusted, and recommended by conversational AI platforms and search systems.',
+    features: ['AI Visibility Audit', 'Entity SEO', 'Schema Markup', 'Citation Building'],
+    benefits: ['AI Recommendations', 'Future-proof Search', 'Brand Authority'],
+    tools: ['ChatGPT', 'Gemini', 'Claude', 'Perplexity'],
+  },
+  {
     id: 'social-media-marketing',
     category: 'Marketing',
     title: 'Social Media Marketing',

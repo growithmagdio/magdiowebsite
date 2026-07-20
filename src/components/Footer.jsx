@@ -15,6 +15,7 @@ const companyLinks = [
 
 const serviceLinks = [
   { name: 'SEO',                  path: '/services/seo-services' },
+  { name: 'GEO Services',         path: '/services/geo-services' },
   { name: 'Digital Marketing',    path: '/services/digital-marketing' },
   { name: 'Shopify Development',  path: '/services/shopify-development' },
   { name: 'AI Agent Development', path: '/services/ai-agent-development' },

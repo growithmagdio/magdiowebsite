@@ -23,11 +23,13 @@ const BlogDetailPage  = lazy(() => import('./pages/BlogDetailPage'));
 const AdminPage       = lazy(() => import('./pages/AdminPage'));
 const ContactPage     = lazy(() => import('./pages/ContactPage'));
 const SeoServicesPage      = lazy(() => import('./pages/SeoServicesPage'));
+const GeoServicesPage      = lazy(() => import('./pages/GeoServicesPage'));
 const SocialMediaMarketingPage = lazy(() => import('./pages/SocialMediaMarketingPage'));
 const GoogleAdsPage = lazy(() => import('./pages/GoogleAdsPage'));
 const PerformanceMarketingPage = lazy(() => import('./pages/PerformanceMarketingPage'));
 const LinkedInAdsPage = lazy(() => import('./pages/LinkedInAdsPage'));
 const YouTubeAdsPage = lazy(() => import('./pages/YouTubeAdsPage'));
+const MetaAdsPage = lazy(() => import('./pages/MetaAdsPage'));
 const WhatsAppMarketingPage = lazy(() => import('./pages/WhatsAppMarketingPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
@@ -106,6 +108,11 @@ function AnimatedRoutes() {
               <Route path="/seo-company-in-chennai-magdio" element={<Navigate to="/services/seo-services" replace />} />
               <Route path="/seo-services-tamilnadu-magdio" element={<Navigate to="/services/seo-services" replace />} />
               
+              {/* GEO Services */}
+              <Route path="/services/geo-services" element={<GeoServicesPage />} />
+              <Route path="/geo-service-agency-in-chennai-magdio" element={<Navigate to="/services/geo-services" replace />} />
+              <Route path="/geo-services-tamilnadu-magdio" element={<Navigate to="/services/geo-services" replace />} />
+              
               {/* Social Media Marketing Services */}
               <Route path="/services/social-media-marketing" element={<SocialMediaMarketingPage />} />
               <Route path="/social-media-marketing-agency-in-chennai-magdio" element={<Navigate to="/services/social-media-marketing" replace />} />
@@ -121,6 +128,11 @@ function AnimatedRoutes() {
               <Route path="/best-performance-marketing-agency-in-chennai-magdio" element={<Navigate to="/services/performance-marketing" replace />} />
               <Route path="/performance-marketing-tamilnadu-magdio" element={<Navigate to="/services/performance-marketing" replace />} />
               
+              {/* LinkedIn Ads Services */}
+              <Route path="/services/meta-ads" element={<MetaAdsPage />} />
+              <Route path="/meta-ads-agency-in-chennai-magdio" element={<Navigate to="/services/meta-ads" replace />} />
+              <Route path="/meta-ads-tamilnadu-magdio" element={<Navigate to="/services/meta-ads" replace />} />
+
               {/* LinkedIn Ads Services */}
               <Route path="/services/linkedin-ads" element={<LinkedInAdsPage />} />
               <Route path="/linkedin-marketing-b2b-marketing-in-chennai-magdio" element={<Navigate to="/services/linkedin-ads" replace />} />
