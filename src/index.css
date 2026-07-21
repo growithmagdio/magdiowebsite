@@ -17,11 +17,11 @@
     font-family: 'Inter', sans-serif;
     background-color: #04081c;
     background: linear-gradient(135deg, #04081c 0%, #03030b 50%, #0a0514 100%);
-    background-attachment: fixed;
     color: #FFFFFF;
     overflow-x: hidden;
     width: 100%;
     max-width: 100vw;
+    -webkit-tap-highlight-color: transparent;
   }
 
   ::-webkit-scrollbar {

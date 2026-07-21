@@ -49,8 +49,8 @@ export default function PerformanceMarketingPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0 bg-[#03030b]">
       <SEO 
-        title="Performance Marketing Agency in Chennai | Meta Ads & Paid Media | MAGDIO" 
-        description="Magdio is a leading performance marketing agency in Chennai. We optimize Meta Ads, Instagram Ads, lead gen campaigns, and ecommerce growth strategies." 
+        title="Best Performance Marketing Agency in Chennai | MAGDIO" 
+        description="Magdio is a result-driven performance marketing company in Chennai delivering strategic campaigns to improve leads, conversions, ROI, and business growth." 
         canonicalUrl="https://www.magdio.com/services/performance-marketing"
         jsonLd={{
           "@context": "https://schema.org",

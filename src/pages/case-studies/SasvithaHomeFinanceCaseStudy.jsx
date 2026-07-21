@@ -256,6 +256,8 @@ export default function SasvithaHomeFinanceCaseStudy() {
                   src={picture10} 
                   alt="Google search results showing Sasvitha Home Finance ranked on page 1 for Composite Loan in Tirunelveli" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture10)}

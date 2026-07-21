@@ -298,6 +298,8 @@ export default function OdooERPCaseStudy() {
                   src={picture6} 
                   alt="Meta Ads dashboard showing campaign names and CPL metrics for Odoo Gold Partner" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture6)}

@@ -299,6 +299,8 @@ export default function NammaMarktCaseStudy() {
                   src={picture6} 
                   alt="Google search results showing Namma Markt ranked on the first page for Indian online grocery store in Germany" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture6)}

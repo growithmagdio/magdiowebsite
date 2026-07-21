@@ -303,6 +303,8 @@ export default function HaberLivingCaseStudy() {
                   src={picture1} 
                   alt="Haber Living Google Search Console performance showing 503K impressions" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture1)}
@@ -324,6 +326,8 @@ export default function HaberLivingCaseStudy() {
                   src={picture2} 
                   alt="Haber Living search result proof showing ranking position #1 for organic cotton towels" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture2)}

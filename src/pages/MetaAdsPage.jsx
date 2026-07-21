@@ -61,8 +61,8 @@ export default function MetaAdsPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0 bg-[#03030b]">
       <SEO 
-        title="Meta Ads Agency in Chennai | Facebook Ads Services | MAGDIO" 
-        description="Magdio is the best Meta Ads agency in Chennai. Our Facebook and Instagram advertising specialists optimize campaigns for B2B leads, ecommerce sales, and high ROAS." 
+        title="Meta Ads Agency in Chennai | Best Meta Ads Expert | MAGDIO" 
+        description="MAGDIO is a trusted Facebook marketing company in Chennai offering Facebook Ads, audience targeting, campaign optimization, and lead generation services." 
         canonicalUrl="https://www.magdio.com/services/meta-ads"
         jsonLd={{
           "@context": "https://schema.org",

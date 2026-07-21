@@ -61,8 +61,8 @@ export default function YouTubeAdsPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0 bg-[#03030b]">
       <SEO 
-        title="YouTube Ads Agency | YouTube Advertising Services | MAGDIO" 
-        description="Magdio is the best YouTube Ads agency in Chennai. Our video advertising specialists design high-performing skippable, non-skippable, and Shorts campaigns to turn views into qualified leads." 
+        title="Best YouTube Advertising Agency in Chennai | MAGDIO" 
+        description="Build stronger online engagement with Magdio, a YouTube marketing agency in Chennai delivering creative video campaigns for leads, visibility and online growth." 
         canonicalUrl="https://www.magdio.com/services/youtube-ads"
         jsonLd={{
           "@context": "https://schema.org",

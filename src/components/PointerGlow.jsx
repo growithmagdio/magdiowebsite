@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 export default function PointerGlow() {
@@ -6,15 +6,14 @@ export default function PointerGlow() {
   const isAdmin = location.pathname === '/admin';
 
   if (isAdmin) return null;
-  const [isHovered, setIsHovered] = useState(false);
+
   const isHoveredRef = useRef(false);
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    isHoveredRef.current = isHovered;
-  }, [isHovered]);
+    // Check screen width - disable on mobile for optimal performance
+    if (window.innerWidth < 768) return;
 
-  useEffect(() => {
     const handleMouseOver = (e) => {
       const target = e.target;
       if (!target) return;
@@ -28,22 +27,25 @@ export default function PointerGlow() {
         target.closest('.glass-card') ||
         target.closest('.btn-primary') ||
         target.closest('.btn-secondary') ||
-        target.classList.contains('nav-link')
+        target.classList?.contains('nav-link')
       ) {
-        setIsHovered(true);
+        isHoveredRef.current = true;
       } else {
-        setIsHovered(false);
+        isHoveredRef.current = false;
       }
     };
 
-    window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
     return () => window.removeEventListener('mouseover', handleMouseOver);
   }, []);
 
   useEffect(() => {
+    if (window.innerWidth < 768) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     
     let width = window.innerWidth;
     let height = window.innerHeight;
@@ -55,7 +57,7 @@ export default function PointerGlow() {
       canvas.height = height;
     };
     setSize();
-    window.addEventListener('resize', setSize);
+    window.addEventListener('resize', setSize, { passive: true });
 
     let particles = [];
     const colors = ['#F2B300', '#FFFFFF', '#FFF8E7', '#A855F7', '#8A2BE2', '#00F2FE'];
@@ -64,38 +66,34 @@ export default function PointerGlow() {
     let lastMouse = { x: -1000, y: -1000 };
 
     const handleMouseMove = (e) => {
-      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
-      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
-      
       mouse.x = e.clientX;
       mouse.y = e.clientY;
       mouse.isActive = true;
 
       const dx = mouse.x - lastMouse.x;
       const dy = mouse.y - lastMouse.y;
-      const speed = Math.sqrt(dx * dx + dy * dy);
+      const speedSq = dx * dx + dy * dy;
       
-      if (speed > 0.5 && mouse.isActive) {
-        // Spawn sparkles and dust proportional to mouse speed
-        const count = Math.min(5, Math.floor(speed * 0.12) + 1);
+      // Speed threshold check using squared math
+      if (speedSq > 0.25 && mouse.isActive) {
+        const speed = Math.sqrt(speedSq);
+        const count = Math.min(3, Math.floor(speed * 0.08) + 1);
         for (let i = 0; i < count; i++) {
-          const isStar = Math.random() < 0.45; // 45% chance of beautiful star, 55% chance of dust
-          
-          // Organic distribution: expand outwards + inherit motion speed
+          const isStar = Math.random() < 0.4;
           const angle = Math.random() * Math.PI * 2;
-          const spreadSpeed = Math.random() * 1.4;
-          const vx = Math.cos(angle) * spreadSpeed + dx * 0.15;
-          const vy = Math.sin(angle) * spreadSpeed + dy * 0.15 - 0.2; // slight upward drift
+          const spreadSpeed = Math.random() * 1.2;
+          const vx = Math.cos(angle) * spreadSpeed + dx * 0.1;
+          const vy = Math.sin(angle) * spreadSpeed + dy * 0.1 - 0.2;
 
           particles.push({
             x: mouse.x + (Math.random() - 0.5) * 6,
             y: mouse.y + (Math.random() - 0.5) * 6,
-            vx: vx,
-            vy: vy,
-            size: isStar ? (Math.random() * 4.0 + 2.5) : (Math.random() * 1.5 + 0.5),
-            isStar: isStar,
+            vx,
+            vy,
+            size: isStar ? (Math.random() * 3.5 + 2.0) : (Math.random() * 1.2 + 0.5),
+            isStar,
             life: 1.0,
-            decay: isStar ? (Math.random() * 0.012 + 0.008) : (Math.random() * 0.025 + 0.015), // stars live longer
+            decay: isStar ? (Math.random() * 0.015 + 0.01) : (Math.random() * 0.03 + 0.02),
             color: colors[Math.floor(Math.random() * colors.length)],
             rotation: Math.random() * Math.PI * 2,
             rotSpeed: (Math.random() - 0.5) * 0.1,
@@ -111,7 +109,7 @@ export default function PointerGlow() {
     const handleMouseLeave = () => { mouse.isActive = false; };
     const handleMouseEnter = () => { mouse.isActive = true; };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
@@ -134,49 +132,72 @@ export default function PointerGlow() {
     };
 
     const animate = () => {
+      // Pause loop if browser tab is hidden to conserve CPU/GPU
+      if (document.hidden) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
+
       ctx.clearRect(0, 0, width, height);
 
-      // Spawn extra sparkles if hovering over interactive elements
-      if (mouse.isActive && isHoveredRef.current && Math.random() < 0.22) {
+      // Draw mouse ambient backdrop spotlight directly onto canvas (bypassing DOM style recalculations)
+      if (mouse.isActive) {
+        const spotRadius = isHoveredRef.current ? 750 : 550;
+        const ambientGrad = ctx.createRadialGradient(
+          mouse.x, mouse.y, 0,
+          mouse.x, mouse.y, spotRadius
+        );
+        const alphaBase = isHoveredRef.current ? 0.22 : 0.14;
+        ambientGrad.addColorStop(0, `rgba(26, 34, 184, ${alphaBase})`);
+        ambientGrad.addColorStop(0.35, `rgba(138, 43, 226, ${alphaBase * 0.65})`);
+        ambientGrad.addColorStop(0.65, `rgba(242, 179, 0, ${alphaBase * 0.35})`);
+        ambientGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        ctx.fillStyle = ambientGrad;
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, spotRadius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Spawn extra sparkles if hovering interactive element
+      if (mouse.isActive && isHoveredRef.current && Math.random() < 0.15) {
         particles.push({
-            x: mouse.x + (Math.random() - 0.5) * 24,
-            y: mouse.y + (Math.random() - 0.5) * 24,
-            vx: (Math.random() - 0.5) * 0.8,
-            vy: (Math.random() - 0.5) * 0.8 - 0.4, // float upwards like sparks
-            size: Math.random() * 3.5 + 2.0,
-            isStar: Math.random() < 0.6,
-            life: 1.0,
-            decay: Math.random() * 0.025 + 0.015,
-            color: colors[Math.floor(Math.random() * colors.length)],
-            rotation: Math.random() * Math.PI * 2,
-            rotSpeed: (Math.random() - 0.5) * 0.08,
-            twinkleOffset: Math.random() * Math.PI * 2
+          x: mouse.x + (Math.random() - 0.5) * 20,
+          y: mouse.y + (Math.random() - 0.5) * 20,
+          vx: (Math.random() - 0.5) * 0.6,
+          vy: (Math.random() - 0.5) * 0.6 - 0.3,
+          size: Math.random() * 3.0 + 1.5,
+          isStar: Math.random() < 0.5,
+          life: 1.0,
+          decay: Math.random() * 0.03 + 0.02,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.08,
+          twinkleOffset: Math.random() * Math.PI * 2
         });
       }
 
       // Draw mouse center glow point
       if (mouse.isActive) {
-         ctx.globalCompositeOperation = 'screen';
-         ctx.beginPath();
-         const glowRadius = isHoveredRef.current ? 12 : 5;
-         const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, glowRadius);
-         grad.addColorStop(0, 'rgba(242, 179, 0, 0.8)');
-         grad.addColorStop(1, 'rgba(242, 179, 0, 0)');
-         ctx.fillStyle = grad;
-         ctx.arc(mouse.x, mouse.y, glowRadius, 0, Math.PI * 2);
-         ctx.fill();
-         ctx.globalCompositeOperation = 'source-over';
+        ctx.globalCompositeOperation = 'screen';
+        ctx.beginPath();
+        const glowRadius = isHoveredRef.current ? 10 : 4;
+        const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, glowRadius);
+        grad.addColorStop(0, 'rgba(242, 179, 0, 0.8)');
+        grad.addColorStop(1, 'rgba(242, 179, 0, 0)');
+        ctx.fillStyle = grad;
+        ctx.arc(mouse.x, mouse.y, glowRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
       }
 
+      // Render sparkles (without hardware-taxing shadowBlur)
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
-        
-        // Decelerate particles gently for smooth natural friction
-        p.vx *= 0.97;
-        p.vy *= 0.97;
-        
+        p.vx *= 0.96;
+        p.vy *= 0.96;
         p.life -= p.decay;
         p.rotation += p.rotSpeed;
         
@@ -186,21 +207,12 @@ export default function PointerGlow() {
         }
 
         ctx.globalAlpha = Math.max(0, p.life);
-        
+        ctx.fillStyle = p.color;
+
         if (p.isStar) {
-          ctx.fillStyle = p.color;
-          // Apply a glowing neon shadow blur to the stars
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = p.color;
-          
-          // Twinkle logic using wave modulation
           const pulse = Math.sin(p.life * Math.PI * 6 + p.twinkleOffset) * 0.28 + 0.72;
           drawStar(ctx, p.x, p.y, p.size * p.life * pulse, p.rotation);
-          
-          // Reset shadow blur
-          ctx.shadowBlur = 0;
         } else {
-          ctx.fillStyle = p.color;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
           ctx.fill();
@@ -223,21 +235,10 @@ export default function PointerGlow() {
   }, []);
 
   return (
-    <>
-      {/* Large beautiful multi-color ambient backdrop spotlight that follows pointer */}
-      <div 
-        className="pointer-events-none fixed inset-0 z-30 opacity-90 transition-all duration-300 hidden md:block"
-        style={{
-          background: isHovered 
-            ? `radial-gradient(900px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), rgba(26, 34, 184, 0.28) 0%, rgba(138, 43, 226, 0.18) 35%, rgba(242, 179, 0, 0.1) 65%, transparent 80%)`
-            : `radial-gradient(650px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), rgba(26, 34, 184, 0.2) 0%, rgba(138, 43, 226, 0.12) 30%, rgba(242, 179, 0, 0.06) 60%, transparent 80%)`
-        }}
-      />
-      {/* Glitter Trail Canvas */}
-      <canvas 
-        ref={canvasRef} 
-        className="pointer-events-none fixed inset-0 z-50 hidden md:block"
-      />
-    </>
+    <canvas 
+      ref={canvasRef} 
+      className="pointer-events-none fixed inset-0 z-30 hidden md:block"
+    />
   );
 }
+

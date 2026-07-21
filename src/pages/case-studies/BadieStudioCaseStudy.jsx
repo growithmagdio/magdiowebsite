@@ -300,6 +300,8 @@ export default function BadieStudioCaseStudy() {
                   src={picture2} 
                   alt="Badie Studio Google Search Console showing 92.8K Impressions and 4.67K Clicks" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture2)}
@@ -321,6 +323,8 @@ export default function BadieStudioCaseStudy() {
                   src={picture3} 
                   alt="Google search results showing Badie Studio ranked number 1 for Musical instruments shop in Qatar" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture3)}
@@ -342,6 +346,8 @@ export default function BadieStudioCaseStudy() {
                   src={picture4} 
                   alt="Google Maps and local search results showing Badie Studio ranked first in Doha map pack" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture4)}
@@ -363,6 +369,8 @@ export default function BadieStudioCaseStudy() {
                   src={picture5} 
                   alt="AI Search Assistant Claude recommending Badie Studio as the top musical instrument retailer in Qatar" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture5)}

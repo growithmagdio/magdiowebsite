@@ -282,6 +282,8 @@ export default function DreamzilCaseStudy() {
                   src={picture4} 
                   alt="Meta Ads Manager dashboard showing Dreamzil lead campaigns metrics" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture4)}
@@ -303,6 +305,8 @@ export default function DreamzilCaseStudy() {
                   src={picture5} 
                   alt="Instagram Reel insights showing 365,733 views and high social engagement" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture5)}

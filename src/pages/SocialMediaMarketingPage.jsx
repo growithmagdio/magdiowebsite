@@ -42,8 +42,8 @@ export default function SocialMediaMarketingPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0 bg-[#03030b]">
       <SEO 
-        title="Social Media Marketing Agency in Chennai | Brand Growth | MAGDIO" 
-        description="Magdio is the best social media marketing agency in Chennai offering creative campaigns, reels strategy, audience growth and paid ads lead generation services." 
+        title="Top Social Media Marketing Agency in Chennai | MAGDIO" 
+        description="Magdio is a leading social media marketing company in Chennai offering creative campaigns, brand growth, audience engagement and lead generation services." 
         canonicalUrl="https://www.magdio.com/services/social-media-marketing"
         jsonLd={{
           "@context": "https://schema.org",

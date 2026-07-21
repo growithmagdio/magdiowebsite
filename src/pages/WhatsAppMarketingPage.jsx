@@ -61,8 +61,8 @@ export default function WhatsAppMarketingPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0 bg-[#03030b]">
       <SEO 
-        title="WhatsApp Marketing Services in Chennai | Automation | MAGDIO" 
-        description="Magdio offers complete WhatsApp marketing services in Chennai. Integrate WhatsApp Business API, CRM integrations, and chatbots to turn customer conversations into leads." 
+        title="Bulk WhatsApp Marketing Services in Chennai | MAGDIO" 
+        description="Reach Magdio, a bulk WhatsApp marketing service provider delivering promotional messages, alerts, customer updates and business communication solutions." 
         canonicalUrl="https://www.magdio.com/services/whatsapp-marketing"
         jsonLd={{
           "@context": "https://schema.org",

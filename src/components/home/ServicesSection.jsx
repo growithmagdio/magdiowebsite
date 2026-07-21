@@ -93,22 +93,23 @@ export default function ServicesSection() {
           ))}
 
           {/* View All Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 5 * 0.1 }}
-            className="p-8 rounded-3xl border border-white/10 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-white/5 transition-all"
-            style={{ background: 'linear-gradient(135deg, rgba(242,179,0,0.1) 0%, transparent 100%)' }}
-            onClick={() => window.location.href = '/services'}
-          >
-            <h3 className="font-display font-bold text-white text-2xl mb-4">
-              Explore All 25+ <br/> Services
-            </h3>
-            <div className="w-12 h-12 rounded-full bg-brand-yellow text-black flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(242,179,0,0.4)]">
-              <FaArrowRight />
-            </div>
-          </motion.div>
+          <Link to="/services" className="block">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 5 * 0.1 }}
+              className="p-8 rounded-3xl border border-white/10 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-white/5 transition-all h-full"
+              style={{ background: 'linear-gradient(135deg, rgba(242,179,0,0.1) 0%, transparent 100%)' }}
+            >
+              <h3 className="font-display font-bold text-white text-2xl mb-4">
+                Explore All 25+ <br/> Services
+              </h3>
+              <div className="w-12 h-12 rounded-full bg-brand-yellow text-black flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(242,179,0,0.4)]">
+                <FaArrowRight />
+              </div>
+            </motion.div>
+          </Link>
         </div>
       </div>
     </section>

@@ -24,20 +24,27 @@ export default function FloatingElements() {
   }, [messages, isTyping, isChatOpen]);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollTop;
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scroll = `${totalScroll / windowHeight}`;
-      setScrollProgress(scroll);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const totalScroll = document.documentElement.scrollTop || document.body.scrollTop;
+          const windowHeight = (document.documentElement.scrollHeight || document.body.scrollHeight) - document.documentElement.clientHeight;
+          const scroll = windowHeight > 0 ? totalScroll / windowHeight : 0;
+          setScrollProgress(scroll);
 
-      if (totalScroll > 500) {
-        setShowBackToTop(true);
-      } else {
-        setShowBackToTop(false);
+          if (totalScroll > 500) {
+            setShowBackToTop(true);
+          } else {
+            setShowBackToTop(false);
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

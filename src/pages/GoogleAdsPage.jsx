@@ -49,8 +49,8 @@ export default function GoogleAdsPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0 bg-[#03030b]">
       <SEO 
-        title="Google Ads Agency in Chennai | PPC Services | MAGDIO" 
-        description="Magdio is the best Google Ads agency in Chennai. Our PPC specialists manage search, display, Shopping, and YouTube Ads to maximize ROAS and generate quality leads." 
+        title="Google Ads Agency in Chennai for Business Growth | MAGDIO" 
+        description="Grow your business with the best Google Ads agency in Chennai. Magdio creates targeted PPC campaigns to improve ROI, generate leads, and boost visibility." 
         canonicalUrl="https://www.magdio.com/services/google-ads"
         jsonLd={{
           "@context": "https://schema.org",

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 // Color Palette: red ➔ orange ➔ purple ➔ blue ➔ pink
 const COLORS = [
@@ -29,15 +29,14 @@ function getColorString(t, alpha) {
 export default function PremiumBackground() {
   const canvasRef = useRef(null);
 
-  const [isHovered, setIsHovered] = useState(false);
+  const isHoveredRef = useRef(false);
 
   // Mouse tracking
   const mouse = useRef({ x: 0, y: 0, active: false, clientX: 0, clientY: 0 });
   const lastMouse = useRef({ x: 0, y: 0 });
-  const ringPos = useRef({ x: 0, y: 0 });
 
   // Physics-based trail (snake)
-  const TRAIL_LENGTH = 22;
+  const TRAIL_LENGTH = 16;
   const trail = useRef(Array.from({ length: TRAIL_LENGTH }, () => ({ x: 0, y: 0 })));
 
   // Spark particles spawned by mouse movement speed
@@ -61,7 +60,7 @@ export default function PremiumBackground() {
     const updateSize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       canvas.style.width = `${width}px`;
@@ -70,29 +69,27 @@ export default function PremiumBackground() {
     };
 
     updateSize();
-    window.addEventListener('resize', updateSize);
+    window.addEventListener('resize', updateSize, { passive: true });
 
     // Initialize trail positions at center
     trail.current.forEach((t) => {
       t.x = width / 2;
       t.y = height / 2;
     });
-    ringPos.current.x = width / 2;
-    ringPos.current.y = height / 2;
 
-    // Background floating particles configuration
-    const NUM_PARTICLES = 70;
+    // Background floating particles configuration (reduced for 60fps performance)
+    const NUM_PARTICLES = width < 768 ? 15 : 35;
     const particles = [];
     for (let i = 0; i < NUM_PARTICLES; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        ox: Math.random() * width, // origin reference for drift
+        ox: Math.random() * width,
         oy: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
         size: Math.random() * 1.5 + 0.8,
-        depth: Math.random() * 1.0 + 0.4, // closer (higher) vs deeper (lower)
+        depth: Math.random() * 1.0 + 0.4,
         baseAlpha: Math.random() * 0.4 + 0.2,
         alpha: 0,
         pulseSpeed: Math.random() * 0.02 + 0.005,
@@ -101,17 +98,15 @@ export default function PremiumBackground() {
       });
     }
 
-    // Grid spacing configuration
-    const gridSpacing = 55;
+    const gridSpacing = width < 768 ? 75 : 60;
 
-    // Large ambient background blobs configuration
     const blobs = [
       {
         baseX: 0.25,
         baseY: 0.3,
         freqX: 0.00015,
         freqY: 0.0002,
-        color: 'rgba(168, 85, 247, ', // Purple
+        color: 'rgba(168, 85, 247, ',
         radiusFactor: 0.45,
       },
       {
@@ -119,7 +114,7 @@ export default function PremiumBackground() {
         baseY: 0.75,
         freqX: 0.0001,
         freqY: 0.00025,
-        color: 'rgba(59, 130, 246, ', // Blue
+        color: 'rgba(59, 130, 246, ',
         radiusFactor: 0.55,
       },
       {
@@ -127,7 +122,7 @@ export default function PremiumBackground() {
         baseY: 0.5,
         freqX: 0.0002,
         freqY: 0.00012,
-        color: 'rgba(236, 72, 153, ', // Pink
+        color: 'rgba(236, 72, 153, ',
         radiusFactor: 0.35,
       },
     ];
@@ -136,24 +131,29 @@ export default function PremiumBackground() {
 
     // Main animation loop
     const animate = (timestamp) => {
+      if (document.hidden || width < 768) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
+
       time = timestamp;
 
-      // 1. Draw base cinematic background
+      // 1. Draw base background
       const baseGrad = ctx.createLinearGradient(0, 0, width, height);
-      baseGrad.addColorStop(0, '#04081c'); // Deep dark blue
-      baseGrad.addColorStop(0.5, '#03030b'); // Very dark center
-      baseGrad.addColorStop(1, '#0a0514'); // Deep dark purple
+      baseGrad.addColorStop(0, '#04081c');
+      baseGrad.addColorStop(0.5, '#03030b');
+      baseGrad.addColorStop(1, '#0a0514');
       ctx.fillStyle = baseGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // 2. Draw moving ambient blobs
+      // 2. Draw ambient blobs
       blobs.forEach((blob) => {
         const bx = width * blob.baseX + Math.sin(time * blob.freqX) * width * 0.15;
         const by = height * blob.baseY + Math.cos(time * blob.freqY) * height * 0.15;
         const radius = Math.min(width, height) * blob.radiusFactor;
 
         const grad = ctx.createRadialGradient(bx, by, 0, bx, by, radius);
-        grad.addColorStop(0, `${blob.color}0.12)`); // Increased ambient opacity
+        grad.addColorStop(0, `${blob.color}0.12)`);
         grad.addColorStop(0.5, `${blob.color}0.04)`);
         grad.addColorStop(1, 'rgba(0,0,0,0)');
 
@@ -163,7 +163,7 @@ export default function PremiumBackground() {
         ctx.fill();
       });
 
-      // 3. Smooth parallax calculations
+      // 3. Parallax
       const targetParallaxX = mouse.current.active
         ? (mouse.current.x - width / 2) * 0.025
         : 0;
@@ -174,17 +174,14 @@ export default function PremiumBackground() {
       parallax.current.x += (targetParallaxX - parallax.current.x) * 0.05;
       parallax.current.y += (targetParallaxY - parallax.current.y) * 0.05;
 
-      // 4. Update and draw floating particles + connections
+      // 4. Update particles
       ctx.globalCompositeOperation = 'lighter';
       
-      // Update particles
       particles.forEach((p) => {
-        // Ambient drift
         p.angle += p.driftSpeed;
         p.ox += p.vx;
         p.oy += p.vy;
 
-        // Wrap around boundaries
         if (p.ox < -50) p.ox = width + 50;
         if (p.ox > width + 50) p.ox = -50;
         if (p.oy < -50) p.oy = height + 50;
@@ -193,40 +190,38 @@ export default function PremiumBackground() {
         let curX = p.ox + Math.sin(p.angle) * 12;
         let curY = p.oy + Math.cos(p.angle) * 12;
 
-        // Mouse elastic repulsion
         if (mouse.current.active) {
           const dx = curX - mouse.current.x;
           const dy = curY - mouse.current.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const pushRadius = 150;
+          const distSq = dx * dx + dy * dy;
+          const pushRadiusSq = 150 * 150;
 
-          if (dist < pushRadius) {
-            const force = (pushRadius - dist) / pushRadius;
-            curX += (dx / dist) * force * 35 * p.depth;
-            curY += (dy / dist) * force * 35 * p.depth;
+          if (distSq < pushRadiusSq) {
+            const dist = Math.sqrt(distSq);
+            const force = (150 - dist) / 150;
+            curX += (dx / (dist || 1)) * force * 35 * p.depth;
+            curY += (dy / (dist || 1)) * force * 35 * p.depth;
           }
         }
 
-        // Apply depth-based parallax offset
         p.x = curX + parallax.current.x * p.depth;
         p.y = curY + parallax.current.y * p.depth;
-
-        // Pulsing alpha
         p.alpha = p.baseAlpha + Math.sin(time * p.pulseSpeed) * 0.12;
       });
 
-      // Draw neural lines
+      // Neural lines (using squared distance optimization)
+      const maxDistSq = 95 * 95;
       for (let i = 0; i < NUM_PARTICLES; i++) {
         const p1 = particles[i];
         for (let j = i + 1; j < NUM_PARTICLES; j++) {
           const p2 = particles[j];
           const dx = p1.x - p2.x;
           const dy = p1.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const maxDist = 95;
+          const distSq = dx * dx + dy * dy;
 
-          if (dist < maxDist) {
-            const opacity = ((maxDist - dist) / maxDist) * 0.06 * Math.min(p1.alpha, p2.alpha);
+          if (distSq < maxDistSq) {
+            const dist = Math.sqrt(distSq);
+            const opacity = ((95 - dist) / 95) * 0.06 * Math.min(p1.alpha, p2.alpha);
             ctx.strokeStyle = `rgba(168, 85, 247, ${opacity})`;
             ctx.lineWidth = 0.55;
             ctx.beginPath();
@@ -239,7 +234,6 @@ export default function PremiumBackground() {
 
       // Draw particle dots
       particles.forEach((p) => {
-        // Blend colors based on their screen index/depth
         const t = (p.x / width + p.depth / 1.4) / 2;
         const color = getColorString(t % 1, p.alpha);
         
@@ -247,24 +241,14 @@ export default function PremiumBackground() {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
-
-        // Subtle glow for closer, larger particles
-        if (p.depth > 1.1) {
-          ctx.shadowBlur = 4;
-          ctx.shadowColor = color;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 0.7, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.shadowBlur = 0; // reset
-        }
       });
 
-      // 5. Draw Interactive Grid System (Batched optimization)
+      // 5. Grid System
       const cols = Math.ceil(width / gridSpacing) + 1;
       const rows = Math.ceil(height / gridSpacing) + 1;
       const activeGridRadius = 180;
+      const activeGridRadiusSq = activeGridRadius * activeGridRadius;
 
-      // Draw default grid dots in a single batch path for peak performance
       ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
       ctx.beginPath();
       for (let c = 0; c < cols; c++) {
@@ -276,7 +260,7 @@ export default function PremiumBackground() {
             const dx = gx - mouse.current.x;
             const dy = gy - mouse.current.y;
             const distSq = dx * dx + dy * dy;
-            if (distSq >= activeGridRadius * activeGridRadius) {
+            if (distSq >= activeGridRadiusSq) {
               ctx.moveTo(gx, gy);
               ctx.arc(gx, gy, 0.75, 0, Math.PI * 2);
             }
@@ -288,7 +272,7 @@ export default function PremiumBackground() {
       }
       ctx.fill();
 
-      // Draw custom warped/glowing dots near the cursor
+      // Custom warped dots
       if (mouse.current.active) {
         for (let c = 0; c < cols; c++) {
           for (let r = 0; r < rows; r++) {
@@ -296,20 +280,16 @@ export default function PremiumBackground() {
             const gy = r * gridSpacing;
             const dx = gx - mouse.current.x;
             const dy = gy - mouse.current.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
+            const distSq = dx * dx + dy * dy;
 
-            if (dist < activeGridRadius) {
+            if (distSq < activeGridRadiusSq) {
+              const dist = Math.sqrt(distSq);
               const pullFactor = (activeGridRadius - dist) / activeGridRadius;
-              
-              // Magnetic warp: pull dots slightly toward mouse pointer
               const pull = pullFactor * 8.5;
               const drawX = gx - (dx / (dist || 1)) * pull;
               const drawY = gy - (dy / (dist || 1)) * pull;
-
               const size = 0.75 + pullFactor * 0.95;
               const opacity = 0.04 + pullFactor * 0.16;
-
-              // Color cycling matching current mouse position
               const colRatio = (dist / activeGridRadius + time * 0.0001) % 1;
               const color = getColorString(colRatio, opacity);
 
@@ -322,19 +302,18 @@ export default function PremiumBackground() {
         }
       }
 
-      // 6. Draw Mouse Cursor Waves (Ribbon Trail)
+      // 6. Ribbon Trail
       if (mouse.current.active) {
-        // Large Multi-colored Gradient Bloom following the cursor
+        const isHovered = isHoveredRef.current;
         const t = (time * 0.00004) % 1.0;
-        const radialRadius = isHovered ? 460 : 320;
+        const radialRadius = isHovered ? 440 : 300;
         const radialGrad = ctx.createRadialGradient(
           mouse.current.x, mouse.current.y, 0,
           mouse.current.x, mouse.current.y, radialRadius
         );
-        radialGrad.addColorStop(0, getColorString(t, isHovered ? 0.22 : 0.16));
-        radialGrad.addColorStop(0.2, getColorString((t + 0.15) % 1, isHovered ? 0.16 : 0.11));
-        radialGrad.addColorStop(0.45, getColorString((t + 0.35) % 1, isHovered ? 0.08 : 0.05));
-        radialGrad.addColorStop(0.75, getColorString((t + 0.6) % 1, isHovered ? 0.02 : 0.01));
+        radialGrad.addColorStop(0, getColorString(t, isHovered ? 0.2 : 0.14));
+        radialGrad.addColorStop(0.2, getColorString((t + 0.15) % 1, isHovered ? 0.14 : 0.09));
+        radialGrad.addColorStop(0.45, getColorString((t + 0.35) % 1, isHovered ? 0.07 : 0.04));
         radialGrad.addColorStop(1, 'rgba(0,0,0,0)');
 
         ctx.globalCompositeOperation = 'screen';
@@ -343,26 +322,23 @@ export default function PremiumBackground() {
         ctx.arc(mouse.current.x, mouse.current.y, radialRadius, 0, Math.PI * 2);
         ctx.fill();
 
-        // Update trail physics (snake follow)
+        // Trail snake
         trail.current[0].x = mouse.current.x;
         trail.current[0].y = mouse.current.y;
 
         for (let i = 1; i < TRAIL_LENGTH; i++) {
           const prev = trail.current[i - 1];
           const curr = trail.current[i];
-          // Spring effect
           curr.x += (prev.x - curr.x) * 0.28;
           curr.y += (prev.y - curr.y) * 0.28;
         }
 
-        // Draw glowing wave ribbon (overlapping soft circles with screen blend)
         ctx.globalCompositeOperation = 'screen';
         for (let i = TRAIL_LENGTH - 1; i >= 0; i--) {
           const p = trail.current[i];
-          const ratio = i / TRAIL_LENGTH; // 0 (head) to 1 (tail)
-          const size = (1 - ratio) * 20 + 3.5;
-          const opacity = (1 - ratio) * 0.24;
-
+          const ratio = i / TRAIL_LENGTH;
+          const size = (1 - ratio) * 18 + 3;
+          const opacity = (1 - ratio) * 0.22;
           const colorRatio = (ratio + time * 0.00012) % 1;
           const color = getColorString(colorRatio, opacity);
 
@@ -377,38 +353,31 @@ export default function PremiumBackground() {
         }
       }
 
-      // 7. Update and Draw Sparks
+      // 7. Sparks
       ctx.globalCompositeOperation = 'screen';
       sparks.current.forEach((s) => {
         s.x += s.vx;
         s.y += s.vy;
         s.life -= s.decay;
-
-        // Apply slight friction
-        s.vx *= 0.97;
-        s.vy *= 0.97;
+        s.vx *= 0.96;
+        s.vy *= 0.96;
 
         if (s.life > 0) {
-          const color = getColorString(s.colorRatio, s.life * 0.75);
+          const color = getColorString(s.colorRatio, s.life * 0.7);
           ctx.fillStyle = color;
           ctx.beginPath();
           ctx.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
           ctx.fill();
         }
       });
-      // Filter out dead sparks
       sparks.current = sparks.current.filter((s) => s.life > 0);
 
-      // 8. Custom Smooth Cursor Ring Following (Removed dot/ring, using large gradient bloom instead)
-
-      // Loop
       ctx.globalCompositeOperation = 'source-over';
       animationFrameId = requestAnimationFrame(animate);
     };
 
     animationFrameId = requestAnimationFrame(animate);
 
-    // Mouse movement physics speed check for spark generation
     const handleMouseMove = (e) => {
       const rect = canvas.getBoundingClientRect();
       const newX = e.clientX - rect.left;
@@ -420,25 +389,22 @@ export default function PremiumBackground() {
       mouse.current.clientY = e.clientY;
       mouse.current.active = true;
 
-      // Refs visibility toggle removed
-
-      // Speed calculation
       const dx = newX - lastMouse.current.x;
       const dy = newY - lastMouse.current.y;
-      const speed = Math.sqrt(dx * dx + dy * dy);
+      const speedSq = dx * dx + dy * dy;
 
-      // Spawn sparks if moving quickly
-      if (speed > 2.5) {
-        const numSparks = Math.min(3, Math.floor(speed / 3));
+      if (speedSq > 6.25) {
+        const speed = Math.sqrt(speedSq);
+        const numSparks = Math.min(2, Math.floor(speed / 4));
         for (let i = 0; i < numSparks; i++) {
           sparks.current.push({
             x: newX,
             y: newY,
-            vx: (Math.random() - 0.5) * 1.8 - dx * 0.08,
-            vy: (Math.random() - 0.5) * 1.8 - dy * 0.08,
-            size: Math.random() * 2.2 + 0.8,
+            vx: (Math.random() - 0.5) * 1.6 - dx * 0.08,
+            vy: (Math.random() - 0.5) * 1.6 - dy * 0.08,
+            size: Math.random() * 2.0 + 0.8,
             life: 1.0,
-            decay: Math.random() * 0.018 + 0.012,
+            decay: Math.random() * 0.02 + 0.015,
             colorRatio: (time * 0.0001) % 1,
           });
         }
@@ -448,79 +414,9 @@ export default function PremiumBackground() {
       lastMouse.current.y = newY;
     };
 
-    const handleMouseLeave = () => {
-      mouse.current.active = false;
-    };
+    const handleMouseLeave = () => { mouse.current.active = false; };
+    const handleMouseEnter = () => { mouse.current.active = true; };
 
-    const handleMouseEnter = () => {
-      mouse.current.active = true;
-    };
-
-    // Mobile touch controls to enable particle trails & waves on touch devices
-    const handleTouchMove = (e) => {
-      if (e.touches.length > 0) {
-        const touch = e.touches[0];
-        const rect = canvas.getBoundingClientRect();
-        const newX = touch.clientX - rect.left;
-        const newY = touch.clientY - rect.top;
-
-        mouse.current.x = newX;
-        mouse.current.y = newY;
-        mouse.current.clientX = touch.clientX;
-        mouse.current.clientY = touch.clientY;
-        mouse.current.active = true;
-
-        const dx = newX - lastMouse.current.x;
-        const dy = newY - lastMouse.current.y;
-        const speed = Math.sqrt(dx * dx + dy * dy);
-
-        if (speed > 2.0) {
-          sparks.current.push({
-            x: newX,
-            y: newY,
-            vx: (Math.random() - 0.5) * 1.5 - dx * 0.05,
-            vy: (Math.random() - 0.5) * 1.5 - dy * 0.05,
-            size: Math.random() * 2.0 + 0.6,
-            life: 1.0,
-            decay: Math.random() * 0.02 + 0.015,
-            colorRatio: (time * 0.0001) % 1,
-          });
-        }
-
-        lastMouse.current.x = newX;
-        lastMouse.current.y = newY;
-      }
-    };
-
-    const handleTouchStart = (e) => {
-      if (e.touches.length > 0) {
-        const touch = e.touches[0];
-        const rect = canvas.getBoundingClientRect();
-        const startX = touch.clientX - rect.left;
-        const startY = touch.clientY - rect.top;
-
-        mouse.current.x = startX;
-        mouse.current.y = startY;
-        mouse.current.clientX = touch.clientX;
-        mouse.current.clientY = touch.clientY;
-        mouse.current.active = true;
-
-        lastMouse.current.x = startX;
-        lastMouse.current.y = startY;
-
-        // Initialize trail positions at touch point to avoid jumps
-        trail.current.forEach((t) => {
-          t.x = startX;
-          t.y = startY;
-        });
-      }
-    };
-
-    const handleTouchEnd = () => {
-      mouse.current.active = false;
-    };
-
-    // Interactive cursor ring expansion on hover
     const handleMouseOver = (e) => {
       const target = e.target;
       if (!target) return;
@@ -534,23 +430,18 @@ export default function PremiumBackground() {
         target.closest('.glass-card') ||
         target.closest('.btn-primary') ||
         target.closest('.btn-secondary') ||
-        target.classList.contains('nav-link')
+        target.classList?.contains('nav-link')
       ) {
-        setIsHovered(true);
+        isHoveredRef.current = true;
       } else {
-        setIsHovered(false);
+        isHoveredRef.current = false;
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
-    window.addEventListener('mouseover', handleMouseOver);
-
-    // Touch listeners
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
 
     return () => {
       cancelAnimationFrame(animationFrameId);
@@ -559,12 +450,8 @@ export default function PremiumBackground() {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
       window.removeEventListener('mouseover', handleMouseOver);
-
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [isHovered]);
+  }, []); // ⚡ Run effect ONCE on mount (no isHovered dependency churn!)
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-transparent">
@@ -573,3 +460,4 @@ export default function PremiumBackground() {
     </div>
   );
 }
+

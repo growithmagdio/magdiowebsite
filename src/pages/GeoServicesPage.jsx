@@ -105,8 +105,8 @@ export default function GeoServicesPage() {
   return (
     <div className="page-bg min-h-screen pt-0 pb-0">
       <SEO 
-        title="GEO Service Agency in Chennai | ChatGPT & AI Search Optimization | MAGDIO" 
-        description="Rank in AI search engines! MAGDIO is Chennai's leading GEO Service Agency. Get your business recommended by ChatGPT, Google Gemini, Claude & Perplexity." 
+        title="GEO Service Agency in Chennai | GEO Expert Chennai | MAGDIO" 
+        description="MAGDIO is the best GEO company in Chennai, helping businesses improve visibility across AI platforms with expert Generative Engine Optimization(GEO) services." 
         canonicalUrl="https://www.magdio.com/services/geo-services"
         jsonLd={{
           "@context": "https://schema.org",

@@ -274,6 +274,8 @@ export default function AutomobileEcommerceCaseStudy() {
                   src={picture3} 
                   alt="Shopify ecommerce sales dashboard showing 1.12 Crore sales attributed to marketing and ChatGPT traffic sessions" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture3)}

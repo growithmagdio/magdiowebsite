@@ -111,6 +111,7 @@ function AnimatedRoutes() {
               {/* GEO Services */}
               <Route path="/services/geo-services" element={<GeoServicesPage />} />
               <Route path="/geo-service-agency-in-chennai-magdio" element={<Navigate to="/services/geo-services" replace />} />
+              <Route path="/geo-services-agency-chennai-magdio" element={<Navigate to="/services/geo-services" replace />} />
               <Route path="/geo-services-tamilnadu-magdio" element={<Navigate to="/services/geo-services" replace />} />
               
               {/* Social Media Marketing Services */}
@@ -128,7 +129,7 @@ function AnimatedRoutes() {
               <Route path="/best-performance-marketing-agency-in-chennai-magdio" element={<Navigate to="/services/performance-marketing" replace />} />
               <Route path="/performance-marketing-tamilnadu-magdio" element={<Navigate to="/services/performance-marketing" replace />} />
               
-              {/* LinkedIn Ads Services */}
+              {/* Meta Ads Services */}
               <Route path="/services/meta-ads" element={<MetaAdsPage />} />
               <Route path="/meta-ads-agency-in-chennai-magdio" element={<Navigate to="/services/meta-ads" replace />} />
               <Route path="/meta-ads-tamilnadu-magdio" element={<Navigate to="/services/meta-ads" replace />} />
@@ -141,6 +142,7 @@ function AnimatedRoutes() {
               {/* YouTube Ads Services */}
               <Route path="/services/youtube-ads" element={<YouTubeAdsPage />} />
               <Route path="/youtube-marketing-agency-in-chennai-magdio" element={<Navigate to="/services/youtube-ads" replace />} />
+              <Route path="/youtube-marketing-agency-chennai-magdio" element={<Navigate to="/services/youtube-ads" replace />} />
               <Route path="/youtube-ads-tamilnadu-magdio" element={<Navigate to="/services/youtube-ads" replace />} />
               
               {/* WhatsApp Marketing Services */}

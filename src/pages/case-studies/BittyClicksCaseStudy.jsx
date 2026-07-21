@@ -298,6 +298,8 @@ export default function BittyClicksCaseStudy() {
                   src={picture1} 
                   alt="Bitty Clicks Google AI Overview result showing recommended studio for food product videography in Chennai" 
                   className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <button 
                   onClick={() => setLightboxImage(picture1)}
