@@ -51,7 +51,7 @@ export default function GoogleAdsPage() {
       <SEO 
         title="Google Ads Agency in Chennai for Business Growth | MAGDIO" 
         description="Grow your business with the best Google Ads agency in Chennai. Magdio creates targeted PPC campaigns to improve ROI, generate leads, and boost visibility." 
-        canonicalUrl="https://www.magdio.com/services/google-ads"
+        canonicalUrl="https://www.magdio.com/google-ads-agency-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",

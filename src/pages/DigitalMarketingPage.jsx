@@ -118,7 +118,7 @@ export default function DigitalMarketingPage() {
       <SEO 
         title="Best Digital Marketing Company In Chennai | MAGDIO" 
         description="Magdio offers result-driven digital marketing services in Chennai, including SEO, Google Ads, branding and social media marketing strategies for online growth." 
-        canonicalUrl="https://www.magdio.com/services/digital-marketing"
+        canonicalUrl="https://www.magdio.com/digital-marketing-company-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",

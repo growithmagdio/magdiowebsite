@@ -51,7 +51,7 @@ export default function PerformanceMarketingPage() {
       <SEO 
         title="Best Performance Marketing Agency in Chennai | MAGDIO" 
         description="Magdio is a result-driven performance marketing company in Chennai delivering strategic campaigns to improve leads, conversions, ROI, and business growth." 
-        canonicalUrl="https://www.magdio.com/services/performance-marketing"
+        canonicalUrl="https://www.magdio.com/best-performance-marketing-agency-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",

@@ -63,7 +63,7 @@ export default function MetaAdsPage() {
       <SEO 
         title="Meta Ads Agency in Chennai | Best Meta Ads Expert | MAGDIO" 
         description="MAGDIO is a trusted Facebook marketing company in Chennai offering Facebook Ads, audience targeting, campaign optimization, and lead generation services." 
-        canonicalUrl="https://www.magdio.com/services/meta-ads"
+        canonicalUrl="https://www.magdio.com/meta-ads-agency-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",

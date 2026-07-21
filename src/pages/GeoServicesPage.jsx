@@ -107,7 +107,7 @@ export default function GeoServicesPage() {
       <SEO 
         title="GEO Service Agency in Chennai | GEO Expert Chennai | MAGDIO" 
         description="MAGDIO is the best GEO company in Chennai, helping businesses improve visibility across AI platforms with expert Generative Engine Optimization(GEO) services." 
-        canonicalUrl="https://www.magdio.com/services/geo-services"
+        canonicalUrl="https://www.magdio.com/geo-services-agency-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",

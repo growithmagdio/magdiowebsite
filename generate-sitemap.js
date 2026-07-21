@@ -23,7 +23,16 @@ const staticRoutes = [
   '/portfolio/namma-markt-seo-case-study',
   '/portfolio/sasvitha-home-finance-seo-case-study',
   '/services',
-  '/services/performance-marketing',
+  '/digital-marketing-company-in-chennai-magdio',
+  '/seo-company-in-chennai-magdio',
+  '/social-media-marketing-agency-in-chennai-magdio',
+  '/google-ads-agency-chennai-magdio',
+  '/linkedin-marketing-b2b-marketing-in-chennai-magdio',
+  '/youtube-marketing-agency-chennai-magdio',
+  '/whatsapp-marketing-services-in-chennai-magdio',
+  '/best-performance-marketing-agency-in-chennai-magdio',
+  '/meta-ads-agency-in-chennai-magdio',
+  '/geo-services-agency-chennai-magdio',
   '/blog',
   '/mission'
 ];
