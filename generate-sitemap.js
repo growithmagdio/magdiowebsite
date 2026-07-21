@@ -14,15 +14,11 @@ const staticRoutes = [
   '/about',
   '/contact',
   '/portfolio',
-  '/portfolio/haber-living-seo-growth',
-  '/portfolio/automobile-ecommerce-seo-growth',
-  '/portfolio/dreamzil-meta-ads-growth',
-  '/portfolio/odoo-erp-lead-generation',
-  '/portfolio/bitty-clicks-seo-case-study',
-  '/portfolio/badie-studio-seo-case-study',
-  '/portfolio/namma-markt-seo-case-study',
-  '/portfolio/sasvitha-home-finance-seo-case-study',
   '/services',
+  '/blog',
+  '/mission',
+
+  // 10 Chennai Keyword Pages
   '/digital-marketing-company-in-chennai-magdio',
   '/seo-company-in-chennai-magdio',
   '/social-media-marketing-agency-in-chennai-magdio',
@@ -33,8 +29,31 @@ const staticRoutes = [
   '/best-performance-marketing-agency-in-chennai-magdio',
   '/meta-ads-agency-in-chennai-magdio',
   '/geo-services-agency-chennai-magdio',
-  '/blog',
-  '/mission'
+
+  // 8 Tamil Nadu Keyword Pages
+  '/digital-marketing-company-tamilnadu-magdio',
+  '/seo-services-tamilnadu-magdio',
+  '/social-media-marketing-tamilnadu-magdio',
+  '/google-ads-tamilnadu-magdio',
+  '/performance-marketing-tamilnadu-magdio',
+  '/linkedin-ads-tamilnadu-magdio',
+  '/youtube-ads-tamilnadu-magdio',
+  '/whatsapp-marketing-tamilnadu-magdio',
+
+  // 3 Core Service Pages
+  '/services/digital-marketing',
+  '/services/seo-services',
+  '/services/geo-services',
+
+  // 8 Case Study Pages
+  '/portfolio/haber-living-seo-growth',
+  '/portfolio/automobile-ecommerce-seo-growth',
+  '/portfolio/dreamzil-meta-ads-growth',
+  '/portfolio/odoo-erp-lead-generation',
+  '/portfolio/bitty-clicks-seo-case-study',
+  '/portfolio/badie-studio-seo-case-study',
+  '/portfolio/namma-markt-seo-case-study',
+  '/portfolio/sasvitha-home-finance-seo-case-study'
 ];
 
 async function generateSitemap() {
