@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
 import useQueryStringGuard from './hooks/useQueryStringGuard';
 
 // Lazy load non-critical visual background & widget overlays
@@ -11,8 +12,7 @@ const PremiumBackground = lazy(() => import('./components/PremiumBackground'));
 const FloatingElements  = lazy(() => import('./components/FloatingElements'));
 const PointerGlow       = lazy(() => import('./components/PointerGlow'));
 
-// Lazy load pages for fast initial page loading times
-const HomePage             = lazy(() => import('./pages/HomePage'));
+// Lazy load secondary pages for fast initial page loading times
 const ServicesPage         = lazy(() => import('./pages/ServicesPage'));
 const ServiceTemplate      = lazy(() => import('./pages/ServiceTemplate'));
 const DigitalMarketingPage = lazy(() => import('./pages/DigitalMarketingPage'));
@@ -93,7 +93,7 @@ function AnimatedRoutes() {
 
   return (
     <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         <motion.div key={location.pathname} {...activePageTransition} className="flex-grow">
           <Suspense fallback={<PageLoader />}>
             <Routes location={location}>
