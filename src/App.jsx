@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -191,14 +191,24 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  const [loadVisuals, setLoadVisuals] = useState(false);
+
+  useEffect(() => {
+    // Defer visual ambient background & floating elements until critical initial paint is complete
+    const timer = setTimeout(() => {
+      setLoadVisuals(true);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <BrowserRouter>
       <ScrollToTop />
       <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col bg-transparent">
-        <PremiumBackground />
-        <PointerGlow />
+        {loadVisuals && <PremiumBackground />}
+        {loadVisuals && <PointerGlow />}
         <Navbar />
-        <FloatingElements />
+        {loadVisuals && <FloatingElements />}
         <AnimatedRoutes />
       </div>
     </BrowserRouter>

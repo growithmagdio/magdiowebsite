@@ -1,16 +1,18 @@
+import { lazy, Suspense } from 'react';
 import HeroSection from '../components/home/HeroSection';
-import ServicesSection from '../components/home/ServicesSection';
-import IndustriesSection from '../components/home/IndustriesSection';
-import WhyChooseSection from '../components/home/WhyChooseSection';
-import ClientsSection from '../components/home/ClientsSection';
-import ToolsSection from '../components/home/ToolsSection';
-import ProcessSection from '../components/home/ProcessSection';
-import TestimonialsSection from '../components/home/TestimonialsSection';
-import StatsSection from '../components/home/StatsSection';
-import EnquirySection from '../components/home/EnquirySection';
-import FAQSection from '../components/home/FAQSection';
-import CTABanner from '../components/home/CTABanner';
 import SEO from '../components/SEO';
+
+const ServicesSection = lazy(() => import('../components/home/ServicesSection'));
+const IndustriesSection = lazy(() => import('../components/home/IndustriesSection'));
+const WhyChooseSection = lazy(() => import('../components/home/WhyChooseSection'));
+const ClientsSection = lazy(() => import('../components/home/ClientsSection'));
+const ToolsSection = lazy(() => import('../components/home/ToolsSection'));
+const ProcessSection = lazy(() => import('../components/home/ProcessSection'));
+const TestimonialsSection = lazy(() => import('../components/home/TestimonialsSection'));
+const StatsSection = lazy(() => import('../components/home/StatsSection'));
+const EnquirySection = lazy(() => import('../components/home/EnquirySection'));
+const FAQSection = lazy(() => import('../components/home/FAQSection'));
+const CTABanner = lazy(() => import('../components/home/CTABanner'));
 
 export default function HomePage() {
   return (
@@ -34,17 +36,20 @@ export default function HomePage() {
         }}
       />
       <HeroSection />
-      <ServicesSection />
-      <IndustriesSection />
-      <WhyChooseSection />
-      <ClientsSection />
-      <ToolsSection />
-      <ProcessSection />
-      <TestimonialsSection />
-      <StatsSection />
-      <EnquirySection />
-      <FAQSection />
-      <CTABanner />
+      
+      <Suspense fallback={null}>
+        <ServicesSection />
+        <IndustriesSection />
+        <WhyChooseSection />
+        <ClientsSection />
+        <ToolsSection />
+        <ProcessSection />
+        <TestimonialsSection />
+        <StatsSection />
+        <EnquirySection />
+        <FAQSection />
+        <CTABanner />
+      </Suspense>
     </div>
   );
 }
