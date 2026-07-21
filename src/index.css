@@ -7,15 +7,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-display: swap;
   }
 
   html {
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
   }
 
   html, body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: #04081c;
     background: linear-gradient(135deg, #04081c 0%, #03030b 50%, #0a0514 100%);
     color: #FFFFFF;
@@ -23,6 +23,12 @@
     width: 100%;
     max-width: 100vw;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Below-the-fold content visibility optimization */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 600px;
   }
 
   ::-webkit-scrollbar {

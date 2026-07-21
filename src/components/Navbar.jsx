@@ -119,11 +119,8 @@ export default function Navbar() {
   return (
     <>
       {/* ── Z-INDEX 9999 to prevent hero overlap ── */}
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 ${
+      <header
+        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${
           scrolled || activeDropdown
             ? 'py-3 border-b border-white/10'
             : 'py-5'
@@ -304,7 +301,7 @@ export default function Navbar() {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.nav>
+      </header>
 
       {/* Mobile Drawer */}
       <AnimatePresence>

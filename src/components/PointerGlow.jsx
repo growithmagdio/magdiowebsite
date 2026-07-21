@@ -4,8 +4,9 @@ import { useLocation } from 'react-router-dom';
 export default function PointerGlow() {
   const location = useLocation();
   const isAdmin = location.pathname === '/admin';
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
-  if (isAdmin) return null;
+  if (isAdmin || isMobile) return null;
 
   const isHoveredRef = useRef(false);
   const canvasRef = useRef(null);

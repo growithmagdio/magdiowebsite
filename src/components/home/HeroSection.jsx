@@ -1,13 +1,12 @@
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden pt-24">
+    <section className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
       {/* ── Background Gradients & Blobs ── */}
-      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-brand-purple/20 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-brand-blue/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] sm:w-[800px] h-[600px] sm:h-[800px] bg-brand-purple/20 rounded-full blur-[100px] sm:blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[450px] sm:w-[600px] h-[450px] sm:h-[600px] bg-brand-blue/20 rounded-full blur-[90px] sm:blur-[100px] pointer-events-none" />
       
       {/* ── Futuristic Grid ── */}
       <div className="absolute inset-0 opacity-[0.03]"
@@ -20,13 +19,13 @@ export default function HeroSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col items-center text-center">
         
         {/* Floating AI Glow Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brand-purple/40 mb-8 bg-brand-purple/10 backdrop-blur-md shadow-[0_0_20px_rgba(138,43,226,0.3)]">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brand-purple/40 mb-8 bg-brand-purple/10 backdrop-blur-md shadow-[0_0_20px_rgba(138,43,226,0.3)] min-h-[36px]">
           <span className="w-2 h-2 rounded-full bg-brand-yellow animate-pulse" />
           <span className="text-sm text-white font-medium tracking-wide">MAGDIO — The AI Growth Studio</span>
         </div>
 
-        {/* Strong Heading */}
-        <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-white leading-[1.1] mb-6 tracking-tight">
+        {/* Strong Heading (LCP Element) */}
+        <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-white leading-[1.1] mb-6 tracking-tight min-h-[1.1em]">
           Your Trusted Partner <br />
           in <span className="gradient-text-purple relative inline-block">
                Digital Growth
@@ -35,7 +34,7 @@ export default function HeroSection() {
         </h1>
 
         {/* Subtitle */}
-        <p className="text-lg md:text-xl text-white/60 max-w-2xl mb-12 leading-relaxed">
+        <p className="text-lg md:text-xl text-white/60 max-w-2xl mb-12 leading-relaxed min-h-[3em]">
           Accelerate your business with premium AI-powered solutions, cutting-edge web experiences, and data-driven marketing strategies.
         </p>
 

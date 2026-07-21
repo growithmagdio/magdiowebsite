@@ -1,33 +1,58 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google Tag Manager (Deferred for Page Speed) -->
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Critical CSS Inline for instant 0ms FCP shell paint -->
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #04081c;
+        color: #ffffff;
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        overflow-x: hidden;
+        width: 100%;
+        scrollbar-gutter: stable;
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: #04081c;
+      }
+    </style>
+
+    <!-- Google Tag Manager (Deferred for maximum PageSpeed) -->
     <script>
-      window.addEventListener('load', function() {
-        var loadGTM = function() {
+      (function() {
+        var loaded = false;
+        function loadGTM() {
+          if (loaded) return;
+          loaded = true;
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
           })(window,document,'script','dataLayer','GTM-TL78VFGK');
-        };
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(function() { setTimeout(loadGTM, 2500); });
-        } else {
-          setTimeout(loadGTM, 4000);
         }
-      });
+        var triggerEvents = ['touchstart', 'scroll', 'mousemove', 'keydown'];
+        function triggerGTM() {
+          triggerEvents.forEach(function(e) { window.removeEventListener(e, triggerGTM, { passive: true }); });
+          loadGTM();
+        }
+        triggerEvents.forEach(function(e) { window.addEventListener(e, triggerGTM, { passive: true }); });
+        setTimeout(loadGTM, 5000);
+      })();
     </script>
     <!-- End Google Tag Manager -->
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet" />
-    </noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet" />
+    
     <link rel="preload" as="image" href="/logo.webp" type="image/webp" fetchpriority="high" />
     <meta name="description" content="MAGDIO — The AI Growth Studio. Boost your online presence and accelerate business growth with innovative AI-powered digital marketing strategies." />
     <meta name="keywords" content="digital marketing, AI growth, social media marketing, SEO, branding, web development, Chennai" />

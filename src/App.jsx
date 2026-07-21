@@ -196,20 +196,31 @@ export default function App() {
   const [loadVisuals, setLoadVisuals] = useState(false);
 
   useEffect(() => {
-    // Defer visual ambient background & floating elements until critical initial paint is complete
-    const handleVisualLoad = () => {
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => setLoadVisuals(true));
-      } else {
-        setTimeout(() => setLoadVisuals(true), 1500);
-      }
+    let timerId;
+    let loaded = false;
+
+    const triggerVisuals = () => {
+      if (loaded) return;
+      loaded = true;
+      if (timerId) clearTimeout(timerId);
+      ['touchstart', 'scroll', 'mousemove'].forEach(evt => {
+        window.removeEventListener(evt, triggerVisuals);
+      });
+      setLoadVisuals(true);
     };
 
-    if (document.readyState === 'complete') {
-      handleVisualLoad();
-    } else {
-      window.addEventListener('load', handleVisualLoad, { once: true });
-    }
+    ['touchstart', 'scroll', 'mousemove'].forEach(evt => {
+      window.addEventListener(evt, triggerVisuals, { passive: true, once: true });
+    });
+
+    timerId = setTimeout(triggerVisuals, 3500);
+
+    return () => {
+      if (timerId) clearTimeout(timerId);
+      ['touchstart', 'scroll', 'mousemove'].forEach(evt => {
+        window.removeEventListener(evt, triggerVisuals);
+      });
+    };
   }, []);
 
   return (

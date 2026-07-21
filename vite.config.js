@@ -5,8 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    target: 'es2020',
+    target: 'es2022',
     cssCodeSplit: true,
+    cssMinify: true,
     minify: 'esbuild',
     reportCompressedSize: false,
     modulePreload: {
@@ -14,6 +15,7 @@ export default defineConfig({
     },
     esbuild: {
       drop: ['console', 'debugger'],
+      legalComments: 'none',
     },
     rollupOptions: {
       output: {
@@ -22,23 +24,20 @@ export default defineConfig({
             if (id.includes('firebase')) {
               return 'vendor-firebase';
             }
-            if (id.includes('react-router-dom') || id.includes('react-helmet-async')) {
-              return 'vendor-router';
-            }
             if (id.includes('framer-motion')) {
               return 'vendor-framer';
             }
             if (id.includes('react-icons')) {
               return 'vendor-icons';
             }
-            if (id.includes('react/') || id.includes('react-dom/')) {
-              return 'vendor-react';
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom') || id.includes('react-helmet-async')) {
+              return 'vendor-core';
             }
           }
         }
       }
     },
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 800,
   }
 })
 

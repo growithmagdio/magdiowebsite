@@ -27,6 +27,8 @@ function getColorString(t, alpha) {
 }
 
 export default function PremiumBackground() {
+  if (typeof window !== 'undefined' && window.innerWidth < 768) return null;
+
   const canvasRef = useRef(null);
 
   const isHoveredRef = useRef(false);
