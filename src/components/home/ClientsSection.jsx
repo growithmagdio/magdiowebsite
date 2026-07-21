@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 
-// Dynamically load image filenames from the public folder using Vite's glob import
+// Dynamically load image URLs from the banner images folder using Vite's glob import
 const imageModules = import.meta.glob('/public/banner images/*.{png,jpg,jpeg,webp,svg}', { query: '?url', eager: true });
-const clientImages = Object.keys(imageModules).map(path => path.split('/').pop());
+const clientImages = Object.values(imageModules).map(mod => (typeof mod === 'string' ? mod : mod.default || mod));
 
 export default function ClientsSection() {
   const imagesToDisplay = clientImages;
@@ -37,14 +37,14 @@ export default function ClientsSection() {
         {imagesToDisplay.length > 0 ? (
           <div className="animate-marquee flex whitespace-nowrap items-center pt-4 pb-8">
             {/* Double array for seamless infinite effect */}
-            {[...imagesToDisplay, ...imagesToDisplay].map((image, i) => (
+            {[...imagesToDisplay, ...imagesToDisplay].map((imageSrc, i) => (
               <div
                 key={i}
                 className="mx-3 md:mx-4 w-48 h-28 sm:w-56 sm:h-32 md:w-64 md:h-36 lg:w-72 lg:h-40 shrink-0 rounded-2xl bg-white/[0.93] backdrop-blur-sm border border-white/10 flex items-center justify-center p-2.5 md:p-4 overflow-hidden transition-all duration-300 cursor-pointer group hover:bg-white hover:border-brand-purple/50 hover:scale-105 hover:shadow-[0_0_30px_rgba(138,43,226,0.25)]"
               >
                 <img 
-                  src={`/banner images/${image}`} 
-                  alt={`Trusted Client ${i}`}
+                  src={imageSrc} 
+                  alt={`Trusted Client ${i + 1}`}
                   className="w-full h-full object-contain pointer-events-none transition-all duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
