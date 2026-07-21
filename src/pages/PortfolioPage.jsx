@@ -229,6 +229,9 @@ export default function PortfolioPage() {
                     <img
                       src={project.image}
                       alt={project.title}
+                      width="600"
+                      height="400"
+                      decoding="async"
                       loading="lazy"
                       className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 brightness-[0.88] saturate-[1.05] contrast-[1.05] group-hover:brightness-100 group-hover:saturate-100 group-hover:contrast-100"
                     />
@@ -315,6 +318,9 @@ export default function PortfolioPage() {
               <img
                 src={card.img}
                 alt={card.title}
+                width="260"
+                height="170"
+                decoding="async"
                 loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover brightness-[0.8] contrast-[1.1] saturate-[0.85]"
               />
@@ -356,6 +362,9 @@ export default function PortfolioPage() {
               <img
                 src={card.img}
                 alt={card.title}
+                width="240"
+                height="160"
+                decoding="async"
                 loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover brightness-[0.8] contrast-[1.1] saturate-[0.85]"
               />

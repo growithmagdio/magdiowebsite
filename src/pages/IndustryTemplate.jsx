@@ -20,7 +20,7 @@ export default function IndustryTemplate() {
       <section className="relative pt-20 pb-32 overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-b from-[#03030b]/80 via-[#06071a]/90 to-[#03030b] z-10" />
-          <img src={industry.heroImage} alt={industry.title} className="w-full h-full object-cover opacity-30 blur-sm mix-blend-overlay" />
+          <img src={industry.heroImage} alt={industry.title} width="1200" height="600" decoding="async" loading="lazy" className="w-full h-full object-cover opacity-30 blur-sm mix-blend-overlay" />
         </div>
         
         <div className="max-w-4xl mx-auto px-6 relative z-20 text-center">

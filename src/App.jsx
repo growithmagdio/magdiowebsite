@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import PremiumBackground from './components/PremiumBackground';
-import FloatingElements from './components/FloatingElements';
-import PointerGlow from './components/PointerGlow';
 import useQueryStringGuard from './hooks/useQueryStringGuard';
+
+// Lazy load non-critical visual background & widget overlays
+const PremiumBackground = lazy(() => import('./components/PremiumBackground'));
+const FloatingElements  = lazy(() => import('./components/FloatingElements'));
+const PointerGlow       = lazy(() => import('./components/PointerGlow'));
 
 // Lazy load pages for fast initial page loading times
 const HomePage             = lazy(() => import('./pages/HomePage'));
@@ -195,20 +197,31 @@ export default function App() {
 
   useEffect(() => {
     // Defer visual ambient background & floating elements until critical initial paint is complete
-    const timer = setTimeout(() => {
-      setLoadVisuals(true);
-    }, 1200);
-    return () => clearTimeout(timer);
+    const handleVisualLoad = () => {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => setLoadVisuals(true));
+      } else {
+        setTimeout(() => setLoadVisuals(true), 1500);
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      handleVisualLoad();
+    } else {
+      window.addEventListener('load', handleVisualLoad, { once: true });
+    }
   }, []);
 
   return (
     <BrowserRouter>
       <ScrollToTop />
       <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col bg-transparent">
-        {loadVisuals && <PremiumBackground />}
-        {loadVisuals && <PointerGlow />}
+        <Suspense fallback={null}>
+          {loadVisuals && <PremiumBackground />}
+          {loadVisuals && <PointerGlow />}
+          {loadVisuals && <FloatingElements />}
+        </Suspense>
         <Navbar />
-        {loadVisuals && <FloatingElements />}
         <AnimatedRoutes />
       </div>
     </BrowserRouter>

@@ -16,6 +16,10 @@ export default function ServiceHero({ service }) {
         <img
           src={service.heroImage || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"}
           alt={service.title}
+          width="1200"
+          height="600"
+          decoding="async"
+          loading="lazy"
           className="w-full h-full object-cover opacity-25 blur-sm mix-blend-overlay scale-105"
         />
         {/* Dynamic spot glow */}
