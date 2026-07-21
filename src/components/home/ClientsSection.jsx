@@ -45,6 +45,9 @@ export default function ClientsSection() {
                 <img 
                   src={imageSrc} 
                   alt={`Trusted Client ${i + 1}`}
+                  width="288"
+                  height="160"
+                  decoding="async"
                   className="w-full h-full object-contain pointer-events-none transition-all duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
