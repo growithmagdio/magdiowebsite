@@ -7,14 +7,17 @@ export default function SEO({
   description = "Boost your online presence and accelerate your business growth with innovative AI-powered digital marketing strategies tailored for modern brands.",
   name = "Magdio",
   type = "website",
-  image = "/favicon.png?v=2",
+  image = "/favicon.png",
   canonicalUrl,
   noindex = false,
   jsonLd
 }) {
   const location = useLocation();
+  const rawPath = location.pathname.endsWith('/') && location.pathname !== '/'
+    ? location.pathname.slice(0, -1)
+    : location.pathname;
   const cleanCanonical = !noindex
-    ? (canonicalUrl || `https://www.magdio.com${location.pathname === '/' ? '/' : location.pathname}`)
+    ? (canonicalUrl || `https://www.magdio.com${rawPath}`)
     : null;
 
   return (

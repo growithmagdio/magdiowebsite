@@ -26,8 +26,8 @@ export default function useQueryStringGuard() {
       if (isPolluted) {
         // Construct the clean relative URL
         const cleanUrl = url.pathname + url.search + url.hash;
-        // Redirect to the clean URL (helps bots recognize the redirection)
-        window.location.replace(cleanUrl);
+        // Replace URL in browser history without triggering full page reload
+        window.history.replaceState(null, '', cleanUrl);
       }
     }
   }, [location.pathname, location.search]);

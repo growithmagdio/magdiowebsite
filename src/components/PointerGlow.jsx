@@ -134,7 +134,6 @@ export default function PointerGlow() {
     const animate = () => {
       // Pause loop if browser tab is hidden to conserve CPU/GPU
       if (document.hidden) {
-        animationFrameId = requestAnimationFrame(animate);
         return;
       }
 

@@ -23,20 +23,23 @@ export default function FloatingElements() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping, isChatOpen]);
 
+  const showBackToTopRef = useRef(false);
+
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const totalScroll = document.documentElement.scrollTop || document.body.scrollTop;
-          const windowHeight = (document.documentElement.scrollHeight || document.body.scrollHeight) - document.documentElement.clientHeight;
-          const scroll = windowHeight > 0 ? totalScroll / windowHeight : 0;
+          const totalScroll = window.scrollY || document.documentElement.scrollTop;
+          const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const scroll = windowHeight > 0 ? Math.round((totalScroll / windowHeight) * 100) / 100 : 0;
+          
           setScrollProgress(scroll);
 
-          if (totalScroll > 500) {
-            setShowBackToTop(true);
-          } else {
-            setShowBackToTop(false);
+          const shouldShow = totalScroll > 500;
+          if (shouldShow !== showBackToTopRef.current) {
+            showBackToTopRef.current = shouldShow;
+            setShowBackToTop(shouldShow);
           }
           ticking = false;
         });

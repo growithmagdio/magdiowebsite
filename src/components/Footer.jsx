@@ -10,7 +10,7 @@ const companyLinks = [
   { name: 'About Us',    path: '/about' },
   { name: 'Our Mission', path: '/mission' },
   { name: 'Portfolio',   path: '/portfolio' },
-  { name: 'Careers',     path: '/careers' },
+  { name: 'Contact',     path: '/contact' },
 ];
 
 const serviceLinks = [
@@ -18,25 +18,22 @@ const serviceLinks = [
   { name: 'GEO Services',         path: '/services/geo-services' },
   { name: 'Digital Marketing',    path: '/services/digital-marketing' },
   { name: 'Shopify Development',  path: '/services/shopify-development' },
-  { name: 'AI Agent Development', path: '/services/ai-agent-development' },
   { name: 'SaaS Development',     path: '/services/saas-application-development' },
-  { name: 'Branding',             path: '/services/branding-services' },
   { name: 'Mobile App Dev',       path: '/services/mobile-app-development' },
 ];
 
 const industryLinks = [
-  { name: 'Retail',       path: '/portfolio' },
-  { name: 'Real Estate',  path: '/portfolio' },
-  { name: 'Health Care',  path: '/portfolio' },
-  { name: 'E-Commerce',   path: '/portfolio' },
-  { name: 'IT & SaaS',    path: '/portfolio' },
+  { name: 'Retail & FMCG', path: '/industries/retail-fmcg' },
+  { name: 'Real Estate',   path: '/industries/real-estate' },
+  { name: 'Health Care',   path: '/industries/health-care' },
+  { name: 'E-Commerce',    path: '/industries/e-commerce' },
+  { name: 'IT & SaaS',     path: '/industries/it-saas' },
 ];
 
 const resourceLinks = [
   { name: 'Blog',          path: '/blog' },
   { name: 'Case Studies',  path: '/portfolio' },
-  { name: 'Privacy Policy',path: '/privacy-policy' },
-  { name: 'Terms of Use',  path: '/terms' },
+  { name: 'All Services',  path: '/services' },
 ];
 
 const socialLinks = [

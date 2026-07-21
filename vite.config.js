@@ -8,6 +8,10 @@ export default defineConfig({
     target: 'es2020',
     cssCodeSplit: true,
     minify: 'esbuild',
+    reportCompressedSize: false,
+    modulePreload: {
+      polyfill: false
+    },
     esbuild: {
       drop: ['console', 'debugger'],
     },
@@ -15,6 +19,9 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
+            if (id.includes('firebase')) {
+              return 'vendor-firebase';
+            }
             if (id.includes('react-router-dom') || id.includes('react-helmet-async')) {
               return 'vendor-router';
             }
@@ -23,6 +30,9 @@ export default defineConfig({
             }
             if (id.includes('react-icons')) {
               return 'vendor-icons';
+            }
+            if (id.includes('react/') || id.includes('react-dom/')) {
+              return 'vendor-react';
             }
           }
         }

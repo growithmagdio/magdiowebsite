@@ -46,6 +46,8 @@ export default function PremiumBackground() {
   const parallax = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
+    if (window.innerWidth < 768) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -132,7 +134,6 @@ export default function PremiumBackground() {
     // Main animation loop
     const animate = (timestamp) => {
       if (document.hidden || width < 768) {
-        animationFrameId = requestAnimationFrame(animate);
         return;
       }
 
