@@ -679,7 +679,7 @@ export default function AdminPage() {
                       <FaCalendarAlt /> Today's Date
                     </span>
                     <span className="flex items-center gap-1">
-                      <FaClock /> ~{Math.max(1, Math.ceil(formData.content.split(/\s+/).length / 200))} min read
+                      <FaClock /> ~{Math.max(1, Math.ceil((formData.content || '').replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length / 200))} min read
                     </span>
                   </div>
 
@@ -700,20 +700,21 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Text rendering helper preview */}
-              {formData.imageUrl && (
-                <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
-                  <span className="text-[10px] font-bold text-white/40 uppercase block mb-2">IMAGE PREVIEW</span>
-                  <img 
-                    src={formData.imageUrl} 
-                    alt="Cover Source" 
-                    className="w-full h-32 object-cover rounded-lg border border-white/10"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
+              {/* Full Article Content Live Preview */}
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-5 shadow-2xl text-left max-w-sm mx-auto">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-brand-yellow flex items-center gap-2">
+                    <FaEye size={12} /> Live Article Content Preview
+                  </h4>
+                  <span className="text-[10px] text-white/40 font-mono">HTML Rendered</span>
                 </div>
-              )}
+                <div 
+                  className="blog-prose space-y-4 text-white/80 font-sans tracking-wide text-xs sm:text-sm leading-relaxed overflow-x-auto max-h-[350px] overflow-y-auto pr-1 [&>h1]:text-xl [&>h1]:font-bold [&>h1]:font-display [&>h1]:text-white [&>h1]:mt-4 [&>h1]:mb-2 [&>h2]:text-lg [&>h2]:font-bold [&>h2]:font-display [&>h2]:text-white [&>h2]:mt-4 [&>h2]:mb-2 [&>h3]:text-base [&>h3]:font-bold [&>h3]:font-display [&>h3]:text-brand-yellow [&>h3]:mt-3 [&>h3]:mb-1.5 [&>ul]:list-disc [&>ul]:list-inside [&>ul]:pl-2 [&>ul]:space-y-1 [&>ol]:list-decimal [&>ol]:list-inside [&>ol]:pl-2 [&>ol]:space-y-1 [&>blockquote]:border-l-2 [&>blockquote]:border-brand-yellow [&>blockquote]:bg-white/5 [&>blockquote]:rounded-r-lg [&>blockquote]:p-3 [&>blockquote]:italic [&>blockquote]:my-3 [&>a]:text-brand-yellow [&>a]:underline [&>pre]:bg-[#03030b] [&>pre]:border [&>pre]:border-white/10 [&>pre]:p-3 [&>pre]:rounded-lg [&>pre]:overflow-x-auto [&>pre]:font-mono [&>pre]:text-[11px] [&>pre]:text-brand-yellow [&>img]:rounded-xl [&>img]:my-3 [&>img]:border [&>img]:border-white/10 [&>img]:shadow-lg"
+                  dangerouslySetInnerHTML={{ 
+                    __html: formData.content || '<p class="text-white/30 italic text-xs">Start typing or formatting text in the Rich Text Editor to see the live formatted preview here...</p>' 
+                  }}
+                />
+              </div>
             </div>
 
           </div>
