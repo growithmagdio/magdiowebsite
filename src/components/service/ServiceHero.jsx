@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import Breadcrumb from '../Breadcrumb';
 
 export default function ServiceHero({ service }) {
   const onGetStartedClick = () => {
@@ -33,7 +34,12 @@ export default function ServiceHero({ service }) {
         />
       </div>
       
-      <div className="max-w-4xl mx-auto px-6 relative z-20 text-center">
+      <div className="max-w-4xl mx-auto px-6 relative z-20 text-center flex flex-col items-center">
+        {/* Breadcrumb Path */}
+        {service.breadcrumbItems && (
+          <Breadcrumb items={service.breadcrumbItems} />
+        )}
+
         {/* Category Pill Badge */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}

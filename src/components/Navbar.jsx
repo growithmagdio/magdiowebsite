@@ -203,8 +203,10 @@ export default function Navbar() {
                     const isActive = activeServiceCategory === category.id;
                     const Icon = category.icon;
                     return (
-                      <button 
+                      <Link 
                         key={category.id}
+                        to={`/services/${category.id}`}
+                        onClick={() => setActiveDropdown(null)}
                         onMouseEnter={() => setActiveServiceCategory(category.id)}
                         className={`w-full text-left flex items-center gap-4 px-4 py-4 rounded-xl transition-all duration-300 ${isActive ? 'bg-white/10 border border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.05)]' : 'border border-transparent hover:bg-white/10'}`}
                       >
@@ -215,7 +217,7 @@ export default function Navbar() {
                           <h4 className={`font-display font-bold text-[15px] transition-colors ${isActive ? 'text-white' : 'text-white/80'}`}>{category.name}</h4>
                         </div>
                         <FaArrowRight className={`ml-auto text-[10px] transition-all duration-300 ${isActive ? 'opacity-100 text-white/70 translate-x-0' : 'opacity-0 -translate-x-2'}`} />
-                      </button>
+                      </Link>
                     );
                   })}
                 </div>
@@ -237,6 +239,7 @@ export default function Navbar() {
                          <Link 
                            to={link.path} 
                            key={link.name} 
+                           onClick={() => setActiveDropdown(null)}
                            className={`group relative pl-4 border-l-2 border-white/20 ${parentCat.hoverBorder} py-2.5 text-white/80 hover:text-white font-medium transition-all duration-300 text-[15px] flex items-center justify-between hover:bg-white/10 rounded-r-lg`}
                          >
                            <span className="group-hover:translate-x-1 transition-transform">{link.name}</span>
@@ -345,12 +348,12 @@ export default function Navbar() {
                            </h5>
                            <div className="flex flex-col gap-1 pl-6 border-l border-white/10 ml-2">
                              {category.items.map(l => (
-                               <Link key={l.name} to={l.path} className="text-white/60 py-1.5 text-base hover:text-white transition-colors">{l.name}</Link>
+                               <Link key={l.name} to={l.path} onClick={() => setMenuOpen(false)} className="text-white/60 py-1.5 text-base hover:text-white transition-colors">{l.name}</Link>
                              ))}
                            </div>
                         </div>
                       ))}
-                      <Link to="/services" className="mt-2 text-brand-yellow font-bold text-sm flex items-center gap-2 ml-2">View All Services <FaArrowRight size={10}/></Link>
+                      <Link to="/services" onClick={() => setMenuOpen(false)} className="mt-2 text-brand-yellow font-bold text-sm flex items-center gap-2 ml-2">View All Services <FaArrowRight size={10}/></Link>
                     </motion.div>
                   )}
                 </AnimatePresence>

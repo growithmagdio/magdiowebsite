@@ -188,7 +188,12 @@ function AnimatedRoutes() {
               <Route path="/whatsapp-marketing-agency-chennai-magdio" element={<WhatsAppMarketingPage />} />
               <Route path="/whatsapp-marketing-chennai-magdio" element={<WhatsAppMarketingPage />} />
               <Route path="/whatsapp-marketing-tamilnadu-magdio" element={<WhatsAppMarketingPage />} />
-              <Route path="/whatsapp-marketing" element={<WhatsAppMarketingPage />} />
+              {/* Service Category Routes */}
+              <Route path="/services/marketing" element={<ServicesPage category="Marketing" />} />
+              <Route path="/services/development" element={<ServicesPage category="Development" />} />
+              <Route path="/services/branding" element={<ServicesPage category="Branding" />} />
+              <Route path="/services/consulting" element={<ServicesPage category="Consulting" />} />
+              <Route path="/services/analytics" element={<ServicesPage category="Analytics" />} />
 
               <Route path="/services/:serviceId"   element={<ServiceTemplate />} />
               <Route path="/industries/:industryId" element={<IndustryTemplate />} />

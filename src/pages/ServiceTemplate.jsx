@@ -1,5 +1,6 @@
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, useLocation } from 'react-router-dom';
 import { servicesData } from '../data/servicesData';
+import SEO from '../components/SEO';
 
 // Import newly created modular components
 import ServiceHero from '../components/service/ServiceHero';
@@ -36,6 +37,7 @@ const defaultServiceFaqs = [
 
 export default function ServiceTemplate({ serviceId: propServiceId }) {
   const params = useParams();
+  const location = useLocation();
   const serviceId = propServiceId || params.serviceId;
   const service = servicesData.find(s => s.id === serviceId);
 
@@ -47,10 +49,31 @@ export default function ServiceTemplate({ serviceId: propServiceId }) {
   // Get dynamic FAQs or fall back to verified premium defaults
   const faqs = service.faqs || defaultServiceFaqs;
 
+  const categorySlug = service.category ? service.category.toLowerCase() : 'marketing';
+
+  const breadcrumbItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Services', path: '/services' },
+    { label: service.category || 'Services', path: `/services/${categorySlug}` },
+    { label: service.title }
+  ];
+
+  const fullService = {
+    ...service,
+    breadcrumbItems
+  };
+
+  const seoTitle = `${service.title} | ${service.category || 'Services'} | MAGDIO`;
+  const seoDescription = service.subtitle || service.overview || `Professional ${service.title} services by MAGDIO to accelerate your digital growth.`;
+
   return (
-    <div className="page-bg min-h-screen pt-0 pb-0">
+    <div className="page-bg min-h-screen pt-0 pb-0 bg-[#03030b]">
+      <SEO 
+        title={seoTitle}
+        description={seoDescription}
+      />
       {/* 1. Hero Banner Component */}
-      <ServiceHero service={service} />
+      <ServiceHero service={fullService} />
 
       {/* 2. Service Overview Component */}
       <ServiceOverview service={service} />
