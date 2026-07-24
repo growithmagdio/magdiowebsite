@@ -25,6 +25,7 @@ import {
   uploadImageFile
 } from '../utils/blogService';
 import { db } from '../firebase';
+import RichTextEditor from '../components/admin/RichTextEditor';
 
 export default function AdminPage() {
   // Auth state
@@ -595,20 +596,15 @@ export default function AdminPage() {
                   ></textarea>
                 </div>
 
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between ml-1">
                     <label className="text-xs text-white/60 font-medium">FULL ARTICLE CONTENT</label>
-                    <span className="text-[10px] text-brand-yellow">Supports ### for subheadings and - for bullet points</span>
+                    <span className="text-[10px] text-brand-yellow font-bold uppercase tracking-wider">✦ Rich Text Editor Active</span>
                   </div>
-                  <textarea
-                    name="content"
-                    required
-                    rows="12"
+                  <RichTextEditor
                     value={formData.content}
-                    onChange={handleFormChange}
-                    placeholder="Write article details here. Separate paragraphs with double blank lines. Use '### Subheading' and list formats to construct structured posts."
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all text-sm font-light font-mono resize-y"
-                  ></textarea>
+                    onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+                  />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">

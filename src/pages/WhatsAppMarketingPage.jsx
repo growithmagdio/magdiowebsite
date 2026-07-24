@@ -6,6 +6,7 @@ import {
 import FAQAccordion from '../components/FAQAccordion';
 import EnquirySection from '../components/home/EnquirySection';
 import SEO from '../components/SEO';
+import Breadcrumb from '../components/Breadcrumb';
 
 const waFaqs = [
   {
@@ -63,7 +64,6 @@ export default function WhatsAppMarketingPage() {
       <SEO 
         title="Bulk WhatsApp Marketing Services in Chennai | MAGDIO" 
         description="Reach Magdio, a bulk WhatsApp marketing service provider delivering promotional messages, alerts, customer updates and business communication solutions." 
-        canonicalUrl="https://www.magdio.com/whatsapp-marketing-services-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
@@ -85,6 +85,14 @@ export default function WhatsAppMarketingPage() {
         </div>
         
         <div className="max-w-5xl mx-auto px-6 relative z-20 text-center">
+          <div className="flex justify-center mb-4">
+            <Breadcrumb items={[
+              { label: 'Home', path: '/' },
+              { label: 'Services', path: '/services' },
+              { label: 'Marketing', path: '/services/marketing' },
+              { label: 'WhatsApp Marketing' }
+            ]} />
+          </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

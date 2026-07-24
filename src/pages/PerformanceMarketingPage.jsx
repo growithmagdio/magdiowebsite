@@ -6,6 +6,7 @@ import {
 import FAQAccordion from '../components/FAQAccordion';
 import EnquirySection from '../components/home/EnquirySection';
 import SEO from '../components/SEO';
+import Breadcrumb from '../components/Breadcrumb';
 
 const pmFaqs = [
   {
@@ -51,7 +52,6 @@ export default function PerformanceMarketingPage() {
       <SEO 
         title="Best Performance Marketing Agency in Chennai | MAGDIO" 
         description="Magdio is a result-driven performance marketing company in Chennai delivering strategic campaigns to improve leads, conversions, ROI, and business growth." 
-        canonicalUrl="https://www.magdio.com/best-performance-marketing-agency-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
@@ -73,6 +73,14 @@ export default function PerformanceMarketingPage() {
         </div>
         
         <div className="max-w-5xl mx-auto px-6 relative z-20 text-center">
+          <div className="flex justify-center mb-4">
+            <Breadcrumb items={[
+              { label: 'Home', path: '/' },
+              { label: 'Services', path: '/services' },
+              { label: 'Marketing', path: '/services/marketing' },
+              { label: 'Performance Marketing' }
+            ]} />
+          </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

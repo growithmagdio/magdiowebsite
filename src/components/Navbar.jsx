@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   FaInstagram, FaLinkedinIn, FaWhatsapp,
   FaBars, FaTimes, FaChevronDown,
-  FaBullhorn, FaCode, FaBuilding, FaArrowRight
+  FaBullhorn, FaCode, FaBuilding, FaLightbulb, FaChartLine, FaArrowRight
 } from 'react-icons/fa';
 import MagdioLogo from './MagdioLogo';
 
@@ -48,6 +48,41 @@ const megaMenuData = {
         { name: 'SaaS Application', path: '/services/saas-application-development' },
         { name: 'Mobile App Development', path: '/services/mobile-app-development' },
         { name: 'WordPress Development', path: '/services/wordpress-development' },
+      ]
+    },
+    {
+      id: 'branding',
+      name: 'Branding',
+      icon: FaBuilding,
+      color: 'text-purple-400',
+      hoverBorder: 'hover:border-purple-400',
+      items: [
+        { name: 'Branding Services', path: '/services/branding-services' },
+        { name: 'Graphic & Logo Design', path: '/services/graphic-logo-design' },
+      ]
+    },
+    {
+      id: 'consulting',
+      name: 'Consulting',
+      icon: FaLightbulb,
+      color: 'text-amber-400',
+      hoverBorder: 'hover:border-amber-400',
+      items: [
+        { name: 'Business Consulting', path: '/services/business-consulting' },
+        { name: 'Digital Transformation', path: '/services/digital-transformation' },
+      ]
+    },
+    {
+      id: 'analytics',
+      name: 'Analytics',
+      icon: FaChartLine,
+      color: 'text-emerald-400',
+      hoverBorder: 'hover:border-emerald-400',
+      items: [
+        { name: 'Google Analytics Setup', path: '/services/google-analytics-setup' },
+        { name: 'Google Tag Manager', path: '/services/google-tag-manager-setup' },
+        { name: 'Search Console Setup', path: '/services/google-search-console-setup' },
+        { name: 'Conversion Tracking', path: '/services/conversion-tracking' },
       ]
     }
   ],
@@ -156,13 +191,15 @@ export default function Navbar() {
             <div className="relative group">
               <button 
                 onClick={() => setActiveDropdown(activeDropdown === 'industries' ? null : 'industries')}
-                className={`nav-link flex items-center gap-1.5 ${activeDropdown === 'industries' ? 'active' : ''}`}
+                className={`nav-link flex items-center gap-1.5 ${location.pathname.includes('/industries') || activeDropdown === 'industries' ? 'active' : ''}`}
               >
                 Industries <FaChevronDown size={10} className={`transition-transform duration-300 ${activeDropdown === 'industries' ? 'rotate-180' : ''}`} />
               </button>
             </div>
 
-            <Link to="/portfolio" className={`nav-link ${location.pathname === '/portfolio' ? 'active' : ''}`}>Portfolio</Link>
+            <Link to="/portfolio" className={`nav-link ${location.pathname.startsWith('/portfolio') ? 'active' : ''}`}>Portfolio</Link>
+            <Link to="/blog" className={`nav-link ${location.pathname.startsWith('/blog') ? 'active' : ''}`}>Blog</Link>
+            <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}>Contact</Link>
           </div>
 
           {/* Contact Button */}
@@ -321,14 +358,14 @@ export default function Navbar() {
             }}
           >
             <div className="flex flex-col gap-2 pb-10">
-              <Link to="/" className="text-2xl font-display font-bold py-4 border-b border-white/5 text-white">Home</Link>
-              <Link to="/about" className="text-2xl font-display font-bold py-4 border-b border-white/5 text-white">About</Link>
+              <Link to="/" onClick={() => setMenuOpen(false)} className={`text-2xl font-display font-bold py-4 border-b border-white/5 flex items-center justify-between ${location.pathname === '/' ? 'text-brand-yellow' : 'text-white'}`}>Home</Link>
+              <Link to="/about" onClick={() => setMenuOpen(false)} className={`text-2xl font-display font-bold py-4 border-b border-white/5 flex items-center justify-between ${location.pathname === '/about' ? 'text-brand-yellow' : 'text-white'}`}>About</Link>
               
               {/* Mobile Services Accordion */}
               <div className="border-b border-white/5">
                 <button 
                   onClick={() => setOpenMobileAccordion(openMobileAccordion === 'services' ? null : 'services')}
-                  className="w-full flex items-center justify-between text-2xl font-display font-bold py-4 text-white"
+                  className={`w-full flex items-center justify-between text-2xl font-display font-bold py-4 ${location.pathname.includes('/services') ? 'text-brand-yellow' : 'text-white'}`}
                 >
                   Services
                   <FaChevronDown className={`text-base transition-transform duration-300 ${openMobileAccordion === 'services' ? 'rotate-180 text-brand-yellow' : 'text-white/30'}`} />
@@ -363,7 +400,7 @@ export default function Navbar() {
               <div className="border-b border-white/5">
                 <button 
                   onClick={() => setOpenMobileAccordion(openMobileAccordion === 'industries' ? null : 'industries')}
-                  className="w-full flex items-center justify-between text-2xl font-display font-bold py-4 text-white"
+                  className={`w-full flex items-center justify-between text-2xl font-display font-bold py-4 ${location.pathname.includes('/industries') ? 'text-brand-yellow' : 'text-white'}`}
                 >
                   Industries
                   <FaChevronDown className={`text-base transition-transform duration-300 ${openMobileAccordion === 'industries' ? 'rotate-180 text-brand-yellow' : 'text-white/30'}`} />
@@ -378,7 +415,7 @@ export default function Navbar() {
                     >
                        <div className="flex flex-col gap-1 border-l border-white/10 pl-4 mt-2">
                          {megaMenuData.industries.map(l => (
-                           <Link key={l.name} to={l.path} className="text-white/60 py-2 text-base hover:text-white transition-colors">{l.name}</Link>
+                           <Link key={l.name} to={l.path} onClick={() => setMenuOpen(false)} className="text-white/60 py-2 text-base hover:text-white transition-colors">{l.name}</Link>
                          ))}
                        </div>
                     </motion.div>
@@ -386,8 +423,9 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
 
-              <Link to="/portfolio" className="text-2xl font-display font-bold py-4 border-b border-white/5 text-white">Portfolio</Link>
-              <Link to="/contact" className="text-2xl font-display font-bold py-4 border-b border-white/5 text-white">Contact</Link>
+              <Link to="/portfolio" onClick={() => setMenuOpen(false)} className={`text-2xl font-display font-bold py-4 border-b border-white/5 flex items-center justify-between ${location.pathname.startsWith('/portfolio') ? 'text-brand-yellow' : 'text-white'}`}>Portfolio</Link>
+              <Link to="/blog" onClick={() => setMenuOpen(false)} className={`text-2xl font-display font-bold py-4 border-b border-white/5 flex items-center justify-between ${location.pathname.startsWith('/blog') ? 'text-brand-yellow' : 'text-white'}`}>Blog</Link>
+              <Link to="/contact" onClick={() => setMenuOpen(false)} className={`text-2xl font-display font-bold py-4 border-b border-white/5 flex items-center justify-between ${location.pathname === '/contact' ? 'text-brand-yellow' : 'text-white'}`}>Contact</Link>
             </div>
           </motion.div>
         )}

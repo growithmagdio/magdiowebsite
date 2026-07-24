@@ -9,6 +9,7 @@ import {
 import FAQAccordion from '../components/FAQAccordion';
 import EnquirySection from '../components/home/EnquirySection';
 import SEO from '../components/SEO';
+import Breadcrumb from '../components/Breadcrumb';
 
 // Dynamic data constants
 const experienceStats = [
@@ -107,7 +108,6 @@ export default function GeoServicesPage() {
       <SEO 
         title="GEO Service Agency in Chennai | GEO Expert Chennai | MAGDIO" 
         description="MAGDIO is the best GEO company in Chennai, helping businesses improve visibility across AI platforms with expert Generative Engine Optimization(GEO) services." 
-        canonicalUrl="https://www.magdio.com/geo-services-agency-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
@@ -135,6 +135,14 @@ export default function GeoServicesPage() {
         </div>
         
         <div className="max-w-6xl mx-auto px-6 relative z-20 text-center">
+          <div className="flex justify-center mb-4">
+            <Breadcrumb items={[
+              { label: 'Home', path: '/' },
+              { label: 'Services', path: '/services' },
+              { label: 'Marketing', path: '/services/marketing' },
+              { label: 'GEO Services' }
+            ]} />
+          </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

@@ -7,6 +7,7 @@ import {
 import FAQAccordion from '../components/FAQAccordion';
 import EnquirySection from '../components/home/EnquirySection';
 import SEO from '../components/SEO';
+import Breadcrumb from '../components/Breadcrumb';
 
 const smmFaqs = [
   {
@@ -44,7 +45,6 @@ export default function SocialMediaMarketingPage() {
       <SEO 
         title="Top Social Media Marketing Agency in Chennai | MAGDIO" 
         description="Magdio is a leading social media marketing company in Chennai offering creative campaigns, brand growth, audience engagement and lead generation services." 
-        canonicalUrl="https://www.magdio.com/social-media-marketing-agency-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
@@ -66,6 +66,14 @@ export default function SocialMediaMarketingPage() {
         </div>
         
         <div className="max-w-5xl mx-auto px-6 relative z-20 text-center">
+          <div className="flex justify-center mb-4">
+            <Breadcrumb items={[
+              { label: 'Home', path: '/' },
+              { label: 'Services', path: '/services' },
+              { label: 'Marketing', path: '/services/marketing' },
+              { label: 'Social Media Marketing' }
+            ]} />
+          </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

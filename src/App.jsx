@@ -111,6 +111,7 @@ function AnimatedRoutes() {
               
               {/* SEO Services */}
               <Route path="/services/seo-services" element={<SeoServicesPage />} />
+              <Route path="/services/seo" element={<SeoServicesPage />} />
               <Route path="/seo-company-in-chennai-magdio" element={<SeoServicesPage />} />
               <Route path="/seo-company-chennai-magdio" element={<SeoServicesPage />} />
               <Route path="/seo-agency-in-chennai-magdio" element={<SeoServicesPage />} />
@@ -122,6 +123,7 @@ function AnimatedRoutes() {
               
               {/* GEO Services */}
               <Route path="/services/geo-services" element={<GeoServicesPage />} />
+              <Route path="/services/geo" element={<GeoServicesPage />} />
               <Route path="/geo-services-agency-chennai-magdio" element={<GeoServicesPage />} />
               <Route path="/geo-services-agency-in-chennai-magdio" element={<GeoServicesPage />} />
               <Route path="/geo-service-agency-in-chennai-magdio" element={<GeoServicesPage />} />
@@ -131,6 +133,7 @@ function AnimatedRoutes() {
               
               {/* Social Media Marketing Services */}
               <Route path="/services/social-media-marketing" element={<SocialMediaMarketingPage />} />
+              <Route path="/services/social-media" element={<SocialMediaMarketingPage />} />
               <Route path="/social-media-marketing-agency-in-chennai-magdio" element={<SocialMediaMarketingPage />} />
               <Route path="/social-media-marketing-agency-chennai-magdio" element={<SocialMediaMarketingPage />} />
               <Route path="/social-media-marketing-company-in-chennai-magdio" element={<SocialMediaMarketingPage />} />

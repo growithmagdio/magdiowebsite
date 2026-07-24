@@ -9,6 +9,7 @@ import {
 import FAQAccordion from '../components/FAQAccordion';
 import EnquirySection from '../components/home/EnquirySection';
 import SEO from '../components/SEO';
+import Breadcrumb from '../components/Breadcrumb';
 
 const coreServicesList = [
   { name: 'Search Engine Optimization (SEO)', desc: 'Dominate traditional searches and modern AI-driven conversational answers.', icon: FaSearch, border: 'hover:border-blue-500/50' },
@@ -118,7 +119,6 @@ export default function DigitalMarketingPage() {
       <SEO 
         title="Best Digital Marketing Company In Chennai | MAGDIO" 
         description="Magdio offers result-driven digital marketing services in Chennai, including SEO, Google Ads, branding and social media marketing strategies for online growth." 
-        canonicalUrl="https://www.magdio.com/digital-marketing-company-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
@@ -146,6 +146,15 @@ export default function DigitalMarketingPage() {
         </div>
         
         <div className="max-w-5xl mx-auto px-6 relative z-20 text-center">
+          <div className="flex justify-center mb-4">
+            <Breadcrumb items={[
+              { label: 'Home', path: '/' },
+              { label: 'Services', path: '/services' },
+              { label: 'Marketing', path: '/services/marketing' },
+              { label: 'Digital Marketing' }
+            ]} />
+          </div>
+
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

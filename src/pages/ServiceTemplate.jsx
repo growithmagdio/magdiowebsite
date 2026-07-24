@@ -38,7 +38,21 @@ const defaultServiceFaqs = [
 export default function ServiceTemplate({ serviceId: propServiceId }) {
   const params = useParams();
   const location = useLocation();
-  const serviceId = propServiceId || params.serviceId;
+  const rawServiceId = propServiceId || params.serviceId;
+  const serviceAliasMap = {
+    'seo': 'seo-services',
+    'geo': 'geo-services',
+    'social-media': 'social-media-marketing',
+    'shopify': 'shopify-development',
+    'wordpress': 'wordpress-development',
+    'web-dev': 'web-development',
+    'saas': 'saas-application-development',
+    'mobile': 'mobile-app-development',
+    'branding': 'branding-services',
+    'consulting': 'business-consulting',
+    'analytics': 'google-analytics-setup'
+  };
+  const serviceId = serviceAliasMap[rawServiceId] || rawServiceId;
   const service = servicesData.find(s => s.id === serviceId);
 
   // If service is not found, redirect to the main services catalog page

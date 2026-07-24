@@ -72,10 +72,27 @@ const staticRoutes = [
   '/youtube-ads-tamilnadu-magdio',
   '/whatsapp-marketing-tamilnadu-magdio',
 
-  // 3 Core Service Pages
+  // Service Category Pages
+  '/services/marketing',
+  '/services/development',
+  '/services/branding',
+  '/services/consulting',
+  '/services/analytics',
+
+  // Core Service Pages & Aliases
   '/services/digital-marketing',
   '/services/seo-services',
+  '/services/seo',
   '/services/geo-services',
+  '/services/geo',
+  '/services/social-media-marketing',
+  '/services/social-media',
+  '/services/google-ads',
+  '/services/meta-ads',
+  '/services/whatsapp-marketing',
+  '/services/youtube-ads',
+  '/services/linkedin-ads',
+  '/services/performance-marketing',
 
   // 8 Case Study Pages
   '/portfolio/haber-living-seo-growth',

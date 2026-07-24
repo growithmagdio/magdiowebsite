@@ -6,6 +6,7 @@ import {
 import FAQAccordion from '../components/FAQAccordion';
 import EnquirySection from '../components/home/EnquirySection';
 import SEO from '../components/SEO';
+import Breadcrumb from '../components/Breadcrumb';
 
 const googleAdsFaqs = [
   {
@@ -51,7 +52,6 @@ export default function GoogleAdsPage() {
       <SEO 
         title="Google Ads Agency in Chennai for Business Growth | MAGDIO" 
         description="Grow your business with the best Google Ads agency in Chennai. Magdio creates targeted PPC campaigns to improve ROI, generate leads, and boost visibility." 
-        canonicalUrl="https://www.magdio.com/google-ads-agency-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
@@ -73,6 +73,14 @@ export default function GoogleAdsPage() {
         </div>
         
         <div className="max-w-5xl mx-auto px-6 relative z-20 text-center">
+          <div className="flex justify-center mb-4">
+            <Breadcrumb items={[
+              { label: 'Home', path: '/' },
+              { label: 'Services', path: '/services' },
+              { label: 'Marketing', path: '/services/marketing' },
+              { label: 'Google Ads' }
+            ]} />
+          </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

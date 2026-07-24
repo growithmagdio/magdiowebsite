@@ -7,6 +7,7 @@ import {
 import FAQAccordion from '../components/FAQAccordion';
 import EnquirySection from '../components/home/EnquirySection';
 import SEO from '../components/SEO';
+import Breadcrumb from '../components/Breadcrumb';
 
 const linkedinFaqs = [
   {
@@ -64,7 +65,6 @@ export default function LinkedInAdsPage() {
       <SEO 
         title="Linkedin B2B Marketing Agency in Chennai | MAGDIO" 
         description="Build stronger business connections with Magdio's LinkedIn marketing services in Chennai, delivering targeted campaigns, B2B leads and engagement growth." 
-        canonicalUrl="https://www.magdio.com/linkedin-marketing-b2b-marketing-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
@@ -86,6 +86,14 @@ export default function LinkedInAdsPage() {
         </div>
         
         <div className="max-w-5xl mx-auto px-6 relative z-20 text-center">
+          <div className="flex justify-center mb-4">
+            <Breadcrumb items={[
+              { label: 'Home', path: '/' },
+              { label: 'Services', path: '/services' },
+              { label: 'Marketing', path: '/services/marketing' },
+              { label: 'LinkedIn Ads' }
+            ]} />
+          </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

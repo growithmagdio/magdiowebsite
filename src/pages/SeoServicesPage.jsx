@@ -8,6 +8,7 @@ import {
 import FAQAccordion from '../components/FAQAccordion';
 import EnquirySection from '../components/home/EnquirySection';
 import SEO from '../components/SEO';
+import Breadcrumb from '../components/Breadcrumb';
 
 const coreServicesList = [
   { name: 'Technical SEO', desc: 'Optimize website architecture, page speed, Core Web Vitals, mobile usability, and technical performance.', icon: FaCogs, border: 'hover:border-blue-500/50' },
@@ -107,7 +108,6 @@ export default function SeoServicesPage() {
       <SEO 
         title="Best SEO Company in Chennai | SEO Agency in Chennai | MAGDIO" 
         description="Boost your business visibility with the best SEO services in Chennai from Magdio. We use SEO, AEO, and GEO strategies to drive leads and online conversions." 
-        canonicalUrl="https://www.magdio.com/seo-company-in-chennai-magdio"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Service",
@@ -135,6 +135,14 @@ export default function SeoServicesPage() {
         </div>
         
         <div className="max-w-5xl mx-auto px-6 relative z-20 text-center">
+          <div className="flex justify-center mb-4">
+            <Breadcrumb items={[
+              { label: 'Home', path: '/' },
+              { label: 'Services', path: '/services' },
+              { label: 'Marketing', path: '/services/marketing' },
+              { label: 'SEO Services' }
+            ]} />
+          </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
