@@ -18,17 +18,49 @@ const staticRoutes = [
   '/blog',
   '/mission',
 
-  // 10 Chennai Keyword Pages
+  // 10 Chennai Keyword Pages & Search Aliases
   '/digital-marketing-company-in-chennai-magdio',
+  '/digital-marketing-company-chennai-magdio',
+  '/digital-marketing-agency-in-chennai-magdio',
+  '/digital-marketing-agency-chennai-magdio',
+
   '/seo-company-in-chennai-magdio',
+  '/seo-company-chennai-magdio',
+  '/seo-agency-in-chennai-magdio',
+  '/seo-agency-chennai-magdio',
+  '/seo-services-chennai-magdio',
+  '/seo-services-in-chennai-magdio',
+
   '/social-media-marketing-agency-in-chennai-magdio',
+  '/social-media-marketing-agency-chennai-magdio',
+  '/social-media-marketing-company-in-chennai-magdio',
+
   '/google-ads-agency-chennai-magdio',
+  '/google-ads-agency-in-chennai-magdio',
+  '/google-ads-company-in-chennai-magdio',
+
   '/linkedin-marketing-b2b-marketing-in-chennai-magdio',
+  '/linkedin-marketing-agency-in-chennai-magdio',
+  '/linkedin-ads-agency-in-chennai-magdio',
+
   '/youtube-marketing-agency-chennai-magdio',
+  '/youtube-marketing-agency-in-chennai-magdio',
+  '/youtube-ads-agency-in-chennai-magdio',
+
   '/whatsapp-marketing-services-in-chennai-magdio',
+  '/whatsapp-marketing-agency-in-chennai-magdio',
+  '/whatsapp-marketing-chennai-magdio',
+
   '/best-performance-marketing-agency-in-chennai-magdio',
+  '/performance-marketing-agency-in-chennai-magdio',
+  '/performance-marketing-company-in-chennai-magdio',
+
   '/meta-ads-agency-in-chennai-magdio',
+  '/meta-ads-agency-chennai-magdio',
+
   '/geo-services-agency-chennai-magdio',
+  '/geo-services-agency-in-chennai-magdio',
+  '/geo-service-agency-in-chennai-magdio',
 
   // 8 Tamil Nadu Keyword Pages
   '/digital-marketing-company-tamilnadu-magdio',
