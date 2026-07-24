@@ -8,14 +8,9 @@ export default defineConfig({
     target: 'es2022',
     cssCodeSplit: true,
     cssMinify: true,
-    minify: 'esbuild',
     reportCompressedSize: false,
     modulePreload: {
       polyfill: false
-    },
-    esbuild: {
-      drop: ['console', 'debugger'],
-      legalComments: 'none',
     },
     rollupOptions: {
       output: {
