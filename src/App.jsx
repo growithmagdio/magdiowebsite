@@ -93,7 +93,7 @@ function AnimatedRoutes() {
 
   return (
     <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col">
-      <AnimatePresence mode="wait" initial={false}>
+      <AnimatePresence mode="wait">
         <motion.div key={location.pathname} {...activePageTransition} className="flex-grow">
           <Suspense fallback={<PageLoader />}>
             <Routes location={location}>
