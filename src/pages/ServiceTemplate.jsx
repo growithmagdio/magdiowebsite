@@ -55,6 +55,23 @@ export default function ServiceTemplate({ serviceId: propServiceId }) {
   const serviceId = serviceAliasMap[rawServiceId] || rawServiceId;
   const service = servicesData.find(s => s.id === serviceId);
 
+  const serviceCustomPaths = {
+    'digital-marketing': '/digital-marketing-company-in-chennai-magdio',
+    'seo-services': '/seo-company-in-chennai-magdio',
+    'geo-services': '/geo-services-agency-chennai-magdio',
+    'social-media-marketing': '/social-media-marketing-agency-in-chennai-magdio',
+    'google-ads': '/google-ads-agency-chennai-magdio',
+    'performance-marketing': '/best-performance-marketing-agency-in-chennai-magdio',
+    'meta-ads': '/meta-ads-agency-in-chennai-magdio',
+    'linkedin-ads': '/linkedin-marketing-b2b-marketing-in-chennai-magdio',
+    'youtube-ads': '/youtube-marketing-agency-chennai-magdio',
+    'whatsapp-marketing': '/whatsapp-marketing-services-in-chennai-magdio',
+  };
+
+  if (serviceCustomPaths[serviceId]) {
+    return <Navigate to={serviceCustomPaths[serviceId]} replace />;
+  }
+
   // If service is not found, redirect to the main services catalog page
   if (!service) {
     return <Navigate to="/services" replace />;
