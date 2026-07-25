@@ -14,9 +14,9 @@ const companyLinks = [
 ];
 
 const serviceLinks = [
-  { name: 'SEO',                  path: '/services/seo-services' },
-  { name: 'GEO Services',         path: '/services/geo-services' },
-  { name: 'Digital Marketing',    path: '/services/digital-marketing' },
+  { name: 'SEO',                  path: '/seo-company-in-chennai-magdio' },
+  { name: 'GEO Services',         path: '/geo-services-agency-chennai-magdio' },
+  { name: 'Digital Marketing',    path: '/digital-marketing-company-in-chennai-magdio' },
   { name: 'Shopify Development',  path: '/services/shopify-development' },
   { name: 'SaaS Development',     path: '/services/saas-application-development' },
   { name: 'Mobile App Dev',       path: '/services/mobile-app-development' },

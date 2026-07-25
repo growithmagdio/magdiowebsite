@@ -18,6 +18,19 @@ const categories = [
   { id: 'analytics', label: 'Analytics & Tracking', icon: FaChartLine, path: '/services/analytics' },
 ];
 
+const serviceCustomPaths = {
+  'digital-marketing': '/digital-marketing-company-in-chennai-magdio',
+  'seo-services': '/seo-company-in-chennai-magdio',
+  'geo-services': '/geo-services-agency-chennai-magdio',
+  'social-media-marketing': '/social-media-marketing-agency-in-chennai-magdio',
+  'google-ads': '/google-ads-agency-chennai-magdio',
+  'performance-marketing': '/best-performance-marketing-agency-in-chennai-magdio',
+  'meta-ads': '/meta-ads-agency-in-chennai-magdio',
+  'linkedin-ads': '/linkedin-marketing-b2b-marketing-in-chennai-magdio',
+  'youtube-ads': '/youtube-marketing-agency-chennai-magdio',
+  'whatsapp-marketing': '/whatsapp-marketing-services-in-chennai-magdio',
+};
+
 const categorySeoMap = {
   all: {
     title: "Our Services | Digital Marketing, Development & Growth | MAGDIO",
@@ -170,7 +183,7 @@ export default function ServicesPage({ category: initialCategory }) {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-20"
           >
             {filteredServices.map((service) => {
-              const servicePath = `/services/${service.id}`;
+              const servicePath = serviceCustomPaths[service.id] || `/services/${service.id}`;
               return (
                 <Link to={servicePath} key={service.id} className="block group h-full">
                   <motion.div

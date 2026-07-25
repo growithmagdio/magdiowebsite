@@ -8,7 +8,7 @@ const services = [
     icon: FaBullhorn,
     title: 'Digital Marketing',
     desc: 'Data-driven campaigns to boost your ROI and brand visibility.',
-    path: '/services/digital-marketing',
+    path: '/digital-marketing-company-in-chennai-magdio',
     color: 'text-orange-400',
     bg: 'bg-orange-500/10 border-orange-500/20'
   },
