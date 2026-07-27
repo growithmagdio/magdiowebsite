@@ -12,7 +12,14 @@ import {
   FaLock, 
   FaUserShield,
   FaCalendarAlt,
-  FaClock
+  FaClock,
+  FaGlobe,
+  FaChevronDown,
+  FaChevronUp,
+  FaSync,
+  FaSearch,
+  FaShareAlt,
+  FaTwitter
 } from 'react-icons/fa';
 import { 
   fetchBlogs, 
@@ -22,7 +29,8 @@ import {
   loginAdmin, 
   logoutAdmin, 
   checkAdminAuth,
-  uploadImageFile
+  uploadImageFile,
+  generateSlug
 } from '../utils/blogService';
 import { db } from '../firebase';
 import RichTextEditor from '../components/admin/RichTextEditor';
@@ -51,8 +59,21 @@ export default function AdminPage() {
     content: '',
     author: 'Admin',
     category: 'Technology',
-    imageUrl: ''
+    imageUrl: '',
+    slug: '',
+    metaTitle: '',
+    metaDescription: '',
+    canonicalUrl: '',
+    ogTitle: '',
+    ogDescription: '',
+    ogImage: '',
+    twitterTitle: '',
+    twitterDescription: '',
+    twitterImage: ''
   });
+  
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
+  const [isSeoOpen, setIsSeoOpen] = useState(true); // Collapsible section named "SEO Settings"
   
   // Image Upload Mode
   const [imageUploadMode, setImageUploadMode] = useState('url'); // 'url' or 'file'
@@ -138,7 +159,26 @@ export default function AdminPage() {
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => {
+      const updated = { ...prev, [name]: value };
+      
+      // Auto-generate slug from title if title changes and user hasn't manually edited slug
+      if (name === 'title' && !isSlugManuallyEdited) {
+        updated.slug = generateSlug(value);
+      }
+      
+      // Auto-populate metaTitle from title if blank or matching previous title
+      if (name === 'title' && (!prev.metaTitle || prev.metaTitle === prev.title.slice(0, 60))) {
+        updated.metaTitle = value.slice(0, 60);
+      }
+
+      // Auto-populate metaDescription from excerpt if blank or matching previous excerpt
+      if (name === 'excerpt' && (!prev.metaDescription || prev.metaDescription === prev.excerpt.slice(0, 160))) {
+        updated.metaDescription = value.slice(0, 160);
+      }
+
+      return updated;
+    });
   };
 
   const handleFileChange = async (e) => {
@@ -169,14 +209,26 @@ export default function AdminPage() {
   };
 
   const startEdit = (blog) => {
+    const defaultSlug = blog.slug || generateSlug(blog.title || '');
     setFormData({
       title: blog.title || '',
       excerpt: blog.excerpt || '',
       content: blog.content || '',
       author: blog.author || 'Admin',
       category: blog.category || 'Technology',
-      imageUrl: blog.imageUrl || ''
+      imageUrl: blog.imageUrl || '',
+      slug: defaultSlug,
+      metaTitle: blog.metaTitle || blog.title || '',
+      metaDescription: blog.metaDescription || blog.excerpt || '',
+      canonicalUrl: blog.canonicalUrl || '',
+      ogTitle: blog.ogTitle || '',
+      ogDescription: blog.ogDescription || '',
+      ogImage: blog.ogImage || '',
+      twitterTitle: blog.twitterTitle || '',
+      twitterDescription: blog.twitterDescription || '',
+      twitterImage: blog.twitterImage || ''
     });
+    setIsSlugManuallyEdited(!!blog.slug);
     setEditingId(blog.id);
     setActiveTab('compose');
     setStatus({ type: '', message: '' });
@@ -189,8 +241,19 @@ export default function AdminPage() {
       content: '',
       author: 'Admin',
       category: 'Technology',
-      imageUrl: ''
+      imageUrl: '',
+      slug: '',
+      metaTitle: '',
+      metaDescription: '',
+      canonicalUrl: '',
+      ogTitle: '',
+      ogDescription: '',
+      ogImage: '',
+      twitterTitle: '',
+      twitterDescription: '',
+      twitterImage: ''
     });
+    setIsSlugManuallyEdited(false);
     setEditingId(null);
     setStatus({ type: '', message: '' });
   };
@@ -200,30 +263,84 @@ export default function AdminPage() {
     setIsSubmitting(true);
     setStatus({ type: '', message: '' });
 
+    // Pre-publish SEO Validation
+    const finalSlug = generateSlug(formData.slug || formData.title);
+    if (!finalSlug) {
+      setStatus({
+        type: 'error',
+        message: 'Validation Error: URL Slug cannot be empty.'
+      });
+      setIsSeoOpen(true);
+      setIsSubmitting(false);
+      return;
+    }
+
+    const finalMetaTitle = (formData.metaTitle || formData.title || '').trim();
+    if (!finalMetaTitle) {
+      setStatus({
+        type: 'error',
+        message: 'Validation Error: Meta Title cannot be empty.'
+      });
+      setIsSeoOpen(true);
+      setIsSubmitting(false);
+      return;
+    }
+
+    const finalMetaDescription = (formData.metaDescription || formData.excerpt || '').trim();
+    if (!finalMetaDescription) {
+      setStatus({
+        type: 'error',
+        message: 'Validation Error: Meta Description cannot be empty.'
+      });
+      setIsSeoOpen(true);
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Slug Uniqueness check across all existing blogs
+    try {
+      const allBlogs = await fetchBlogs();
+      const duplicate = allBlogs.some(b => {
+        if (editingId && b.id === editingId) return false;
+        const bSlug = b.slug || generateSlug(b.title || '');
+        return bSlug === finalSlug;
+      });
+
+      if (duplicate) {
+        setStatus({
+          type: 'error',
+          message: `Validation Error: The URL slug "/blogs/${finalSlug}" is already used by another blog. Please enter a unique slug.`
+        });
+        setIsSeoOpen(true);
+        setIsSubmitting(false);
+        return;
+      }
+    } catch (err) {
+      console.warn('Could not verify slug uniqueness:', err);
+    }
+
+    const payload = {
+      ...formData,
+      slug: finalSlug,
+      metaTitle: finalMetaTitle,
+      metaDescription: finalMetaDescription
+    };
+
     try {
       if (editingId) {
-        // Update existing
-        await updateBlogPost(editingId, formData);
+        await updateBlogPost(editingId, payload);
         setStatus({
           type: 'success',
-          message: 'Blog post updated successfully!'
+          message: 'Blog post updated successfully with SEO settings!'
         });
         cancelEdit();
       } else {
-        // Create new
-        await createBlogPost(formData);
+        await createBlogPost(payload);
         setStatus({
           type: 'success',
-          message: 'Blog post published successfully!'
+          message: 'Blog post published successfully with SEO settings!'
         });
-        setFormData({
-          title: '',
-          excerpt: '',
-          content: '',
-          author: 'Admin',
-          category: 'Technology',
-          imageUrl: ''
-        });
+        cancelEdit();
       }
     } catch (error) {
       console.error('Error publishing blog post:', error);
@@ -607,6 +724,235 @@ export default function AdminPage() {
                   />
                 </div>
 
+                {/* COLLAPSIBLE SEO SETTINGS SECTION */}
+                <div className="border border-white/10 rounded-2xl bg-white/5 overflow-hidden transition-all duration-300">
+                  <button
+                    type="button"
+                    onClick={() => setIsSeoOpen(!isSeoOpen)}
+                    className="w-full px-5 py-4 flex items-center justify-between bg-white/5 hover:bg-white/10 transition-colors text-left font-display font-bold text-white text-base"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-brand-yellow/10 border border-brand-yellow/20 flex items-center justify-center text-brand-yellow text-sm shrink-0">
+                        <FaGlobe />
+                      </div>
+                      <div>
+                        <span className="text-white text-sm md:text-base font-bold">SEO Settings</span>
+                        <p className="text-[11px] text-white/50 font-sans font-normal">Configure slug, metadata & social cards before publishing</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      <span className="hidden sm:inline-block text-[10px] font-mono px-2.5 py-1 rounded-full bg-brand-blue/20 text-brand-blue border border-brand-blue/30 uppercase tracking-wider font-bold">
+                        {formData.slug ? `/blogs/${generateSlug(formData.slug)}` : 'URL & Metadata'}
+                      </span>
+                      {isSeoOpen ? <FaChevronUp className="text-white/60 text-sm" /> : <FaChevronDown className="text-white/60 text-sm" />}
+                    </div>
+                  </button>
+
+                  {isSeoOpen && (
+                    <div className="p-5 md:p-6 border-t border-white/10 space-y-6 bg-brand-dark/40">
+                      
+                      {/* 1. Page URL (Slug) */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <label className="text-xs font-bold text-white/80 uppercase tracking-wider">
+                            1. Page URL (Slug) <span className="text-red-400">*</span>
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const auto = generateSlug(formData.title);
+                              setFormData(prev => ({ ...prev, slug: auto }));
+                              setIsSlugManuallyEdited(false);
+                            }}
+                            className="text-[11px] text-brand-yellow hover:underline flex items-center gap-1 font-semibold"
+                          >
+                            <FaSync className="text-[10px]" /> Auto-generate from Title
+                          </button>
+                        </div>
+
+                        <div className="relative">
+                          <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 text-xs font-mono select-none">
+                            /blogs/
+                          </span>
+                          <input
+                            type="text"
+                            name="slug"
+                            required
+                            value={formData.slug}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setFormData(prev => ({ ...prev, slug: generateSlug(val) }));
+                              setIsSlugManuallyEdited(true);
+                            }}
+                            placeholder="ai-automation-workflows"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl pl-20 pr-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all text-sm font-mono"
+                          />
+                        </div>
+                        <p className="text-[11px] text-white/40 leading-tight">
+                          Live URL Preview: <code className="text-brand-yellow font-mono">https://www.magdio.com/blogs/{generateSlug(formData.slug || formData.title || 'ai-automation-workflows')}</code>
+                        </p>
+                      </div>
+
+                      {/* 2. Meta Title */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <label className="text-xs font-bold text-white/80 uppercase tracking-wider">
+                            2. Meta Title <span className="text-red-400">*</span>
+                          </label>
+                          <span className={`text-[11px] font-mono font-semibold ${
+                            formData.metaTitle.length > 60 ? 'text-red-400' : formData.metaTitle.length > 50 ? 'text-brand-yellow' : 'text-white/50'
+                          }`}>
+                            {formData.metaTitle.length} / 60 characters
+                          </span>
+                        </div>
+                        <input
+                          type="text"
+                          name="metaTitle"
+                          required
+                          maxLength={60}
+                          value={formData.metaTitle}
+                          onChange={handleFormChange}
+                          placeholder="E.g. The Future of AI in Digital Marketing | Magdio"
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all text-sm font-light"
+                        />
+                        <p className="text-[11px] text-white/40">Used as the browser &lt;title&gt; tag (Max 60 characters).</p>
+                      </div>
+
+                      {/* 3. Meta Description */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between">
+                          <label className="text-xs font-bold text-white/80 uppercase tracking-wider">
+                            3. Meta Description <span className="text-red-400">*</span>
+                          </label>
+                          <span className={`text-[11px] font-mono font-semibold ${
+                            formData.metaDescription.length > 160 ? 'text-red-400' : formData.metaDescription.length > 140 ? 'text-brand-yellow' : 'text-white/50'
+                          }`}>
+                            {formData.metaDescription.length} / 160 characters
+                          </span>
+                        </div>
+                        <textarea
+                          name="metaDescription"
+                          required
+                          rows={3}
+                          maxLength={160}
+                          value={formData.metaDescription}
+                          onChange={handleFormChange}
+                          placeholder="A concise summary of the blog article to display on search engine results..."
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all text-sm font-light resize-none"
+                        />
+                        <p className="text-[11px] text-white/40">Used as the page &lt;meta name="description"&gt; tag (Max 160 characters).</p>
+                      </div>
+
+                      {/* 4. Canonical URL (Optional) */}
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-bold text-white/80 uppercase tracking-wider">
+                          4. Canonical URL <span className="text-white/30 font-normal">(Optional)</span>
+                        </label>
+                        <input
+                          type="url"
+                          name="canonicalUrl"
+                          value={formData.canonicalUrl}
+                          onChange={handleFormChange}
+                          placeholder="https://www.magdio.com/blogs/ai-automation-workflows"
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all text-sm font-light"
+                        />
+                        <p className="text-[11px] text-white/40">Specify if this article originates from another primary URL.</p>
+                      </div>
+
+                      {/* 5. Open Graph Settings (Optional) */}
+                      <div className="pt-4 border-t border-white/10 space-y-4">
+                        <h4 className="text-xs font-bold text-brand-yellow uppercase tracking-wider flex items-center gap-2">
+                          <FaShareAlt /> 5. Open Graph Settings (Optional)
+                        </h4>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1">
+                            <label className="text-[11px] text-white/60">OG Title</label>
+                            <input
+                              type="text"
+                              name="ogTitle"
+                              value={formData.ogTitle}
+                              onChange={handleFormChange}
+                              placeholder="Fallback to Meta Title"
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder-white/20 text-xs font-light"
+                            />
+                          </div>
+
+                          <div className="space-y-1">
+                            <label className="text-[11px] text-white/60">OG Image URL</label>
+                            <input
+                              type="url"
+                              name="ogImage"
+                              value={formData.ogImage}
+                              onChange={handleFormChange}
+                              placeholder="Fallback to Header Image"
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder-white/20 text-xs font-light"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="text-[11px] text-white/60">OG Description</label>
+                          <textarea
+                            name="ogDescription"
+                            rows={2}
+                            value={formData.ogDescription}
+                            onChange={handleFormChange}
+                            placeholder="Fallback to Meta Description"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder-white/20 text-xs font-light resize-none"
+                          />
+                        </div>
+                      </div>
+
+                      {/* 6. Twitter Card Settings (Optional) */}
+                      <div className="pt-4 border-t border-white/10 space-y-4">
+                        <h4 className="text-xs font-bold text-brand-blue uppercase tracking-wider flex items-center gap-2">
+                          <FaTwitter /> 6. Twitter Card Settings (Optional)
+                        </h4>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1">
+                            <label className="text-[11px] text-white/60">Twitter Title</label>
+                            <input
+                              type="text"
+                              name="twitterTitle"
+                              value={formData.twitterTitle}
+                              onChange={handleFormChange}
+                              placeholder="Fallback to OG / Meta Title"
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder-white/20 text-xs font-light"
+                            />
+                          </div>
+
+                          <div className="space-y-1">
+                            <label className="text-[11px] text-white/60">Twitter Image URL</label>
+                            <input
+                              type="url"
+                              name="twitterImage"
+                              value={formData.twitterImage}
+                              onChange={handleFormChange}
+                              placeholder="Fallback to OG / Header Image"
+                              className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder-white/20 text-xs font-light"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="text-[11px] text-white/60">Twitter Description</label>
+                          <textarea
+                            name="twitterDescription"
+                            rows={2}
+                            value={formData.twitterDescription}
+                            onChange={handleFormChange}
+                            placeholder="Fallback to OG / Meta Description"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white placeholder-white/20 text-xs font-light resize-none"
+                          />
+                        </div>
+                      </div>
+
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex flex-col sm:flex-row gap-4">
                   {editingId && (
                     <button
@@ -643,6 +989,29 @@ export default function AdminPage() {
 
             {/* PREVIEW CONTAINER */}
             <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-32">
+              
+              {/* Google SERP Snippet Preview */}
+              <div className="bg-[#202124] border border-white/10 rounded-2xl p-5 shadow-2xl text-left max-w-sm mx-auto font-sans">
+                <div className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-green-400 flex items-center gap-1.5">
+                    <FaSearch className="text-[10px]" /> Google SERP Snippet Preview
+                  </h4>
+                  <span className="text-[9px] text-white/40 font-mono">SEO Result View</span>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-xs text-[#bdc1c6]">
+                    <div className="w-4 h-4 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center text-[9px] font-bold">M</div>
+                    <span className="truncate">magdio.com &gt; blogs &gt; {generateSlug(formData.slug || formData.title || 'your-article-slug')}</span>
+                  </div>
+                  <h3 className="text-base text-[#8ab4f8] font-medium hover:underline leading-snug cursor-pointer line-clamp-2">
+                    {formData.metaTitle || formData.title || 'Meta Title Preview'}
+                  </h3>
+                  <p className="text-xs text-[#bdc1c6] leading-relaxed line-clamp-3">
+                    {formData.metaDescription || formData.excerpt || 'Enter a meta description in the SEO Settings section to preview how your search result snippet will look on Google.'}
+                  </p>
+                </div>
+              </div>
+
               <h3 className="text-sm font-bold tracking-widest text-white/50 uppercase flex items-center gap-2">
                 <FaEye className="text-brand-purple" /> Live Blog Card Preview
               </h3>

@@ -10,6 +10,12 @@ export default function SEO({
   image = "/favicon.png",
   canonicalUrl,
   noindex = false,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  twitterTitle,
+  twitterDescription,
+  twitterImage,
   jsonLd
 }) {
   const location = useLocation();
@@ -19,6 +25,14 @@ export default function SEO({
   const cleanCanonical = !noindex
     ? (canonicalUrl || `https://www.magdio.com${rawPath}`)
     : null;
+
+  const finalOgTitle = ogTitle || title;
+  const finalOgDescription = ogDescription || description;
+  const finalOgImage = ogImage || image;
+
+  const finalTwitterTitle = twitterTitle || finalOgTitle;
+  const finalTwitterDescription = twitterDescription || finalOgDescription;
+  const finalTwitterImage = twitterImage || finalOgImage;
 
   return (
     <Helmet>
@@ -31,17 +45,17 @@ export default function SEO({
 
       {/* Open Graph tags */}
       <meta property="og:type" content={type} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
+      <meta property="og:title" content={finalOgTitle} />
+      <meta property="og:description" content={finalOgDescription} />
+      <meta property="og:image" content={finalOgImage} />
       {cleanCanonical && <meta property="og:url" content={cleanCanonical} />}
       
       {/* Twitter tags */}
       <meta name="twitter:creator" content={name} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
+      <meta name="twitter:title" content={finalTwitterTitle} />
+      <meta name="twitter:description" content={finalTwitterDescription} />
+      <meta name="twitter:image" content={finalTwitterImage} />
 
       {/* JSON-LD Structured Data */}
       {jsonLd && (

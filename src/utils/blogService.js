@@ -8,6 +8,7 @@ import {
   updateDoc, 
   deleteDoc, 
   query, 
+  where,
   orderBy, 
   serverTimestamp 
 } from 'firebase/firestore';
@@ -21,6 +22,20 @@ import {
   uploadBytes, 
   getDownloadURL 
 } from 'firebase/storage';
+
+// Helper to auto-generate clean URL slug
+export const generateSlug = (text) => {
+  if (!text) return '';
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/^\/blogs\//, '')
+    .replace(/^\/blog\//, '')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+};
 
 // --- IMAGE UPLOAD FUNCTION ---
 export const uploadImageFile = async (file) => {
@@ -64,10 +79,11 @@ export const uploadImageFile = async (file) => {
 };
 
 
-// Standard fallback mock blogs
+// Standard fallback mock blogs with SEO properties
 export const mockBlogs = [
   {
     id: 'mock1',
+    slug: 'the-future-of-ai-in-digital-marketing',
     title: 'The Future of AI in Digital Marketing',
     excerpt: 'Discover how artificial intelligence is reshaping the landscape of digital marketing and what it means for your brand.',
     content: 'Artificial intelligence is no longer a futuristic concept—it is actively reshaping how businesses interact with consumers, analyze data, and optimize campaigns. From machine learning algorithms that predict user behavior to generative AI tools that streamline content creation, digital marketing has entered a new era of efficiency and hyper-personalization.\n\n### Hyper-Personalization at Scale\nOne of the most powerful applications of AI is its ability to analyze massive datasets in real-time. Marketers can now understand individual user preferences, browsing history, and purchase patterns to deliver tailored content, product recommendations, and emails. This level of personalization increases engagement and conversion rates dramatically.\n\n### Predictive Analytics\nAI algorithms can identify trends and forecast future outcomes based on historical data. By analyzing customer actions, predictive AI helps businesses anticipate what products will be in demand, optimize pricing strategies, and identify which leads are most likely to convert. This takes the guesswork out of budgeting and campaign planning.\n\n### Automating Customer Experience\nAI-powered chatbots and conversational assistants have evolved beyond simple scripted replies. Today, using natural language processing (NLP), they provide instant, round-the-clock support, answering complex customer queries and guiding prospects through the sales funnel without human intervention.\n\n### Key Takeaways for Brands\n1. **Embrace Generative AI:** Use tools to brainstorm copy and create visual concepts, but always keep human oversight for brand voice consistency.\n2. **Clean Your Data:** AI is only as good as the data it trains on. Ensure your customer databases are organized and up-to-date.\n3. **Test and Iterate:** Implement small AI-driven tests, such as automated email subject line optimization, before scaling to larger automated workflows.',
@@ -75,10 +91,14 @@ export const mockBlogs = [
     category: 'Technology',
     readTime: '5 min read',
     date: 'Oct 24, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800'
+    imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800',
+    metaTitle: 'The Future of AI in Digital Marketing | Magdio',
+    metaDescription: 'Discover how artificial intelligence is reshaping digital marketing and what it means for your brand growth.',
+    canonicalUrl: 'https://www.magdio.com/blogs/the-future-of-ai-in-digital-marketing'
   },
   {
     id: 'mock2',
+    slug: 'design-trends-to-watch-in-2027',
     title: 'Design Trends to Watch in 2027',
     excerpt: 'From glassmorphism to dark mode, explore the UI/UX design trends that are dominating the web right now.',
     content: 'As we head toward 2027, web and mobile interface designs are shifting focus toward immersive, tactile, and highly responsive user experiences. Modern UI/UX is moving away from flat, static layouts in favor of depth, physics-based animations, and customized dark modes.\n\n### 1. Advanced Glassmorphism and Depth\nGlassmorphism—utilizing frosted-glass effects with soft shadows and multi-layered backgrounds—remains a dominant visual style. When coupled with dynamic gradient backgrounds, it gives interfaces a premium, high-tech feel. Designing elements that appear to float on top of blurred light sources creates a visual hierarchy that guides the eye naturally.\n\n### 2. Micro-Interactions & Physical Animations\nAn interface that responds to user input with subtle, physics-based micro-interactions feels alive and encouraging. Buttons that compress slightly, cards that rotate based on cursor position (pointer-tracking glow), and scroll-triggered animations make user exploration rewarding. These details elevate standard designs to feel premium.\n\n### 3. Dark Mode First Aesthetics\nWith OLED screens dominating the mobile market, dark-themed interfaces are no longer just an alternative toggle—they are the default starting point for creative and tech-focused brands. A rich dark mode uses dark blues, deep purples, and carbon tones instead of pure black, allowing neon accents and glowing gradients to pop dramatically without causing eye strain.',
@@ -86,10 +106,14 @@ export const mockBlogs = [
     category: 'Design',
     readTime: '4 min read',
     date: 'Oct 20, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=800'
+    imageUrl: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=800',
+    metaTitle: 'Design Trends to Watch in 2027 | Magdio UI/UX',
+    metaDescription: 'From glassmorphism to dark mode, explore top UI/UX design trends dominating the web.',
+    canonicalUrl: 'https://www.magdio.com/blogs/design-trends-to-watch-in-2027'
   },
   {
     id: 'mock3',
+    slug: 'why-your-business-needs-a-custom-web-app',
     title: 'Why Your Business Needs a Custom Web App',
     excerpt: 'Off-the-shelf solutions can only take you so far. Learn why investing in a custom web application is crucial for scaling.',
     content: 'In the early stages of a business, off-the-shelf software or templates might suffice. However, as your operations grow and your customer needs become more specific, generic solutions can hinder growth. Custom web applications tailored specifically to your workflows offer scalability, unique features, and a competitive edge.\n\n### Seamless Integration with Existing Workflows\nUnlike packaged software, a custom app is built to fit *your* business, not the other way around. It can integrate directly with your CRM, inventory database, and marketing software, eliminating manual data entry and reducing operational overhead.\n\n### Scalability and Flexbility\nWhen your user base grows, templates and third-party builders often struggle with performance or demand expensive plan upgrades. Custom code gives you full control over optimization, caching, and hosting architecture. It allows your software to evolve concurrently with your business objectives.\n\n### Enhanced Security\nCustom applications are less vulnerable to mass exploits since their codebases are proprietary. Off-the-shelf plugins and template engines are public and frequently targeted by automated scanners. Building custom endpoints with Firebase or robust API structures ensures your data remains protected.',
@@ -97,7 +121,10 @@ export const mockBlogs = [
     category: 'Development',
     readTime: '6 min read',
     date: 'Oct 15, 2026',
-    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800'
+    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800',
+    metaTitle: 'Why Your Business Needs a Custom Web App | Magdio',
+    metaDescription: 'Learn why investing in a custom web application is crucial for scaling your business operations.',
+    canonicalUrl: 'https://www.magdio.com/blogs/why-your-business-needs-a-custom-web-app'
   }
 ];
 
@@ -169,17 +196,21 @@ export const fetchBlogs = async () => {
   }
 };
 
-// Fetch single blog post by ID
-export const fetchBlogById = async (id) => {
-  // If it's a mock blog, get from mock array directly
-  if (id.startsWith('mock')) {
-    const blog = mockBlogs.find(b => b.id === id);
-    if (blog) return blog;
-  }
+// Fetch single blog post by ID or Slug
+export const fetchBlogById = async (idOrSlug) => {
+  if (!idOrSlug) throw new Error('Blog identifier required.');
+
+  // Clean identifier (strip leading /blogs/ or /blog/ if present)
+  const cleanId = idOrSlug.replace(/^\/blogs\//, '').replace(/^\/blog\//, '').trim();
+
+  // If it's a mock blog, check mock array by id or slug
+  const mockMatch = mockBlogs.find(b => b.id === cleanId || b.slug === cleanId || generateSlug(b.title) === cleanId);
+  if (mockMatch) return mockMatch;
 
   if (db) {
     try {
-      const docRef = doc(db, 'blogs', id);
+      // First try fetching directly by document ID
+      const docRef = doc(db, 'blogs', cleanId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -189,8 +220,22 @@ export const fetchBlogById = async (id) => {
           date: formatDate(data.createdAt)
         };
       }
+
+      // Try querying by slug field in Firestore
+      const blogsRef = collection(db, 'blogs');
+      const q = query(blogsRef, where('slug', '==', cleanId));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const docFound = querySnapshot.docs[0];
+        const data = docFound.data();
+        return {
+          id: docFound.id,
+          ...data,
+          date: formatDate(data.createdAt)
+        };
+      }
     } catch (error) {
-      console.error(`Error fetching blog ${id} from Firestore:`, error);
+      console.error(`Error fetching blog ${cleanId} from Firestore:`, error);
     }
   }
 
@@ -198,7 +243,7 @@ export const fetchBlogById = async (id) => {
   try {
     const localData = localStorage.getItem('magdio_local_blogs');
     const localBlogs = localData ? JSON.parse(localData) : [];
-    const blog = localBlogs.find(b => b.id === id);
+    const blog = localBlogs.find(b => b.id === cleanId || b.slug === cleanId || generateSlug(b.title) === cleanId);
     if (blog) {
       return {
         ...blog,
@@ -209,7 +254,7 @@ export const fetchBlogById = async (id) => {
     console.error('Local Storage read error:', err);
   }
 
-  throw new Error(`Blog article not found for ID: ${id}`);
+  throw new Error(`Blog article not found for: ${idOrSlug}`);
 };
 
 // Create a new blog post

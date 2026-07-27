@@ -77,7 +77,7 @@ export default function BlogPage() {
                 className="group rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-brand-blue/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(26,34,184,0.3)] flex flex-col h-full"
               >
                 {/* Image linked to details */}
-                <Link to={`/blog/${blog.id}`} className="relative h-56 overflow-hidden block">
+                <Link to={`/blogs/${blog.slug || blog.id}`} className="relative h-56 overflow-hidden block">
                   <div className="absolute inset-0 bg-brand-blue/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
                   {blog.category && (
                     <span className="absolute top-4 left-4 z-20 px-3 py-1 text-[10px] font-bold tracking-wider text-black bg-brand-yellow rounded-full uppercase">
@@ -108,7 +108,7 @@ export default function BlogPage() {
                   
                   {/* Title linked to details */}
                   <h3 className="text-xl font-bold font-display mb-3 group-hover:text-brand-yellow transition-colors line-clamp-2">
-                    <Link to={`/blog/${blog.id}`}>
+                    <Link to={`/blogs/${blog.slug || blog.id}`}>
                       {blog.title}
                     </Link>
                   </h3>
@@ -124,7 +124,7 @@ export default function BlogPage() {
                     </span>
                     
                     <Link 
-                      to={`/blog/${blog.id}`}
+                      to={`/blogs/${blog.slug || blog.id}`}
                       className="text-brand-blue font-semibold text-sm flex items-center gap-2 group-hover:text-brand-yellow transition-colors"
                     >
                       Read Article

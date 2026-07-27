@@ -216,7 +216,9 @@ function AnimatedRoutes() {
               
               <Route path="/about"                 element={<AboutPage />} />
               <Route path="/blog"                  element={<BlogPage />} />
+              <Route path="/blogs"                 element={<BlogPage />} />
               <Route path="/blog/:id"              element={<BlogDetailPage />} />
+              <Route path="/blogs/:id"             element={<BlogDetailPage />} />
               <Route path="/admin"                 element={<AdminPage />} />
               <Route path="/contact"               element={<ContactPage />} />
               <Route path="*"                      element={<NotFoundPage />} />

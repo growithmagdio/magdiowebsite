@@ -186,11 +186,50 @@ export default function BlogDetailPage() {
     );
   }
 
+  const slugPath = blog.slug || id;
+  const canonicalUrl = blog.canonicalUrl || `https://www.magdio.com/blogs/${slugPath}`;
+
+  const jsonLdArticle = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": canonicalUrl
+    },
+    "headline": blog.metaTitle || blog.title,
+    "description": blog.metaDescription || blog.excerpt,
+    "image": [
+      blog.ogImage || blog.imageUrl || "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200"
+    ],
+    "author": {
+      "@type": "Person",
+      "name": blog.author || "Admin"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Magdio",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.magdio.com/favicon.png"
+      }
+    },
+    "datePublished": blog.date
+  };
+
   return (
     <div className="min-h-screen bg-brand-dark text-white relative pt-28 pb-20 md:pt-32">
       <SEO 
-        title={`${blog.title} | Blog & Insights | Magdio`}
-        description={blog.excerpt}
+        title={blog.metaTitle || `${blog.title} | Blog & Insights | Magdio`}
+        description={blog.metaDescription || blog.excerpt}
+        canonicalUrl={canonicalUrl}
+        ogTitle={blog.ogTitle}
+        ogDescription={blog.ogDescription}
+        ogImage={blog.ogImage || blog.imageUrl}
+        twitterTitle={blog.twitterTitle}
+        twitterDescription={blog.twitterDescription}
+        twitterImage={blog.twitterImage || blog.ogImage || blog.imageUrl}
+        type="article"
+        jsonLd={jsonLdArticle}
       />
 
       {/* Top scroll progress indicator bar */}
