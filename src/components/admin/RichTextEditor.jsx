@@ -119,7 +119,7 @@ export default function RichTextEditor({ value = '', onChange }) {
 
   // Submit Link
   const handleLinkSubmit = (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     if (!linkUrl) return;
     restoreSelection();
     
@@ -164,7 +164,7 @@ export default function RichTextEditor({ value = '', onChange }) {
 
   // Submit Image Insertion
   const handleImageSubmit = (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     if (!imageUrl) return;
     restoreSelection();
     const imgHtml = `<img src="${imageUrl}" alt="${imageAlt || 'Article image'}" class="w-full h-auto rounded-2xl border border-white/10 my-6 shadow-xl" />`;
@@ -445,17 +445,23 @@ export default function RichTextEditor({ value = '', onChange }) {
               <h3 className="text-white font-bold text-base flex items-center gap-2">
                 <FaLink className="text-brand-yellow" /> Insert Hyperlink
               </h3>
-              <button onClick={() => setShowLinkModal(false)} className="text-white/50 hover:text-white">
+              <button type="button" onClick={() => setShowLinkModal(false)} className="text-white/50 hover:text-white">
                 <FaTimes />
               </button>
             </div>
-            <form onSubmit={handleLinkSubmit} className="space-y-4">
+            <div className="space-y-4">
               <div>
                 <label className="text-xs text-white/60 font-medium block mb-1">LINK TEXT</label>
                 <input
                   type="text"
                   value={linkText}
                   onChange={(e) => setLinkText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleLinkSubmit(e);
+                    }
+                  }}
                   placeholder="e.g. Visit Magdio Portfolio"
                   className="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-yellow"
                 />
@@ -467,6 +473,12 @@ export default function RichTextEditor({ value = '', onChange }) {
                   required
                   value={linkUrl}
                   onChange={(e) => setLinkUrl(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleLinkSubmit(e);
+                    }
+                  }}
                   placeholder="https://example.com or /services"
                   className="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-yellow"
                 />
@@ -480,13 +492,14 @@ export default function RichTextEditor({ value = '', onChange }) {
                   Cancel
                 </button>
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleLinkSubmit}
                   className="px-5 py-2 rounded-xl text-xs font-bold bg-brand-yellow text-black hover:bg-white transition-all flex items-center gap-1.5"
                 >
                   <FaCheck /> Insert Link
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}
@@ -499,17 +512,23 @@ export default function RichTextEditor({ value = '', onChange }) {
               <h3 className="text-white font-bold text-base flex items-center gap-2">
                 <FaImage className="text-brand-blue" /> Insert Image
               </h3>
-              <button onClick={() => setShowImageModal(false)} className="text-white/50 hover:text-white">
+              <button type="button" onClick={() => setShowImageModal(false)} className="text-white/50 hover:text-white">
                 <FaTimes />
               </button>
             </div>
-            <form onSubmit={handleImageSubmit} className="space-y-4">
+            <div className="space-y-4">
               <div>
                 <label className="text-xs text-white/60 font-medium block mb-1">IMAGE URL</label>
                 <input
                   type="url"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleImageSubmit(e);
+                    }
+                  }}
                   placeholder="https://images.unsplash.com/..."
                   className="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-yellow"
                 />
@@ -553,6 +572,12 @@ export default function RichTextEditor({ value = '', onChange }) {
                   type="text"
                   value={imageAlt}
                   onChange={(e) => setImageAlt(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleImageSubmit(e);
+                    }
+                  }}
                   placeholder="Descriptive caption for SEO and accessibility"
                   className="w-full bg-white/5 border border-white/15 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-yellow"
                 />
@@ -567,7 +592,8 @@ export default function RichTextEditor({ value = '', onChange }) {
                   Cancel
                 </button>
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleImageSubmit}
                   disabled={!imageUrl}
                   className={`px-5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
                     imageUrl ? 'bg-brand-blue text-white hover:bg-brand-yellow hover:text-black' : 'bg-white/10 text-white/30 cursor-not-allowed'
@@ -576,7 +602,7 @@ export default function RichTextEditor({ value = '', onChange }) {
                   <FaCheck /> Insert Image
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}

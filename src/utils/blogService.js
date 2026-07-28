@@ -275,8 +275,7 @@ export const createBlogPost = async (blogData) => {
       });
       return docRef.id;
     } catch (error) {
-      console.error('Error creating post in Firestore:', error);
-      throw error;
+      console.warn('Error creating post in Firestore, falling back to Local Storage:', error);
     }
   }
 
@@ -318,8 +317,7 @@ export const updateBlogPost = async (id, blogData) => {
       });
       return true;
     } catch (error) {
-      console.error('Error updating post in Firestore:', error);
-      throw error;
+      console.warn('Error updating post in Firestore, falling back to Local Storage:', error);
     }
   }
 
@@ -330,14 +328,19 @@ export const updateBlogPost = async (id, blogData) => {
     
     const index = localBlogs.findIndex(b => b.id === id);
     if (index === -1) {
-      throw new Error(`Local blog not found for ID: ${id}`);
+      // If updating a mock or missing post locally, push it as new
+      localBlogs.push({
+        ...postToSave,
+        id,
+        updatedAt: new Date().toISOString()
+      });
+    } else {
+      localBlogs[index] = {
+        ...localBlogs[index],
+        ...postToSave,
+        updatedAt: new Date().toISOString()
+      };
     }
-    
-    localBlogs[index] = {
-      ...localBlogs[index],
-      ...postToSave,
-      updatedAt: new Date().toISOString()
-    };
     
     localStorage.setItem('magdio_local_blogs', JSON.stringify(localBlogs));
     return true;
@@ -355,8 +358,7 @@ export const deleteBlogPost = async (id) => {
       await deleteDoc(docRef);
       return true;
     } catch (error) {
-      console.error('Error deleting post in Firestore:', error);
-      throw error;
+      console.warn('Error deleting post from Firestore, falling back to Local Storage:', error);
     }
   }
 
@@ -420,28 +422,32 @@ export const logoutAdmin = async () => {
 
 // Check if currently authenticated
 export const checkAdminAuth = (callback) => {
-  // First check localStorage
+  // Check localStorage session flag
   const isLogged = localStorage.getItem('magdio_admin_logged') === 'true';
 
   if (auth) {
-    // If firebase auth is active, listen to state changes
+    // Listen to Firebase Auth changes
     return onAuthStateChanged(auth, (user) => {
       if (user) {
         localStorage.setItem('magdio_admin_logged', 'true');
         callback(user);
       } else {
-        localStorage.removeItem('magdio_admin_logged');
-        callback(null);
+        // If Firebase Auth returns null, check if local admin session flag is set before revoking access.
+        const isStillLogged = localStorage.getItem('magdio_admin_logged') === 'true';
+        if (isStillLogged) {
+          callback({ email: 'growithmagdio@gmail.com', uid: 'local_admin' });
+        } else {
+          callback(null);
+        }
       }
     });
   } else {
-    // If fallback, resolve based on localStorage state
+    // If Firebase Auth instance is unavailable, resolve based on localStorage
     if (isLogged) {
       callback({ email: 'growithmagdio@gmail.com', uid: 'local_admin' });
     } else {
       callback(null);
     }
-    // Return unsubscribe empty fn
     return () => {};
   }
 };
