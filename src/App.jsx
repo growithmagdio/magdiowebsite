@@ -220,9 +220,9 @@ function AnimatedRoutes() {
               <Route path="/portfolio/sasvitha-home-finance-seo-case-study" element={<SasvithaHomeFinanceCaseStudy />} />
               
               <Route path="/about"                 element={<AboutPage />} />
-              <Route path="/blog"                  element={<Navigate to="/blogs" replace />} />
+              <Route path="/blog"                  element={<BlogPage />} />
               <Route path="/blogs"                 element={<BlogPage />} />
-              <Route path="/blog/:id"              element={<BlogIdRedirect />} />
+              <Route path="/blog/:id"              element={<BlogDetailPage />} />
               <Route path="/blogs/:id"             element={<BlogDetailPage />} />
               <Route path="/admin"                 element={<AdminPage />} />
               <Route path="/contact"               element={<ContactPage />} />

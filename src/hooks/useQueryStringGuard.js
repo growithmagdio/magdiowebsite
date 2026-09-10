@@ -19,16 +19,7 @@ export default function useQueryStringGuard() {
         needsRedirect = true;
       }
 
-      // 2. Normalize /blog to /blogs
-      if (url.pathname === '/blog' || url.pathname === '/blog/') {
-        url.pathname = '/blogs';
-        needsRedirect = true;
-      } else if (url.pathname.startsWith('/blog/')) {
-        url.pathname = url.pathname.replace(/^\/blog\//, '/blogs/');
-        needsRedirect = true;
-      }
-
-      // 3. Remove cache-busting query parameters
+      // 2. Remove cache-busting query parameters
       const cacheBustingParams = ['v', 'version', 'cache', 'timestamp', 'random', 'cachebuster'];
       cacheBustingParams.forEach(param => {
         if (url.searchParams.has(param)) {

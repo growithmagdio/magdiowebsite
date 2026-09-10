@@ -59,7 +59,7 @@ export default function BlogSection() {
           </div>
           
           <Link
-            to="/blogs"
+            to="/blog"
             className="group inline-flex items-center gap-2 text-sm font-bold text-white/80 hover:text-brand-yellow transition-colors shrink-0"
           >
             <span>View All Articles</span>
@@ -91,7 +91,7 @@ export default function BlogSection() {
                 className="group rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-brand-blue/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(26,34,184,0.25)] flex flex-col h-full"
               >
                 {/* Image */}
-                <Link to={`/blogs/${blog.slug || blog.id}`} className="relative h-52 overflow-hidden block">
+                <Link to={`/blog/${blog.slug || blog.id}`} className="relative h-52 overflow-hidden block">
                   <div className="absolute inset-0 bg-brand-blue/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
                   {blog.category && (
                     <span className="absolute top-4 left-4 z-20 px-3 py-1 text-[10px] font-bold tracking-wider text-black bg-brand-yellow rounded-full uppercase">
@@ -123,7 +123,7 @@ export default function BlogSection() {
 
                   {/* Title */}
                   <h3 className="text-xl font-bold font-display text-white mb-3 group-hover:text-brand-yellow transition-colors line-clamp-2 leading-snug">
-                    <Link to={`/blogs/${blog.slug || blog.id}`}>
+                    <Link to={`/blog/${blog.slug || blog.id}`}>
                       {blog.title}
                     </Link>
                   </h3>
@@ -140,7 +140,7 @@ export default function BlogSection() {
                     </span>
 
                     <Link
-                      to={`/blogs/${blog.slug || blog.id}`}
+                      to={`/blog/${blog.slug || blog.id}`}
                       className="text-brand-blue font-semibold text-sm flex items-center gap-2 group-hover:text-brand-yellow transition-colors"
                     >
                       <span>Read Article</span>

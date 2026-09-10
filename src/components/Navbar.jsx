@@ -199,7 +199,7 @@ export default function Navbar() {
             </div>
 
             <Link to="/portfolio" className={`nav-link ${location.pathname.startsWith('/portfolio') ? 'active' : ''}`}>Portfolio</Link>
-            <Link to="/blogs" className={`nav-link ${location.pathname.startsWith('/blogs') ? 'active' : ''}`}>Blog</Link>
+            <Link to="/blog" className={`nav-link ${location.pathname.startsWith('/blog') ? 'active' : ''}`}>Blog</Link>
             <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}>Contact</Link>
           </div>
 
@@ -425,7 +425,7 @@ export default function Navbar() {
               </div>
 
               <Link to="/portfolio" onClick={() => setMenuOpen(false)} className={`text-2xl font-display font-bold py-4 border-b border-white/5 flex items-center justify-between ${location.pathname.startsWith('/portfolio') ? 'text-brand-yellow' : 'text-white'}`}>Portfolio</Link>
-              <Link to="/blogs" onClick={() => setMenuOpen(false)} className={`text-2xl font-display font-bold py-4 border-b border-white/5 flex items-center justify-between ${location.pathname.startsWith('/blogs') ? 'text-brand-yellow' : 'text-white'}`}>Blog</Link>
+              <Link to="/blog" onClick={() => setMenuOpen(false)} className={`text-2xl font-display font-bold py-4 border-b border-white/5 flex items-center justify-between ${location.pathname.startsWith('/blog') ? 'text-brand-yellow' : 'text-white'}`}>Blog</Link>
               <Link to="/contact" onClick={() => setMenuOpen(false)} className={`text-2xl font-display font-bold py-4 border-b border-white/5 flex items-center justify-between ${location.pathname === '/contact' ? 'text-brand-yellow' : 'text-white'}`}>Contact</Link>
             </div>
           </motion.div>

@@ -1,16 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/blog",
-      "destination": "https://www.magdio.com/blogs",
-      "permanent": true
-    },
-    {
-      "source": "/blog/:slug*",
-      "destination": "https://www.magdio.com/blogs/:slug*",
-      "permanent": true
-    }
-  ],
   "rewrites": [
     {
       "source": "/(.*)",

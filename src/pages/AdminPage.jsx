@@ -803,7 +803,7 @@ export default function AdminPage() {
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                       <span className="hidden sm:inline-block text-[10px] font-mono px-2.5 py-1 rounded-full bg-brand-blue/20 text-brand-blue border border-brand-blue/30 uppercase tracking-wider font-bold">
-                        {formData.slug ? `/blogs/${generateSlug(formData.slug)}` : 'URL & Metadata'}
+                        {formData.slug ? `/blog/${generateSlug(formData.slug)}` : 'URL & Metadata'}
                       </span>
                       {isSeoOpen ? <FaChevronUp className="text-white/60 text-sm" /> : <FaChevronDown className="text-white/60 text-sm" />}
                     </div>
@@ -833,7 +833,7 @@ export default function AdminPage() {
 
                         <div className="relative">
                           <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 text-xs font-mono select-none">
-                            /blogs/
+                            /blog/
                           </span>
                           <input
                             type="text"
@@ -850,7 +850,7 @@ export default function AdminPage() {
                           />
                         </div>
                         <p className="text-[11px] text-white/40 leading-tight">
-                          Live URL Preview: <code className="text-brand-yellow font-mono">https://www.magdio.com/blogs/{generateSlug(formData.slug || formData.title || 'ai-automation-workflows')}</code>
+                          Live URL Preview: <code className="text-brand-yellow font-mono">https://www.magdio.com/blog/{generateSlug(formData.slug || formData.title || 'ai-automation-workflows')}</code>
                         </p>
                       </div>
 
@@ -914,7 +914,7 @@ export default function AdminPage() {
                           name="canonicalUrl"
                           value={formData.canonicalUrl}
                           onChange={handleFormChange}
-                          placeholder="https://www.magdio.com/blogs/ai-automation-workflows"
+                          placeholder="https://www.magdio.com/blog/ai-automation-workflows"
                           className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all text-sm font-light"
                         />
                         <p className="text-[11px] text-white/40">Specify if this article originates from another primary URL.</p>

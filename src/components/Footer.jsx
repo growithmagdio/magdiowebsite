@@ -31,7 +31,7 @@ const industryLinks = [
 ];
 
 const resourceLinks = [
-  { name: 'Blog',          path: '/blogs' },
+  { name: 'Blog',          path: '/blog' },
   { name: 'Case Studies',  path: '/portfolio' },
   { name: 'All Services',  path: '/services' },
 ];
