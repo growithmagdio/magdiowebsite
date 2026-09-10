@@ -196,6 +196,23 @@ export default function RichTextEditor({ value = '', onChange }) {
     if (onChange) onChange(newCode);
   };
 
+  // Clean up pasted HTML (e.g. remove black/dark font color and unwanted inline backgrounds from Word/Google Docs)
+  const handlePaste = (e) => {
+    if (isSourceMode) return;
+    const htmlData = e.clipboardData?.getData('text/html');
+    if (htmlData) {
+      e.preventDefault();
+      // Remove inline dark font colors and inline white backgrounds so dark mode formatting stays clean
+      const cleanedHtml = htmlData
+        .replace(/color\s*:\s*(rgb\(0,\s*0,\s*0\)|#000|#000000|black)[^;"]*;?/gi, '')
+        .replace(/background(-color)?\s*:\s*(transparent|#fff|#ffffff|rgb\(255,\s*255,\s*255\)|white)[^;"]*;?/gi, '')
+        .replace(/font-family\s*:[^;"]*;?/gi, '');
+      
+      document.execCommand('insertHTML', false, cleanedHtml);
+      emitChange();
+    }
+  };
+
   return (
     <div className="w-full rounded-2xl border border-white/15 bg-[#08091a] overflow-hidden shadow-2xl">
       {/* Editor Toolbar */}
@@ -430,9 +447,10 @@ export default function RichTextEditor({ value = '', onChange }) {
           ref={editorRef}
           contentEditable
           onInput={emitChange}
+          onPaste={handlePaste}
           onKeyUp={checkActiveFormats}
           onMouseUp={checkActiveFormats}
-          className="rich-editor-content min-h-[350px] max-h-[600px] p-6 text-white text-base md:text-lg leading-relaxed focus:outline-none overflow-y-auto"
+          className="rich-editor-content blog-prose min-h-[350px] max-h-[600px] p-6 text-white text-base md:text-lg leading-relaxed focus:outline-none overflow-y-auto"
           style={{ wordBreak: 'break-word' }}
         />
       )}

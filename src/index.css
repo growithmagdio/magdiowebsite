@@ -463,10 +463,15 @@
   line-height: 1.7 !important;
 }
 
-.blog-prose li p,
-.rich-editor-content li p {
+.blog-prose li > p,
+.blog-prose li > div,
+.blog-prose li > span,
+.rich-editor-content li > p,
+.rich-editor-content li > div,
+.rich-editor-content li > span {
   display: inline !important;
   margin: 0 !important;
+  padding: 0 !important;
 }
 
 .blog-prose ul ul,
