@@ -199,15 +199,24 @@ export const fetchBlogs = async () => {
   if (db) {
     try {
       const blogsRef = collection(db, 'blogs');
-      // Fetch all docs without forced Firestore orderBy query to prevent excluding items missing createdAt
       const querySnapshot = await getDocs(blogsRef);
       
       firestoreBlogs = querySnapshot.docs.map(doc => {
         const data = doc.data();
+        const rawContent = data.content || '';
+        const textSnippet = rawContent.replace(/<[^>]*>/g, '').replace(/[\s\n]+/g, ' ').trim();
         return {
           id: doc.id,
           ...data,
-          date: formatDate(data.createdAt || data.date)
+          title: data.title || 'Untitled Article',
+          excerpt: data.excerpt || (textSnippet ? textSnippet.slice(0, 160) + '...' : 'Read full article for insights.'),
+          content: rawContent || '<p>Content coming soon...</p>',
+          author: data.author || 'Admin',
+          category: data.category || 'Insights',
+          readTime: data.readTime || '5 min read',
+          date: formatDate(data.createdAt || data.date),
+          imageUrl: data.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
+          slug: data.slug || generateSlug(data.title || doc.id)
         };
       });
     } catch (error) {
@@ -221,26 +230,38 @@ export const fetchBlogs = async () => {
     const localData = localStorage.getItem('magdio_local_blogs');
     if (localData) {
       const parsedLocal = JSON.parse(localData);
-      localBlogs = parsedLocal.map(blog => ({
-        ...blog,
-        date: formatDate(blog.createdAt || blog.date)
-      }));
+      localBlogs = parsedLocal.map(blog => {
+        const rawContent = blog.content || '';
+        const textSnippet = rawContent.replace(/<[^>]*>/g, '').replace(/[\s\n]+/g, ' ').trim();
+        return {
+          ...blog,
+          title: blog.title || 'Untitled Article',
+          excerpt: blog.excerpt || (textSnippet ? textSnippet.slice(0, 160) + '...' : 'Read full article for insights.'),
+          content: rawContent || '<p>Content coming soon...</p>',
+          author: blog.author || 'Admin',
+          category: blog.category || 'Insights',
+          readTime: blog.readTime || '5 min read',
+          date: formatDate(blog.createdAt || blog.date),
+          imageUrl: blog.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
+          slug: blog.slug || generateSlug(blog.title || blog.id)
+        };
+      });
     }
   } catch (err) {
     console.error('Local Storage read error:', err);
   }
 
-  // Combine Firestore and LocalStorage
-  const allSources = [...firestoreBlogs, ...localBlogs];
+  // Combine Firestore, Local Storage, and Mock Blogs into complete pool
+  const allSources = [...firestoreBlogs, ...localBlogs, ...mockBlogs];
 
-  // Deduplicate by ID and Slug (Firestore version takes precedence over local version)
+  // Deduplicate by ID and Slug (Firestore > LocalStorage > Mock)
   const seenIds = new Set();
   const seenSlugs = new Set();
   const uniqueBlogs = [];
 
   for (const blog of allSources) {
     const bId = blog.id;
-    const bSlug = blog.slug || generateSlug(blog.title || '');
+    const bSlug = (blog.slug || generateSlug(blog.title || '')).toLowerCase();
     
     if (bId && seenIds.has(bId)) continue;
     if (bSlug && seenSlugs.has(bSlug)) continue;
@@ -248,11 +269,6 @@ export const fetchBlogs = async () => {
     if (bId) seenIds.add(bId);
     if (bSlug) seenSlugs.add(bSlug);
     uniqueBlogs.push(blog);
-  }
-
-  // Include mock blogs ONLY if no custom blogs exist at all
-  if (uniqueBlogs.length === 0) {
-    uniqueBlogs.push(...mockBlogs);
   }
 
   // Sort descending by date/createdAt (newest first)
@@ -265,15 +281,15 @@ export const fetchBlogs = async () => {
 export const fetchBlogById = async (idOrSlug) => {
   if (!idOrSlug) throw new Error('Blog identifier required.');
 
-  const cleanId = idOrSlug.replace(/^\/blogs\//, '').replace(/^\/blog\//, '').trim();
+  const cleanId = idOrSlug.replace(/^\/blogs\//, '').replace(/^\/blog\//, '').trim().toLowerCase();
 
   // Try matching from fetchBlogs result first so local & Firestore blogs are seamlessly resolved
   try {
     const allBlogs = await fetchBlogs();
     const match = allBlogs.find(b => 
-      b.id === cleanId || 
-      b.slug === cleanId || 
-      generateSlug(b.title || '') === cleanId
+      (b.id && b.id.toLowerCase() === cleanId) || 
+      (b.slug && b.slug.toLowerCase() === cleanId) || 
+      generateSlug(b.title || '').toLowerCase() === cleanId
     );
     if (match) return match;
   } catch (err) {
@@ -289,7 +305,15 @@ export const fetchBlogById = async (idOrSlug) => {
         return {
           id: docSnap.id,
           ...data,
-          date: formatDate(data.createdAt || data.date)
+          title: data.title || 'Untitled Article',
+          excerpt: data.excerpt || 'Read full article for insights.',
+          content: data.content || '',
+          author: data.author || 'Admin',
+          category: data.category || 'Insights',
+          readTime: data.readTime || '5 min read',
+          date: formatDate(data.createdAt || data.date),
+          imageUrl: data.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
+          slug: data.slug || generateSlug(data.title || docSnap.id)
         };
       }
 
@@ -302,7 +326,15 @@ export const fetchBlogById = async (idOrSlug) => {
         return {
           id: docFound.id,
           ...data,
-          date: formatDate(data.createdAt || data.date)
+          title: data.title || 'Untitled Article',
+          excerpt: data.excerpt || 'Read full article for insights.',
+          content: data.content || '',
+          author: data.author || 'Admin',
+          category: data.category || 'Insights',
+          readTime: data.readTime || '5 min read',
+          date: formatDate(data.createdAt || data.date),
+          imageUrl: data.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
+          slug: data.slug || generateSlug(data.title || docFound.id)
         };
       }
     } catch (error) {
@@ -310,7 +342,11 @@ export const fetchBlogById = async (idOrSlug) => {
     }
   }
 
-  const mockMatch = mockBlogs.find(b => b.id === cleanId || b.slug === cleanId || generateSlug(b.title) === cleanId);
+  const mockMatch = mockBlogs.find(b => 
+    b.id.toLowerCase() === cleanId || 
+    b.slug.toLowerCase() === cleanId || 
+    generateSlug(b.title).toLowerCase() === cleanId
+  );
   if (mockMatch) return mockMatch;
 
   throw new Error(`Blog article not found for: ${idOrSlug}`);
