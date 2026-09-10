@@ -129,87 +129,159 @@ export const mockBlogs = [
 ];
 
 // Helper to format date
-const formatDate = (dateObj) => {
-  if (!dateObj) return 'Unknown Date';
-  // If it's a Firestore Timestamp
-  if (dateObj.toDate && typeof dateObj.toDate === 'function') {
-    return dateObj.toDate().toLocaleDateString('en-US', {
-      month: 'short', day: 'numeric', year: 'numeric'
-    });
+// Safe date formatter supporting Firestore Timestamps, ISO strings, JS Dates, and formatted strings
+export const formatDate = (dateObj) => {
+  if (!dateObj) return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  
+  if (dateObj && typeof dateObj.toDate === 'function') {
+    try {
+      return dateObj.toDate().toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric'
+      });
+    } catch (e) {
+      console.warn('Error formatting Firestore timestamp:', e);
+    }
   }
-  // If it's a string or date object
-  return new Date(dateObj).toLocaleDateString('en-US', {
-    month: 'short', day: 'numeric', year: 'numeric'
-  });
+
+  if (dateObj && typeof dateObj.seconds === 'number') {
+    try {
+      return new Date(dateObj.seconds * 1000).toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric'
+      });
+    } catch (e) {
+      console.warn('Error formatting timestamp seconds:', e);
+    }
+  }
+
+  if (typeof dateObj === 'string') {
+    const parsed = new Date(dateObj);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric'
+      });
+    }
+    return dateObj;
+  }
+
+  try {
+    const parsed = new Date(dateObj);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric'
+      });
+    }
+  } catch (e) {}
+
+  return 'Unknown Date';
+};
+
+// Safe timestamp parsing for chronological sorting
+const getSortableTime = (item) => {
+  if (!item) return 0;
+  const raw = item.createdAt || item.date || item.updatedAt;
+  if (!raw) return 0;
+  if (raw.toDate && typeof raw.toDate === 'function') {
+    return raw.toDate().getTime();
+  }
+  if (typeof raw.seconds === 'number') {
+    return raw.seconds * 1000;
+  }
+  const parsed = new Date(raw).getTime();
+  return isNaN(parsed) ? 0 : parsed;
 };
 
 // --- BLOG DATA FUNCTIONS ---
 
-// Fetch all blogs (combined Firebase and localStorage fallbacks)
+// Fetch all blogs (Unified Firestore + LocalStorage + Mock Data)
 export const fetchBlogs = async () => {
+  let firestoreBlogs = [];
+
   if (db) {
     try {
       const blogsRef = collection(db, 'blogs');
-      const q = query(blogsRef, orderBy('createdAt', 'desc'));
-      const querySnapshot = await getDocs(q);
+      // Fetch all docs without forced Firestore orderBy query to prevent excluding items missing createdAt
+      const querySnapshot = await getDocs(blogsRef);
       
-      const fetchedBlogs = querySnapshot.docs.map(doc => {
+      firestoreBlogs = querySnapshot.docs.map(doc => {
         const data = doc.data();
         return {
           id: doc.id,
           ...data,
-          date: formatDate(data.createdAt)
+          date: formatDate(data.createdAt || data.date)
         };
       });
-
-      if (fetchedBlogs.length > 0) {
-        return fetchedBlogs;
-      }
     } catch (error) {
       console.error('Error fetching blogs from Firestore:', error);
     }
   }
 
-  // Fallback Mode (LocalStorage + Mock Data)
+  // Local Storage Fallback & Unsynced Posts
+  let localBlogs = [];
   try {
     const localData = localStorage.getItem('magdio_local_blogs');
-    const localBlogs = localData ? JSON.parse(localData) : [];
-    
-    // Format creation dates for local blogs
-    const formattedLocal = localBlogs.map(blog => ({
-      ...blog,
-      date: formatDate(blog.createdAt || blog.date)
-    }));
-
-    // Merge and sort by createdAt desc (newest first)
-    const combined = [...formattedLocal, ...mockBlogs];
-    combined.sort((a, b) => {
-      const dateA = new Date(a.createdAt || a.date);
-      const dateB = new Date(b.createdAt || b.date);
-      return dateB - dateA;
-    });
-
-    return combined;
+    if (localData) {
+      const parsedLocal = JSON.parse(localData);
+      localBlogs = parsedLocal.map(blog => ({
+        ...blog,
+        date: formatDate(blog.createdAt || blog.date)
+      }));
+    }
   } catch (err) {
     console.error('Local Storage read error:', err);
-    return mockBlogs;
   }
+
+  // Combine Firestore and LocalStorage
+  const allSources = [...firestoreBlogs, ...localBlogs];
+
+  // Deduplicate by ID and Slug (Firestore version takes precedence over local version)
+  const seenIds = new Set();
+  const seenSlugs = new Set();
+  const uniqueBlogs = [];
+
+  for (const blog of allSources) {
+    const bId = blog.id;
+    const bSlug = blog.slug || generateSlug(blog.title || '');
+    
+    if (bId && seenIds.has(bId)) continue;
+    if (bSlug && seenSlugs.has(bSlug)) continue;
+
+    if (bId) seenIds.add(bId);
+    if (bSlug) seenSlugs.add(bSlug);
+    uniqueBlogs.push(blog);
+  }
+
+  // Include mock blogs ONLY if no custom blogs exist at all
+  if (uniqueBlogs.length === 0) {
+    uniqueBlogs.push(...mockBlogs);
+  }
+
+  // Sort descending by date/createdAt (newest first)
+  uniqueBlogs.sort((a, b) => getSortableTime(b) - getSortableTime(a));
+
+  return uniqueBlogs;
 };
 
 // Fetch single blog post by ID or Slug
 export const fetchBlogById = async (idOrSlug) => {
   if (!idOrSlug) throw new Error('Blog identifier required.');
 
-  // Clean identifier (strip leading /blogs/ or /blog/ if present)
   const cleanId = idOrSlug.replace(/^\/blogs\//, '').replace(/^\/blog\//, '').trim();
 
-  // If it's a mock blog, check mock array by id or slug
-  const mockMatch = mockBlogs.find(b => b.id === cleanId || b.slug === cleanId || generateSlug(b.title) === cleanId);
-  if (mockMatch) return mockMatch;
+  // Try matching from fetchBlogs result first so local & Firestore blogs are seamlessly resolved
+  try {
+    const allBlogs = await fetchBlogs();
+    const match = allBlogs.find(b => 
+      b.id === cleanId || 
+      b.slug === cleanId || 
+      generateSlug(b.title || '') === cleanId
+    );
+    if (match) return match;
+  } catch (err) {
+    console.warn('fetchBlogById: Search in fetchBlogs failed, trying direct Firestore lookup:', err);
+  }
 
   if (db) {
     try {
-      // First try fetching directly by document ID
       const docRef = doc(db, 'blogs', cleanId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -217,11 +289,10 @@ export const fetchBlogById = async (idOrSlug) => {
         return {
           id: docSnap.id,
           ...data,
-          date: formatDate(data.createdAt)
+          date: formatDate(data.createdAt || data.date)
         };
       }
 
-      // Try querying by slug field in Firestore
       const blogsRef = collection(db, 'blogs');
       const q = query(blogsRef, where('slug', '==', cleanId));
       const querySnapshot = await getDocs(q);
@@ -231,7 +302,7 @@ export const fetchBlogById = async (idOrSlug) => {
         return {
           id: docFound.id,
           ...data,
-          date: formatDate(data.createdAt)
+          date: formatDate(data.createdAt || data.date)
         };
       }
     } catch (error) {
@@ -239,33 +310,23 @@ export const fetchBlogById = async (idOrSlug) => {
     }
   }
 
-  // Local fallback search
-  try {
-    const localData = localStorage.getItem('magdio_local_blogs');
-    const localBlogs = localData ? JSON.parse(localData) : [];
-    const blog = localBlogs.find(b => b.id === cleanId || b.slug === cleanId || generateSlug(b.title) === cleanId);
-    if (blog) {
-      return {
-        ...blog,
-        date: formatDate(blog.createdAt || blog.date)
-      };
-    }
-  } catch (err) {
-    console.error('Local Storage read error:', err);
-  }
+  const mockMatch = mockBlogs.find(b => b.id === cleanId || b.slug === cleanId || generateSlug(b.title) === cleanId);
+  if (mockMatch) return mockMatch;
 
   throw new Error(`Blog article not found for: ${idOrSlug}`);
 };
 
 // Create a new blog post
 export const createBlogPost = async (blogData) => {
-  // Add auto-calculated read time if not provided
-  const wordCount = blogData.content.split(/\s+/).length;
+  const wordCount = blogData.content ? blogData.content.split(/\s+/).length : 0;
   const readTimeMin = Math.max(1, Math.ceil(wordCount / 200));
   const postToSave = {
     ...blogData,
     readTime: blogData.readTime || `${readTimeMin} min read`,
+    date: blogData.date || formatDate(new Date()),
   };
+
+  let firestoreError = null;
 
   if (db) {
     try {
@@ -273,9 +334,10 @@ export const createBlogPost = async (blogData) => {
         ...postToSave,
         createdAt: serverTimestamp(),
       });
-      return docRef.id;
+      return { id: docRef.id, storage: 'firestore' };
     } catch (error) {
       console.warn('Error creating post in Firestore, falling back to Local Storage:', error);
+      firestoreError = error.message || 'Firestore access denied or network error';
     }
   }
 
@@ -292,7 +354,7 @@ export const createBlogPost = async (blogData) => {
     
     localBlogs.push(newBlog);
     localStorage.setItem('magdio_local_blogs', JSON.stringify(localBlogs));
-    return newBlog.id;
+    return { id: newBlog.id, storage: 'local', warning: firestoreError };
   } catch (err) {
     console.error('Error writing blog to Local Storage:', err);
     throw err;
@@ -301,7 +363,7 @@ export const createBlogPost = async (blogData) => {
 
 // Update an existing blog post
 export const updateBlogPost = async (id, blogData) => {
-  const wordCount = blogData.content.split(/\s+/).length;
+  const wordCount = blogData.content ? blogData.content.split(/\s+/).length : 0;
   const readTimeMin = Math.max(1, Math.ceil(wordCount / 200));
   const postToSave = {
     ...blogData,
@@ -315,7 +377,7 @@ export const updateBlogPost = async (id, blogData) => {
         ...postToSave,
         updatedAt: serverTimestamp()
       });
-      return true;
+      return { success: true, storage: 'firestore' };
     } catch (error) {
       console.warn('Error updating post in Firestore, falling back to Local Storage:', error);
     }
@@ -328,7 +390,6 @@ export const updateBlogPost = async (id, blogData) => {
     
     const index = localBlogs.findIndex(b => b.id === id);
     if (index === -1) {
-      // If updating a mock or missing post locally, push it as new
       localBlogs.push({
         ...postToSave,
         id,
@@ -343,7 +404,7 @@ export const updateBlogPost = async (id, blogData) => {
     }
     
     localStorage.setItem('magdio_local_blogs', JSON.stringify(localBlogs));
-    return true;
+    return { success: true, storage: 'local' };
   } catch (err) {
     console.error('Error updating blog in Local Storage:', err);
     throw err;
@@ -356,23 +417,64 @@ export const deleteBlogPost = async (id) => {
     try {
       const docRef = doc(db, 'blogs', id);
       await deleteDoc(docRef);
-      return true;
     } catch (error) {
       console.warn('Error deleting post from Firestore, falling back to Local Storage:', error);
     }
   }
 
-  // Local Storage Delete
+  // Also clean up from Local Storage if present
   try {
     const localData = localStorage.getItem('magdio_local_blogs');
     const localBlogs = localData ? JSON.parse(localData) : [];
-    
     const filteredBlogs = localBlogs.filter(b => b.id !== id);
     localStorage.setItem('magdio_local_blogs', JSON.stringify(filteredBlogs));
     return true;
   } catch (err) {
     console.error('Error deleting blog from Local Storage:', err);
     throw err;
+  }
+};
+
+// Sync any unsynced local storage blogs to Firestore
+export const syncLocalBlogsToFirestore = async () => {
+  if (!db) return { synced: 0, message: 'Database not connected.' };
+  
+  try {
+    const localData = localStorage.getItem('magdio_local_blogs');
+    if (!localData) return { synced: 0, message: 'No local blogs found in browser storage to sync.' };
+    
+    const localBlogs = JSON.parse(localData);
+    if (!Array.isArray(localBlogs) || localBlogs.length === 0) {
+      return { synced: 0, message: 'No local blogs found in browser storage to sync.' };
+    }
+
+    let syncedCount = 0;
+    const remainingLocal = [];
+
+    for (const blog of localBlogs) {
+      try {
+        const { id, date, ...cleanBlogData } = blog;
+        await addDoc(collection(db, 'blogs'), {
+          ...cleanBlogData,
+          createdAt: serverTimestamp(),
+          syncedFromLocalAt: new Date().toISOString()
+        });
+        syncedCount++;
+      } catch (err) {
+        console.error('Failed to sync local blog to Firestore:', blog.title, err);
+        remainingLocal.push(blog);
+      }
+    }
+
+    localStorage.setItem('magdio_local_blogs', JSON.stringify(remainingLocal));
+
+    return {
+      synced: syncedCount,
+      message: `Successfully synced ${syncedCount} blog(s) to Firestore live database!`
+    };
+  } catch (error) {
+    console.error('Sync failed:', error);
+    throw error;
   }
 };
 

@@ -30,7 +30,8 @@ import {
   logoutAdmin, 
   checkAdminAuth,
   uploadImageFile,
-  generateSlug
+  generateSlug,
+  syncLocalBlogsToFirestore
 } from '../utils/blogService';
 import { db } from '../firebase';
 import RichTextEditor from '../components/admin/RichTextEditor';
@@ -51,6 +52,43 @@ export default function AdminPage() {
   const [loadingBlogs, setLoadingBlogs] = useState(false);
   const [status, setStatus] = useState({ type: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [localBlogCount, setLocalBlogCount] = useState(0);
+
+  const checkLocalCount = () => {
+    try {
+      const localData = localStorage.getItem('magdio_local_blogs');
+      const parsed = localData ? JSON.parse(localData) : [];
+      setLocalBlogCount(parsed.length);
+    } catch (e) {
+      setLocalBlogCount(0);
+    }
+  };
+
+  useEffect(() => {
+    checkLocalCount();
+  }, [blogs]);
+
+  const handleSyncLocalBlogs = async () => {
+    try {
+      setIsSyncing(true);
+      setStatus({ type: '', message: '' });
+      const res = await syncLocalBlogsToFirestore();
+      setStatus({
+        type: res.synced > 0 ? 'success' : 'info',
+        message: res.message
+      });
+      await loadBlogsList();
+      checkLocalCount();
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        message: `Sync failed: ${err.message || 'Check database permissions.'}`
+      });
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   // Form state
   const [formData, setFormData] = useState({
@@ -328,20 +366,30 @@ export default function AdminPage() {
 
     try {
       if (editingId) {
-        await updateBlogPost(editingId, payload);
+        const res = await updateBlogPost(editingId, payload);
         setStatus({
           type: 'success',
-          message: 'Blog post updated successfully with SEO settings!'
+          message: res.storage === 'firestore'
+            ? 'Blog post updated successfully on live database!'
+            : 'Blog post updated in browser local storage.'
         });
         cancelEdit();
       } else {
-        await createBlogPost(payload);
-        setStatus({
-          type: 'success',
-          message: 'Blog post published successfully with SEO settings!'
-        });
+        const res = await createBlogPost(payload);
+        if (res.storage === 'firestore') {
+          setStatus({
+            type: 'success',
+            message: 'Blog post published successfully to live database!'
+          });
+        } else {
+          setStatus({
+            type: 'error',
+            message: `Blog post saved to browser storage because server save failed (${res.warning || 'Database error'}). Use 'Sync Local Posts' button to upload to server.`
+          });
+        }
         cancelEdit();
       }
+      checkLocalCount();
     } catch (error) {
       console.error('Error publishing blog post:', error);
       setStatus({
@@ -504,6 +552,17 @@ export default function AdminPage() {
           </div>
           
           <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+            {db && (
+              <button
+                onClick={handleSyncLocalBlogs}
+                disabled={isSyncing}
+                className="px-4 py-2 bg-brand-yellow/10 border border-brand-yellow/30 hover:bg-brand-yellow hover:text-black text-brand-yellow rounded-xl text-sm flex items-center gap-2 transition-all font-semibold"
+                title="Sync unsynced local blogs to live database"
+              >
+                <FaSync className={isSyncing ? 'animate-spin' : ''} />
+                {isSyncing ? 'Syncing...' : localBlogCount > 0 ? `Sync ${localBlogCount} Local Post(s)` : 'Sync Local Posts'}
+              </button>
+            )}
             <span className="text-xs text-white/50 bg-white/5 px-4 py-2 rounded-xl border border-white/5 flex items-center gap-2">
               <span className={`w-2 h-2 rounded-full ${db ? 'bg-green-500' : 'bg-brand-yellow'} animate-pulse`} />
               {db ? 'Database: Live' : 'Database: Local Sandbox'}
