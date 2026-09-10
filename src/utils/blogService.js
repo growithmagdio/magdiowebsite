@@ -190,6 +190,14 @@ const getSortableTime = (item) => {
   return isNaN(parsed) ? 0 : parsed;
 };
 
+// Helper to race an async operation against a timeout (prevents hanging indefinitely on network issues)
+const withTimeout = (promise, ms = 4000, errorMsg = 'Operation timed out') => {
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error(errorMsg)), ms);
+  });
+  return Promise.race([promise, timeoutPromise]);
+};
+
 // --- BLOG DATA FUNCTIONS ---
 
 // Fetch all blogs (Unified Firestore + LocalStorage + Mock Data)
@@ -199,7 +207,7 @@ export const fetchBlogs = async () => {
   if (db) {
     try {
       const blogsRef = collection(db, 'blogs');
-      const querySnapshot = await getDocs(blogsRef);
+      const querySnapshot = await withTimeout(getDocs(blogsRef), 3000, 'Firestore fetch timed out');
       
       firestoreBlogs = querySnapshot.docs.map(doc => {
         const data = doc.data();
@@ -220,7 +228,7 @@ export const fetchBlogs = async () => {
         };
       });
     } catch (error) {
-      console.error('Error fetching blogs from Firestore:', error);
+      console.warn('Firestore fetch skipped or timed out, loading local/cached blogs:', error.message);
     }
   }
 
@@ -299,7 +307,7 @@ export const fetchBlogById = async (idOrSlug) => {
   if (db) {
     try {
       const docRef = doc(db, 'blogs', cleanId);
-      const docSnap = await getDoc(docRef);
+      const docSnap = await withTimeout(getDoc(docRef), 3000, 'Firestore doc fetch timed out');
       if (docSnap.exists()) {
         const data = docSnap.data();
         return {
@@ -319,7 +327,7 @@ export const fetchBlogById = async (idOrSlug) => {
 
       const blogsRef = collection(db, 'blogs');
       const q = query(blogsRef, where('slug', '==', cleanId));
-      const querySnapshot = await getDocs(q);
+      const querySnapshot = await withTimeout(getDocs(q), 3000, 'Firestore query timed out');
       if (!querySnapshot.empty) {
         const docFound = querySnapshot.docs[0];
         const data = docFound.data();
@@ -373,14 +381,18 @@ export const createBlogPost = async (blogData) => {
 
   if (db) {
     try {
-      const docRef = await addDoc(collection(db, 'blogs'), {
-        ...postToSave,
-        createdAt: serverTimestamp(),
-      });
+      const docRef = await withTimeout(
+        addDoc(collection(db, 'blogs'), {
+          ...postToSave,
+          createdAt: serverTimestamp(),
+        }),
+        4000,
+        'Firestore write operation timed out'
+      );
       firestoreResult = { id: docRef.id, storage: 'firestore' };
     } catch (error) {
       console.warn('Error creating post in Firestore, falling back to Local Storage:', error);
-      firestoreError = error.message || 'Firestore access denied or network error';
+      firestoreError = error.message || 'Firestore write timed out or access denied';
     }
   }
 
@@ -421,10 +433,14 @@ export const updateBlogPost = async (id, blogData) => {
   if (db && !id.startsWith('local')) {
     try {
       const docRef = doc(db, 'blogs', id);
-      await updateDoc(docRef, {
-        ...postToSave,
-        updatedAt: serverTimestamp()
-      });
+      await withTimeout(
+        updateDoc(docRef, {
+          ...postToSave,
+          updatedAt: serverTimestamp()
+        }),
+        4000,
+        'Firestore update timed out'
+      );
     } catch (error) {
       console.warn('Error updating post in Firestore, falling back to Local Storage:', error);
     }
@@ -465,7 +481,7 @@ export const deleteBlogPost = async (id) => {
   if (db && !id.startsWith('local') && !id.startsWith('mock')) {
     try {
       const docRef = doc(db, 'blogs', id);
-      await deleteDoc(docRef);
+      await withTimeout(deleteDoc(docRef), 3000, 'Firestore delete timed out');
     } catch (error) {
       console.warn('Error deleting post from Firestore, falling back to Local Storage:', error);
     }
