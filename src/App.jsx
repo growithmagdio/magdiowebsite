@@ -1,4 +1,9 @@
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams } from 'react-router-dom';
+
+function BlogIdRedirect() {
+  const { id } = useParams();
+  return <Navigate to={`/blogs/${id}`} replace />;
+}
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { lazy, Suspense } from 'react';
@@ -215,9 +220,9 @@ function AnimatedRoutes() {
               <Route path="/portfolio/sasvitha-home-finance-seo-case-study" element={<SasvithaHomeFinanceCaseStudy />} />
               
               <Route path="/about"                 element={<AboutPage />} />
-              <Route path="/blog"                  element={<BlogPage />} />
+              <Route path="/blog"                  element={<Navigate to="/blogs" replace />} />
               <Route path="/blogs"                 element={<BlogPage />} />
-              <Route path="/blog/:id"              element={<BlogDetailPage />} />
+              <Route path="/blog/:id"              element={<BlogIdRedirect />} />
               <Route path="/blogs/:id"             element={<BlogDetailPage />} />
               <Route path="/admin"                 element={<AdminPage />} />
               <Route path="/contact"               element={<ContactPage />} />

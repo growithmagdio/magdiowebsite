@@ -15,7 +15,7 @@ const staticRoutes = [
   '/contact',
   '/portfolio',
   '/services',
-  '/blog',
+  '/blogs',
   '/mission',
 
   // 10 Chennai Keyword Pages & Search Aliases

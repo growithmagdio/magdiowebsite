@@ -176,7 +176,7 @@ export default function BlogDetailPage() {
           <h2 className="text-2xl font-bold font-display text-white mb-2">Article Not Found</h2>
           <p className="text-white/60 mb-8">{error || 'We could not find the blog post you are looking for.'}</p>
           <Link 
-            to="/blog" 
+            to="/blogs" 
             className="inline-flex items-center gap-2 bg-brand-blue text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-yellow hover:text-black transition-all"
           >
             <FaArrowLeft /> Back to Insights
@@ -250,7 +250,7 @@ export default function BlogDetailPage() {
         {/* Back Link */}
         <div className="mb-8">
           <Link 
-            to="/blog"
+            to="/blogs"
             className="inline-flex items-center gap-2 text-white/60 hover:text-brand-yellow text-sm font-semibold transition-colors group"
           >
             <FaArrowLeft className="group-hover:-translate-x-1.5 transition-transform" />
