@@ -67,7 +67,7 @@ export default function BlogDetailPage() {
     if (isHtml) {
       return (
         <div 
-          className="blog-prose space-y-6 text-white/80 font-sans tracking-wide text-lg md:text-xl leading-relaxed [&>h1]:text-3xl [&>h1]:md:text-4xl [&>h1]:font-bold [&>h1]:font-display [&>h1]:text-white [&>h1]:mt-10 [&>h1]:mb-4 [&>h2]:text-2xl [&>h2]:md:text-3xl [&>h2]:font-bold [&>h2]:font-display [&>h2]:text-white [&>h2]:mt-8 [&>h2]:mb-4 [&>h3]:text-xl [&>h3]:md:text-2xl [&>h3]:font-bold [&>h3]:font-display [&>h3]:text-brand-yellow [&>h3]:mt-6 [&>h3]:mb-3 [&>ul]:list-disc [&>ul]:list-inside [&>ul]:pl-4 [&>ul]:space-y-2 [&>ol]:list-decimal [&>ol]:list-inside [&>ol]:pl-4 [&>ol]:space-y-2 [&>blockquote]:border-l-4 [&>blockquote]:border-brand-yellow [&>blockquote]:bg-white/5 [&>blockquote]:rounded-r-xl [&>blockquote]:p-5 [&>blockquote]:italic [&>blockquote]:my-6 [&>a]:text-brand-yellow [&>a]:underline [&>a]:hover:text-white [&>pre]:bg-[#03030b] [&>pre]:border [&>pre]:border-white/10 [&>pre]:p-4 [&>pre]:rounded-xl [&>pre]:overflow-x-auto [&>pre]:font-mono [&>pre]:text-sm [&>pre]:text-brand-yellow [&>img]:rounded-2xl [&>img]:my-8 [&>img]:border [&>img]:border-white/10 [&>img]:shadow-2xl"
+          className="blog-prose space-y-6 text-white/80 font-sans tracking-wide text-lg md:text-xl leading-relaxed [&>h1]:text-3xl [&>h1]:md:text-4xl [&>h1]:font-bold [&>h1]:font-display [&>h1]:text-white [&>h1]:mt-10 [&>h1]:mb-4 [&>h2]:text-2xl [&>h2]:md:text-3xl [&>h2]:font-bold [&>h2]:font-display [&>h2]:text-white [&>h2]:mt-8 [&>h2]:mb-4 [&>h3]:text-xl [&>h3]:md:text-2xl [&>h3]:font-bold [&>h3]:font-display [&>h3]:text-brand-yellow [&>h3]:mt-6 [&>h3]:mb-3 [&_ul]:list-disc [&_ul]:list-outside [&_ul]:pl-7 [&_ul]:my-4 [&_ul]:space-y-2 [&_ol]:list-decimal [&_ol]:list-outside [&_ol]:pl-7 [&_ol]:my-4 [&_ol]:space-y-2 [&_li]:my-1.5 [&_li]:leading-relaxed [&_li_p]:inline [&_li_p]:m-0 [&>blockquote]:border-l-4 [&>blockquote]:border-brand-yellow [&>blockquote]:bg-white/5 [&>blockquote]:rounded-r-xl [&>blockquote]:p-5 [&>blockquote]:italic [&>blockquote]:my-6 [&>a]:text-brand-yellow [&>a]:underline [&>a]:hover:text-white [&>pre]:bg-[#03030b] [&>pre]:border [&>pre]:border-white/10 [&>pre]:p-4 [&>pre]:rounded-xl [&>pre]:overflow-x-auto [&>pre]:font-mono [&>pre]:text-sm [&>pre]:text-brand-yellow [&>img]:rounded-2xl [&>img]:my-8 [&>img]:border [&>img]:border-white/10 [&>img]:shadow-2xl"
           dangerouslySetInnerHTML={{ __html: content }}
         />
       );
@@ -116,18 +116,18 @@ export default function BlogDetailPage() {
           
           // Bold matches inside list items
           return (
-            <li key={itemIdx} className="mb-2 leading-relaxed pl-1 text-white/70">
+            <li key={itemIdx} className="mb-2 leading-relaxed text-white/70">
               {renderInlineStyles(cleanItem)}
             </li>
           );
         });
 
         return isOrdered ? (
-          <ol key={index} className="list-decimal list-inside pl-4 mb-6 space-y-2 text-lg text-white/70">
+          <ol key={index} className="list-decimal list-outside pl-7 mb-6 space-y-2 text-lg text-white/70">
             {listContent}
           </ol>
         ) : (
-          <ul key={index} className="list-disc list-inside pl-4 mb-6 space-y-2 text-lg text-white/70">
+          <ul key={index} className="list-disc list-outside pl-7 mb-6 space-y-2 text-lg text-white/70">
             {listContent}
           </ul>
         );

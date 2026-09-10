@@ -435,4 +435,51 @@
   }
 }
 
+/* ===============================
+   BLOG PROSE & EDITOR LIST STYLING
+================================ */
+.blog-prose ul,
+.rich-editor-content ul {
+  list-style-type: disc !important;
+  list-style-position: outside !important;
+  padding-left: 1.75rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.blog-prose ol,
+.rich-editor-content ol {
+  list-style-type: decimal !important;
+  list-style-position: outside !important;
+  padding-left: 1.75rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.blog-prose li,
+.rich-editor-content li {
+  margin-top: 0.35rem !important;
+  margin-bottom: 0.35rem !important;
+  line-height: 1.7 !important;
+}
+
+.blog-prose li p,
+.rich-editor-content li p {
+  display: inline !important;
+  margin: 0 !important;
+}
+
+.blog-prose ul ul,
+.blog-prose ul ol,
+.blog-prose ol ul,
+.blog-prose ol ol,
+.rich-editor-content ul ul,
+.rich-editor-content ul ol,
+.rich-editor-content ol ul,
+.rich-editor-content ol ol {
+  margin-top: 0.25rem !important;
+  margin-bottom: 0.25rem !important;
+}
+
+
 
