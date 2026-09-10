@@ -2,12 +2,12 @@
   "redirects": [
     {
       "source": "/blog",
-      "destination": "/blogs",
+      "destination": "https://www.magdio.com/blogs",
       "permanent": true
     },
     {
       "source": "/blog/:slug*",
-      "destination": "/blogs/:slug*",
+      "destination": "https://www.magdio.com/blogs/:slug*",
       "permanent": true
     }
   ],

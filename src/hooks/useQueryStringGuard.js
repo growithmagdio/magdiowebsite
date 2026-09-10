@@ -11,23 +11,34 @@ export default function useQueryStringGuard() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href);
-      let isPolluted = false;
+      let needsRedirect = false;
 
-      // Define cache-busting parameters to check and remove
+      // 1. Force www domain on magdio.com
+      if (url.hostname === 'magdio.com') {
+        url.hostname = 'www.magdio.com';
+        needsRedirect = true;
+      }
+
+      // 2. Normalize /blog to /blogs
+      if (url.pathname === '/blog' || url.pathname === '/blog/') {
+        url.pathname = '/blogs';
+        needsRedirect = true;
+      } else if (url.pathname.startsWith('/blog/')) {
+        url.pathname = url.pathname.replace(/^\/blog\//, '/blogs/');
+        needsRedirect = true;
+      }
+
+      // 3. Remove cache-busting query parameters
       const cacheBustingParams = ['v', 'version', 'cache', 'timestamp', 'random', 'cachebuster'];
-
       cacheBustingParams.forEach(param => {
         if (url.searchParams.has(param)) {
           url.searchParams.delete(param);
-          isPolluted = true;
+          needsRedirect = true;
         }
       });
 
-      if (isPolluted) {
-        // Construct the clean relative URL
-        const cleanUrl = url.pathname + url.search + url.hash;
-        // Replace URL in browser history without triggering full page reload
-        window.history.replaceState(null, '', cleanUrl);
+      if (needsRedirect) {
+        window.location.replace(url.toString());
       }
     }
   }, [location.pathname, location.search]);
