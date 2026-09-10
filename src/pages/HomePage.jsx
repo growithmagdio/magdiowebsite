@@ -12,6 +12,7 @@ const TestimonialsSection = lazy(() => import('../components/home/TestimonialsSe
 const StatsSection = lazy(() => import('../components/home/StatsSection'));
 const EnquirySection = lazy(() => import('../components/home/EnquirySection'));
 const FAQSection = lazy(() => import('../components/home/FAQSection'));
+const BlogSection = lazy(() => import('../components/home/BlogSection'));
 const CTABanner = lazy(() => import('../components/home/CTABanner'));
 
 export default function HomePage() {
@@ -46,6 +47,7 @@ export default function HomePage() {
         <ProcessSection />
         <TestimonialsSection />
         <StatsSection />
+        <BlogSection />
         <EnquirySection />
         <FAQSection />
         <CTABanner />
