@@ -20,12 +20,12 @@ const cleanEnvValue = (val) => {
 };
 
 const firebaseConfig = {
-  apiKey: cleanEnvValue(import.meta.env.VITE_FIREBASE_API_KEY),
-  authDomain: cleanEnvValue(import.meta.env.VITE_FIREBASE_AUTH_DOMAIN),
-  projectId: cleanEnvValue(import.meta.env.VITE_FIREBASE_PROJECT_ID),
-  storageBucket: cleanEnvValue(import.meta.env.VITE_FIREBASE_STORAGE_BUCKET),
-  messagingSenderId: cleanEnvValue(import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID),
-  appId: cleanEnvValue(import.meta.env.VITE_FIREBASE_APP_ID),
+  apiKey: cleanEnvValue(import.meta.env.VITE_FIREBASE_API_KEY) || "AIzaSyCkoZ8rKY9MDDqXmgxLFXrv6_LFrELvBwY",
+  authDomain: cleanEnvValue(import.meta.env.VITE_FIREBASE_AUTH_DOMAIN) || "magdio-blog.firebaseapp.com",
+  projectId: cleanEnvValue(import.meta.env.VITE_FIREBASE_PROJECT_ID) || "magdio-blog",
+  storageBucket: cleanEnvValue(import.meta.env.VITE_FIREBASE_STORAGE_BUCKET) || "magdio-blog.firebasestorage.app",
+  messagingSenderId: cleanEnvValue(import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID) || "271550466197",
+  appId: cleanEnvValue(import.meta.env.VITE_FIREBASE_APP_ID) || "1:271550466197:web:da103f06ec2fe99b19339c",
 };
 
 // A valid Firebase config must have a non-empty apiKey and projectId (and not just empty quotes)

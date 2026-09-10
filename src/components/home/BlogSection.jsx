@@ -25,7 +25,17 @@ export default function BlogSection() {
     };
 
     loadLatestBlogs();
-    return () => { isMounted = false; };
+
+    const handleUpdate = () => {
+      loadLatestBlogs();
+    };
+
+    window.addEventListener('magdio_blogs_updated', handleUpdate);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener('magdio_blogs_updated', handleUpdate);
+    };
   }, []);
 
   if (!loading && blogs.length === 0) return null;

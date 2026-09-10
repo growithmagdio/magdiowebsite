@@ -389,7 +389,9 @@ export default function AdminPage() {
         }
         cancelEdit();
       }
+      await loadBlogsList();
       checkLocalCount();
+      setActiveTab('manage');
     } catch (error) {
       console.error('Error publishing blog post:', error);
       setStatus({

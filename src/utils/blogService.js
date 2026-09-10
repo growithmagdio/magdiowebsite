@@ -352,9 +352,15 @@ export const fetchBlogById = async (idOrSlug) => {
   throw new Error(`Blog article not found for: ${idOrSlug}`);
 };
 
+const notifyBlogUpdate = () => {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('magdio_blogs_updated'));
+  }
+};
+
 // Create a new blog post
 export const createBlogPost = async (blogData) => {
-  const wordCount = blogData.content ? blogData.content.split(/\s+/).length : 0;
+  const wordCount = blogData.content ? blogData.content.replace(/<[^>]*>/g, '').split(/\s+/).length : 0;
   const readTimeMin = Math.max(1, Math.ceil(wordCount / 200));
   const postToSave = {
     ...blogData,
@@ -362,6 +368,7 @@ export const createBlogPost = async (blogData) => {
     date: blogData.date || formatDate(new Date()),
   };
 
+  let firestoreResult = null;
   let firestoreError = null;
 
   if (db) {
@@ -370,36 +377,41 @@ export const createBlogPost = async (blogData) => {
         ...postToSave,
         createdAt: serverTimestamp(),
       });
-      return { id: docRef.id, storage: 'firestore' };
+      firestoreResult = { id: docRef.id, storage: 'firestore' };
     } catch (error) {
       console.warn('Error creating post in Firestore, falling back to Local Storage:', error);
       firestoreError = error.message || 'Firestore access denied or network error';
     }
   }
 
-  // Local Storage Save
+  // Local Storage Save (always cache locally for instant local availability)
   try {
     const localData = localStorage.getItem('magdio_local_blogs');
     const localBlogs = localData ? JSON.parse(localData) : [];
     
     const newBlog = {
       ...postToSave,
-      id: `local_${Date.now()}`,
+      id: firestoreResult ? firestoreResult.id : `local_${Date.now()}`,
       createdAt: new Date().toISOString(),
     };
     
-    localBlogs.push(newBlog);
+    localBlogs.unshift(newBlog);
     localStorage.setItem('magdio_local_blogs', JSON.stringify(localBlogs));
+    notifyBlogUpdate();
+
+    if (firestoreResult) return firestoreResult;
     return { id: newBlog.id, storage: 'local', warning: firestoreError };
   } catch (err) {
     console.error('Error writing blog to Local Storage:', err);
+    notifyBlogUpdate();
+    if (firestoreResult) return firestoreResult;
     throw err;
   }
 };
 
 // Update an existing blog post
 export const updateBlogPost = async (id, blogData) => {
-  const wordCount = blogData.content ? blogData.content.split(/\s+/).length : 0;
+  const wordCount = blogData.content ? blogData.content.replace(/<[^>]*>/g, '').split(/\s+/).length : 0;
   const readTimeMin = Math.max(1, Math.ceil(wordCount / 200));
   const postToSave = {
     ...blogData,
@@ -413,7 +425,6 @@ export const updateBlogPost = async (id, blogData) => {
         ...postToSave,
         updatedAt: serverTimestamp()
       });
-      return { success: true, storage: 'firestore' };
     } catch (error) {
       console.warn('Error updating post in Firestore, falling back to Local Storage:', error);
     }
@@ -440,9 +451,11 @@ export const updateBlogPost = async (id, blogData) => {
     }
     
     localStorage.setItem('magdio_local_blogs', JSON.stringify(localBlogs));
-    return { success: true, storage: 'local' };
+    notifyBlogUpdate();
+    return { success: true, storage: 'firestore' };
   } catch (err) {
     console.error('Error updating blog in Local Storage:', err);
+    notifyBlogUpdate();
     throw err;
   }
 };
@@ -464,9 +477,11 @@ export const deleteBlogPost = async (id) => {
     const localBlogs = localData ? JSON.parse(localData) : [];
     const filteredBlogs = localBlogs.filter(b => b.id !== id);
     localStorage.setItem('magdio_local_blogs', JSON.stringify(filteredBlogs));
+    notifyBlogUpdate();
     return true;
   } catch (err) {
     console.error('Error deleting blog from Local Storage:', err);
+    notifyBlogUpdate();
     throw err;
   }
 };

@@ -10,19 +10,34 @@ export default function BlogPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const loadBlogs = async () => {
       try {
         setLoading(true);
         const data = await fetchBlogs();
-        setBlogs(data);
+        if (isMounted) {
+          setBlogs(data);
+        }
       } catch (error) {
         console.error('Error fetching blogs:', error);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     loadBlogs();
+
+    const handleUpdate = () => {
+      loadBlogs();
+    };
+
+    window.addEventListener('magdio_blogs_updated', handleUpdate);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener('magdio_blogs_updated', handleUpdate);
+    };
   }, []);
 
   return (
