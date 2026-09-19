@@ -1,4 +1,4 @@
-import { db, auth, storage } from '../firebase';
+import { db, auth, storage } from '../firebase.js';
 import { 
   collection, 
   getDocs, 

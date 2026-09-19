@@ -40,11 +40,29 @@ export default function BlogPage() {
     };
   }, []);
 
+  const blogListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Magdio Digital Marketing & AI Growth Blog",
+    "description": "Thoughts, news, and perspectives on design, technology, and digital growth from the experts at Magdio.",
+    "url": "https://www.magdio.com/blog",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Magdio",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.magdio.com/favicon.png"
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen pt-28 pb-16 md:pt-32 md:pb-20">
       <SEO 
         title="Our Insights & Blog | Digital Marketing Resources | Magdio" 
         description="Thoughts, news, and perspectives on design, technology, and digital growth from the experts at Magdio." 
+        canonicalUrl="https://www.magdio.com/blog"
+        jsonLd={blogListJsonLd}
       />
       
       {/* Background elements */}

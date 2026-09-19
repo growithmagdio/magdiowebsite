@@ -19,13 +19,15 @@ const cleanEnvValue = (val) => {
   return clean;
 };
 
+const getEnv = (key) => (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env[key] : (typeof process !== 'undefined' && process.env ? process.env[key] : ''));
+
 const firebaseConfig = {
-  apiKey: cleanEnvValue(import.meta.env.VITE_FIREBASE_API_KEY) || "AIzaSyCkoZ8rKY9MDDqXmgxLFXrv6_LFrELvBwY",
-  authDomain: cleanEnvValue(import.meta.env.VITE_FIREBASE_AUTH_DOMAIN) || "magdio-blog.firebaseapp.com",
-  projectId: cleanEnvValue(import.meta.env.VITE_FIREBASE_PROJECT_ID) || "magdio-blog",
-  storageBucket: cleanEnvValue(import.meta.env.VITE_FIREBASE_STORAGE_BUCKET) || "magdio-blog.firebasestorage.app",
-  messagingSenderId: cleanEnvValue(import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID) || "271550466197",
-  appId: cleanEnvValue(import.meta.env.VITE_FIREBASE_APP_ID) || "1:271550466197:web:da103f06ec2fe99b19339c",
+  apiKey: cleanEnvValue(getEnv('VITE_FIREBASE_API_KEY')) || "AIzaSyCkoZ8rKY9MDDqXmgxLFXrv6_LFrELvBwY",
+  authDomain: cleanEnvValue(getEnv('VITE_FIREBASE_AUTH_DOMAIN')) || "magdio-blog.firebaseapp.com",
+  projectId: cleanEnvValue(getEnv('VITE_FIREBASE_PROJECT_ID')) || "magdio-blog",
+  storageBucket: cleanEnvValue(getEnv('VITE_FIREBASE_STORAGE_BUCKET')) || "magdio-blog.firebasestorage.app",
+  messagingSenderId: cleanEnvValue(getEnv('VITE_FIREBASE_MESSAGING_SENDER_ID')) || "271550466197",
+  appId: cleanEnvValue(getEnv('VITE_FIREBASE_APP_ID')) || "1:271550466197:web:da103f06ec2fe99b19339c",
 };
 
 // A valid Firebase config must have a non-empty apiKey and projectId (and not just empty quotes)

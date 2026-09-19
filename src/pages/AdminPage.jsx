@@ -35,6 +35,7 @@ import {
 } from '../utils/blogService';
 import { db } from '../firebase';
 import RichTextEditor from '../components/admin/RichTextEditor';
+import SEO from '../components/SEO';
 
 export default function AdminPage() {
   // Auth state
@@ -426,6 +427,7 @@ export default function AdminPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen pt-32 pb-20 relative flex items-center justify-center bg-brand-dark px-6">
+        <SEO title="Admin Portal | Magdio" noindex={true} />
         {/* Background glows */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <div className="absolute top-[20%] right-[10%] w-[35rem] h-[35rem] bg-brand-blue/15 rounded-full blur-[110px]"></div>
@@ -535,7 +537,7 @@ export default function AdminPage() {
   // Dashboard Screen (Authenticated)
   return (
     <div className="min-h-screen pt-32 pb-20 relative bg-brand-dark">
-      
+      <SEO title="Admin Console | Magdio" noindex={true} />
       {/* Background glow */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[30%] right-[10%] w-[30rem] h-[30rem] bg-brand-blue/10 rounded-full blur-[100px]"></div>
