@@ -11,8 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DIST_DIR = path.join(__dirname, 'dist');
 const PUBLIC_DIR = path.join(__dirname, 'public');
-const BASE_URL = 'https://www.magdio.com';
-const SERVER_PORT = 41733;
+const SERVER_PORT = 0;
 
 function writeHtmlFile(filePath, htmlContent) {
   const dir = path.dirname(filePath);
@@ -28,11 +27,7 @@ function getSystemChromePath() {
     'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
     'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-    'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
-    '/usr/bin/google-chrome',
-    '/usr/bin/chromium',
-    '/usr/bin/chromium-browser',
-    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe'
   ];
 
   for (const p of possiblePaths) {
@@ -45,57 +40,7 @@ function getSystemChromePath() {
 
 async function fetchFirestoreBlogs() {
   let firestoreBlogs = [];
-  try {
-    const res = await fetch(
-      'https://firestore.googleapis.com/v1/projects/growth-studio-2026/databases/(default)/documents/blogs',
-      { signal: AbortSignal.timeout(6000) }
-    );
-    if (res.ok) {
-      const data = await res.json();
-      if (data.documents && Array.isArray(data.documents)) {
-        firestoreBlogs = data.documents.map(doc => {
-          const fields = doc.fields || {};
-          const docId = doc.name.split('/').pop();
-          const title = fields.title?.stringValue || 'Untitled Article';
-          const rawContent = fields.content?.stringValue || '';
-          const snippet = rawContent.replace(/<[^>]*>/g, '').replace(/[\s\n]+/g, ' ').trim();
-          const excerpt = fields.excerpt?.stringValue || (snippet ? snippet.slice(0, 160) + '...' : 'Read full article for insights.');
-          const slug = fields.slug?.stringValue || title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
-          
-          return {
-            id: docId,
-            slug,
-            title,
-            excerpt,
-            content: rawContent,
-            author: fields.author?.stringValue || 'Admin',
-            category: fields.category?.stringValue || 'Technology',
-            readTime: fields.readTime?.stringValue || '5 min read',
-            date: fields.date?.stringValue || 'Oct 2026',
-            imageUrl: fields.imageUrl?.stringValue || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
-            metaTitle: fields.metaTitle?.stringValue || `${title} | Magdio`,
-            metaDescription: fields.metaDescription?.stringValue || excerpt,
-            canonicalUrl: fields.canonicalUrl?.stringValue || `${BASE_URL}/blog/${slug}`
-          };
-        });
-      }
-    }
-  } catch (err) {
-    console.warn('⚠️ Firestore fetch during build skipped, falling back to mock blogs:', err.message);
-  }
-
-  const allSources = [...firestoreBlogs, ...mockBlogs];
-  const seenSlugs = new Set();
-  const uniqueBlogs = [];
-
-  for (const blog of allSources) {
-    const slug = (blog.slug || blog.id || '').toLowerCase().trim();
-    if (!slug || seenSlugs.has(slug)) continue;
-    seenSlugs.add(slug);
-    uniqueBlogs.push(blog);
-  }
-
-  return uniqueBlogs;
+  return firestoreBlogs;
 }
 
 function startLocalStaticServer(distDir, port) {
@@ -150,8 +95,9 @@ function startLocalStaticServer(distDir, port) {
 
   return new Promise((resolve) => {
     server.listen(port, '127.0.0.1', () => {
-      console.log(`🌐 Local static preview server running at http://127.0.0.1:${port}`);
-      resolve(server);
+      const activePort = server.address().port;
+      console.log(`🌐 Local static preview server running at http://127.0.0.1:${activePort}`);
+      resolve({ server, port: activePort });
     });
   });
 }
@@ -269,19 +215,29 @@ async function runPrerender() {
 
   console.log(`📋 Total routes queued for pre-rendering: ${routesToPrerender.size}`);
 
-  const server = await startLocalStaticServer(DIST_DIR, SERVER_PORT);
+  const { server, port: activePort } = await startLocalStaticServer(DIST_DIR, SERVER_PORT);
 
   const executablePath = getSystemChromePath();
   console.log(`🌐 Launching headless browser for static rendering... ${executablePath ? `(Using system browser: ${executablePath})` : ''}`);
 
+  const tmpUserDataDir = path.join(__dirname, 'scratch', `chrome_data_${Date.now()}`);
+  fs.mkdirSync(tmpUserDataDir, { recursive: true });
+
   const launchOptions = {
-    headless: true,
+    headless: 'shell',
     args: [
+      '--headless=shell',
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--disable-dev-shm-usage',
       '--disable-gpu',
-      '--no-first-run'
+      '--no-first-run',
+      '--disable-background-networking',
+      '--disable-default-apps',
+      '--disable-extensions',
+      '--disable-sync',
+      '--disable-translate',
+      `--user-data-dir=${tmpUserDataDir}`
     ]
   };
 
@@ -299,13 +255,31 @@ async function runPrerender() {
   let renderedCount = 0;
 
   for (const route of routesToPrerender) {
-    const targetUrl = `http://127.0.0.1:${SERVER_PORT}${route}`;
+    const targetUrl = `http://127.0.0.1:${activePort}${route}`;
+    console.log(`⏳ Pre-rendering route: ${route}...`);
     try {
-      await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 20000 });
-      // Wait for React app to mount and render content in #root
-      await page.waitForSelector('#root > *', { timeout: 15000 });
-      // Small pause to allow Suspense components and React Helmet tags to populate
-      await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 400)));
+      await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      
+      // Wait for actual page content (heading, main section, title) to be populated in #root
+      await page.waitForFunction(() => {
+        const root = document.querySelector('#root');
+        if (!root) return false;
+        
+        // Ensure PageLoader spinner is gone
+        if (root.querySelector('.animate-spin')) return false;
+
+        // Check if meaningful content elements exist inside root
+        const h1 = root.querySelector('h1');
+        const main = root.querySelector('main');
+        const heading = root.querySelector('h2, h3, h4');
+
+        return (h1 && h1.innerText.trim().length > 0) || 
+               (main && main.innerText.trim().length > 50) || 
+               (heading && heading.innerText.trim().length > 0);
+      }, { timeout: 8000 });
+
+      // Small extra pause to allow React Helmet tags (title, meta, canonical) to flush
+      await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 150)));
 
       const pageHtml = await page.content();
 
