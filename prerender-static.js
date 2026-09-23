@@ -9,7 +9,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const DIST_DIR = path.join(__dirname, 'dist');
-const PUBLIC_DIR = path.join(__dirname, 'public');
 const BASE_URL = 'https://www.magdio.com';
 
 function writeHtmlFile(filePath, htmlContent) {
@@ -87,10 +86,13 @@ const renderFooterHtml = () => `
 function buildFullHtmlPage(templateHtml, pageData) {
   const { title, description, canonicalUrl, bodyContent, currentPath } = pageData;
   
-  // Replace <title>
-  let html = templateHtml.replace(/<title>.*?<\/title>/gi, `<title>${title}</title>`);
-  
-  // Replace or inject meta description & canonical
+  // Clean existing title, description, og, canonical tags
+  let html = templateHtml
+    .replace(/<title>.*?<\/title>/gi, '')
+    .replace(/<meta\s+name=["']description["'][^>]*>/gi, '')
+    .replace(/<meta\s+property=["']og:[^"']+["'][^>]*>/gi, '')
+    .replace(/<link\s+rel=["']canonical["'][^>]*>/gi, '');
+
   const headInject = `
     <title>${title}</title>
     <meta name="description" content="${description.replace(/"/g, '&quot;')}">
@@ -103,23 +105,21 @@ function buildFullHtmlPage(templateHtml, pageData) {
   
   html = html.replace('</head>', `${headInject}\n</head>`);
   
-  // Inject rendered body content into <div id="root">
   const fullRootInner = `
-    <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col bg-transparent">
+    <div class="overflow-x-hidden w-full relative min-h-screen flex flex-col bg-transparent">
       ${renderHeaderHtml(currentPath)}
-      <div className="flex-grow pt-24">
+      <div class="flex-grow pt-24">
         ${bodyContent}
       </div>
       ${renderFooterHtml()}
     </div>
-  `.replace(/className=/g, 'class=');
+  `;
 
   html = html.replace('<div id="root"></div>', `<div id="root">${fullRootInner}</div>`);
   
   return html;
 }
 
-// ── SERVICE TEMPLATE RENDERER ──
 function renderServiceContent(service) {
   const faqs = service.faqs || [
     { q: 'How do you customize this service for our business?', a: 'We perform an in-depth audit of your current tech stack, target audience, and market objectives to create a tailored execution strategy.' },
@@ -129,7 +129,6 @@ function renderServiceContent(service) {
 
   return `
     <main class="page-bg min-h-screen bg-[#03030b] text-white py-12 px-6 max-w-7xl mx-auto">
-      <!-- Breadcrumb -->
       <nav class="text-xs text-white/50 mb-6 flex items-center gap-2">
         <a href="/" class="hover:text-white">Home</a> &gt;
         <a href="/services" class="hover:text-white">Services</a> &gt;
@@ -137,7 +136,6 @@ function renderServiceContent(service) {
         <span class="text-brand-yellow font-medium">${service.title}</span>
       </nav>
 
-      <!-- Hero Header -->
       <section class="text-center py-12 border-b border-white/10">
         <div class="inline-block px-4 py-1.5 rounded-full border border-brand-purple/40 bg-brand-purple/10 text-brand-lightblue text-xs font-bold uppercase tracking-widest mb-4">
           ✦ MAGDIO Professional ${service.category || 'Services'}
@@ -154,7 +152,6 @@ function renderServiceContent(service) {
         </div>
       </section>
 
-      <!-- Service Overview -->
       <section class="py-16 border-b border-white/10">
         <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-6">Service Overview</h2>
         <p class="text-base text-white/70 leading-relaxed max-w-4xl">
@@ -162,7 +159,6 @@ function renderServiceContent(service) {
         </p>
       </section>
 
-      <!-- Key Features -->
       ${service.features && service.features.length ? `
       <section class="py-16 border-b border-white/10">
         <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-8">Key Capabilities &amp; Features</h2>
@@ -177,7 +173,6 @@ function renderServiceContent(service) {
       </section>
       ` : ''}
 
-      <!-- Core Benefits -->
       ${service.benefits && service.benefits.length ? `
       <section class="py-16 border-b border-white/10">
         <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-8">Core Benefits &amp; Impact</h2>
@@ -192,7 +187,6 @@ function renderServiceContent(service) {
       </section>
       ` : ''}
 
-      <!-- Tools & Platforms -->
       ${service.tools && service.tools.length ? `
       <section class="py-16 border-b border-white/10">
         <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-8">Tools, Platforms &amp; Technologies</h2>
@@ -206,7 +200,6 @@ function renderServiceContent(service) {
       </section>
       ` : ''}
 
-      <!-- Frequently Asked Questions -->
       <section class="py-16 border-b border-white/10">
         <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-8">Frequently Asked Questions</h2>
         <div class="space-y-6 max-w-4xl">
@@ -219,7 +212,6 @@ function renderServiceContent(service) {
         </div>
       </section>
 
-      <!-- CTA Section -->
       <section class="py-16 text-center">
         <h2 class="font-display font-bold text-3xl text-white mb-4">Ready to Accelerate Your Growth?</h2>
         <p class="text-white/60 mb-8">Partner with MAGDIO to deploy tailored ${service.title} strategies.</p>
@@ -229,7 +221,6 @@ function renderServiceContent(service) {
   `;
 }
 
-// ── LANDING PAGE CONTENT RENDERER ──
 function renderLandingPageContent(pageKey) {
   const landingData = {
     'digital-marketing': {
@@ -248,95 +239,93 @@ function renderLandingPageContent(pageKey) {
     },
     'geo-services': {
       h1: 'GEO Services Agency Chennai',
-      title: 'GEO Services Agency in Chennai | MAGDIO AI Search',
-      desc: 'Get your business recommended by ChatGPT, Google Gemini, Claude, and Perplexity with Magdio Generative Engine Optimization (GEO) services in Chennai.',
-      overview: 'Generative Engine Optimization (GEO) ensures your brand is recommended by AI search assistants and LLM conversational engines when buyers search online.',
-      services: ['AI Search Visibility Audits', 'Entity & Schema Architecture', 'Conversational Answer Optimization', 'Brand Authority Citations', 'Perplexity & ChatGPT Search Placements']
+      title: 'GEO Services Agency In Chennai | MAGDIO',
+      desc: 'Generative Engine Optimization (GEO) services in Chennai. Get your brand recommended by ChatGPT, Claude, Perplexity, and Google Gemini.',
+      overview: 'Traditional SEO is no longer enough. Modern buyers consult AI assistants. GEO ensures your brand is indexed and recommended by AI engines.',
+      services: ['AI Engine Optimization', 'Brand Entity Building', 'Generative Search Schema', 'LLM Citation Network']
     },
     'social-media': {
       h1: 'Social Media Marketing Agency In Chennai',
-      title: 'Best Social Media Marketing Agency In Chennai | MAGDIO',
-      desc: 'Scale your brand engagement with Magdio — leading social media marketing agency in Chennai. Creative campaigns across Instagram, Facebook, and LinkedIn.',
-      overview: 'Build an engaged audience and turn social media interactions into predictable customer pipelines through creative storytelling and paid ad channels.',
-      services: ['Instagram Reels & Content Creation', 'Community Management', 'Meta Paid Ads Campaigns', 'Influencer Marketing', 'B2B LinkedIn Content']
+      title: 'Social Media Marketing Agency In Chennai | MAGDIO',
+      desc: 'Build high-converting social media campaigns across Instagram, Facebook, LinkedIn, and YouTube with Chennai\'s top social media agency.',
+      overview: 'Social media is the heartbeat of digital engagement. We create high-impact visual content, viral reels, and strategic ad campaigns.',
+      services: ['Instagram Reels Strategy', 'Facebook Ad Management', 'LinkedIn Thought Leadership', 'Community Growth']
     },
     'google-ads': {
-      h1: 'Google Ads Agency Chennai',
-      title: 'Google Ads Agency in Chennai | MAGDIO Performance PPC',
-      desc: 'Capture high-intent customer traffic with Magdio Google Ads agency in Chennai. Certified PPC experts managing Search, Shopping, and Display campaigns.',
-      overview: 'Stop wasting ad spend. We build hyper-targeted Google Search & Shopping campaigns that maximize lead intent and minimize cost per acquisition.',
-      services: ['Search Ads Strategy', 'Shopping & Performance Max', 'Conversion Rate Optimization', 'Negative Keyword Audits', 'A/B Ad Testing']
+      h1: 'Google Ads Agency In Chennai',
+      title: 'Google Ads Agency In Chennai | MAGDIO',
+      desc: 'Maximize ROAS with Chennai\'s leading Google Ads agency. Certified experts managing Search, Performance Max, Display, and Shopping ads.',
+      overview: 'High-intent searchers are actively looking for your products. We build data-driven Google Ads campaigns that convert high-value clicks into revenue.',
+      services: ['Google Search Ads', 'Performance Max (PMax)', 'Google Shopping Ads', 'Conversion Rate Optimization']
     },
     'performance-marketing': {
-      h1: 'Best Performance Marketing Agency In Chennai',
-      title: 'Best Performance Marketing Agency In Chennai | MAGDIO',
-      desc: 'Drive measurable ROI with Magdio — top performance marketing agency in Chennai. Scalable paid media campaigns, server-side tracking, and conversion funnels.',
-      overview: 'Every marketing dollar spent must deliver clear revenue return. We design server-side tracked performance campaigns across Search, Social, and Display channels.',
-      services: ['Multi-Channel Paid Media', 'Server-Side Conversion Tracking', 'Funnel Optimization', 'Customer Acquisition Cost Reduction', 'ROAS Optimization']
+      h1: 'Performance Marketing Agency In Chennai',
+      title: 'Performance Marketing Agency In Chennai | MAGDIO',
+      desc: 'Scalable performance marketing campaigns focused on low CPA, high ROAS, and verified revenue attribution.',
+      overview: 'We combine paid media, real-time analytics, server-side conversion tracking, and landing page engineering to scale your sales funnel.',
+      services: ['Paid Acquisition', 'CPA Optimization', 'Attribution Modeling', 'Full-Funnel Scaling']
     },
     'meta-ads': {
       h1: 'Meta Ads Agency In Chennai',
-      title: 'Meta Ads Agency in Chennai | MAGDIO Facebook & Instagram Ads',
-      desc: 'Scale your ecommerce sales and lead gen with Magdio Meta Ads agency in Chennai. High-converting creative design and laser-targeted audience funnels.',
-      overview: 'Harness Meta’s machine learning algorithms with scroll-stopping video creatives, dynamic product catalogs, and precise audience retargeting.',
-      services: ['Facebook & Instagram Ad Creatives', 'Custom & Lookalike Audiences', 'Dynamic Product Catalog Ads', 'Full Funnel Retargeting', 'CAPI Server Tracking']
+      title: 'Meta Ads Agency In Chennai | MAGDIO',
+      desc: 'High-converting Facebook & Instagram ad campaigns that scale ecommerce brands and B2B lead generation.',
+      overview: 'Leverage Meta\'s AI targeting algorithms with scroll-stopping creatives and high-converting funnel design.',
+      services: ['Facebook Ads', 'Instagram Retargeting', 'DPA Catalog Sales', 'Video Ad Production']
     },
     'linkedin-ads': {
-      h1: 'LinkedIn Marketing & B2B Marketing In Chennai',
-      title: 'LinkedIn Ads & B2B Marketing Agency In Chennai | MAGDIO',
-      desc: 'Target corporate decision-makers with Magdio B2B LinkedIn marketing agency in Chennai. Account-based marketing (ABM) and lead generation campaigns.',
-      overview: 'Connect directly with executives, procurement managers, and B2B buyers through Account-Based Marketing (ABM) and targeted LinkedIn Sponsored Content.',
-      services: ['Account-Based Marketing (ABM)', 'Lead Gen Forms Setup', 'InMail Sponsored Messages', 'Company Page Authority', 'B2B Funnel Nurturing']
+      h1: 'LinkedIn Marketing Agency In Chennai',
+      title: 'LinkedIn Marketing & B2B Agency In Chennai | MAGDIO',
+      desc: 'B2B lead generation agency in Chennai specializing in LinkedIn Ads, Account-Based Marketing (ABM), and high-ticket customer acquisition.',
+      overview: 'Reach key decision-makers and C-suite executives directly through targeted LinkedIn campaigns.',
+      services: ['LinkedIn InMail Ads', 'Lead Gen Forms', 'Account-Based Marketing', 'Executive Branding']
     },
     'youtube-ads': {
-      h1: 'YouTube Marketing Agency Chennai',
-      title: 'YouTube Marketing & Ads Agency in Chennai | MAGDIO',
-      desc: 'Engage video audiences with Magdio YouTube marketing agency in Chennai. High-impact video ad creation and targeted YouTube channel growth.',
-      overview: 'YouTube is the world’s 2nd largest search engine. We create in-stream and discovery video ads that capture viewer attention and drive conversions.',
-      services: ['In-Stream Video Ads', 'Discovery Video Search Ads', 'Bumper Ad Campaigns', 'Video Creative Scripting', 'Audience Interest Targeting']
+      h1: 'YouTube Marketing Agency In Chennai',
+      title: 'YouTube Marketing Agency In Chennai | MAGDIO',
+      desc: 'Drive massive brand awareness and targeted customer action with high-impact YouTube video ads.',
+      overview: 'YouTube is the world\'s 2nd largest search engine. We script, produce, and optimize video campaigns for maximum view-through conversions.',
+      services: ['In-Stream Video Ads', 'Bumper Ads', 'YouTube SEO', 'Audience Retargeting']
     },
     'whatsapp-marketing': {
       h1: 'WhatsApp Marketing Services In Chennai',
-      title: 'WhatsApp Marketing Services & Agency In Chennai | MAGDIO',
-      desc: 'Connect directly with customers using Magdio WhatsApp marketing services in Chennai. Official WhatsApp Business API setup, broadcast campaigns, and chatbots.',
-      overview: 'Achieve 90%+ open rates with official WhatsApp Business API integrations, automated customer support flows, and direct broadcast marketing.',
-      services: ['Official WhatsApp Business API', 'Automated Chatbot Workflows', 'Broadcast Campaign Strategy', 'CRM & E-Commerce Integration', 'Opt-in Customer Capture']
+      title: 'WhatsApp Marketing Services In Chennai | MAGDIO',
+      desc: 'Deploy automated WhatsApp broadcast campaigns, interactive chatbots, and transactional flows with 98% open rates.',
+      overview: 'Engage customers on their favorite messaging app with automated notification sequences and interactive commerce.',
+      services: ['WhatsApp API Integration', 'Broadcast Campaigns', 'Chatbot Automation', 'CRM Synchronization']
     }
   };
 
   const data = landingData[pageKey] || landingData['digital-marketing'];
-
   return `
     <main class="page-bg min-h-screen bg-[#03030b] text-white py-12 px-6 max-w-7xl mx-auto">
-      <nav class="text-xs text-white/50 mb-6 flex items-center gap-2">
-        <a href="/" class="hover:text-white">Home</a> &gt;
-        <a href="/services" class="hover:text-white">Services</a> &gt;
-        <span class="text-brand-yellow font-medium">${data.h1}</span>
-      </nav>
-
       <section class="text-center py-12 border-b border-white/10">
-        <div class="inline-block px-4 py-1.5 rounded-full border border-brand-yellow/30 bg-brand-yellow/10 text-brand-yellow text-xs font-bold uppercase tracking-widest mb-4">
-          ✦ MAGDIO Growth Studio
+        <div class="inline-block px-4 py-1.5 rounded-full border border-brand-purple/40 bg-brand-purple/10 text-brand-lightblue text-xs font-bold uppercase tracking-widest mb-4">
+          ✦ MAGDIO Growth Engine
         </div>
         <h1 class="font-display font-black text-4xl sm:text-6xl text-white mb-6 leading-tight">
           ${data.h1}
         </h1>
         <p class="text-lg sm:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed mb-8">
-          ${data.overview}
+          ${data.desc}
         </p>
         <div class="flex justify-center gap-4">
-          <a href="/contact" class="px-8 py-3.5 rounded-full font-bold text-white bg-gradient-to-r from-brand-blue to-brand-purple">Get Started</a>
-          <a href="https://wa.me/918838887303" target="_blank" class="px-8 py-3.5 rounded-full font-bold text-white border border-white/20">Talk To An Expert</a>
+          <a href="/contact" class="px-8 py-3.5 rounded-full font-bold text-white bg-gradient-to-r from-brand-blue to-brand-purple">Get Free Audit</a>
+          <a href="https://wa.me/918838887303" target="_blank" class="px-8 py-3.5 rounded-full font-bold text-white border border-white/20">Talk To Specialist</a>
         </div>
       </section>
 
       <section class="py-16 border-b border-white/10">
-        <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-8">Our Core Services &amp; Capabilities</h2>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-6">Overview &amp; Growth Strategy</h2>
+        <p class="text-base text-white/70 leading-relaxed max-w-4xl">${data.overview}</p>
+      </section>
+
+      <section class="py-16 border-b border-white/10">
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-8">Core Capabilities</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           ${data.services.map(s => `
             <div class="p-6 rounded-2xl bg-white/[0.03] border border-white/10">
-              <h3 class="font-bold text-white text-lg mb-2 text-brand-yellow">✓ ${s}</h3>
-              <p class="text-xs text-white/50">Customized execution of ${s} designed for maximum brand growth and lead acquisition.</p>
+              <span class="text-brand-yellow font-bold text-base mb-2 block">✓ ${s}</span>
+              <p class="text-xs text-white/50 leading-relaxed">Dedicated enterprise setup for ${s} engineered for revenue growth.</p>
             </div>
           `).join('')}
         </div>
@@ -353,32 +342,44 @@ function renderLandingPageContent(pageKey) {
 
 // ── MAIN RUNNER ──
 async function generateAllStaticPages() {
-  console.log('🚀 Running Instant Static HTML Pre-renderer for All 108 Routes...');
+  console.log('🚀 Running Automatic Static HTML Pre-renderer...');
 
-  const indexPath = path.join(DIST_DIR, 'index.html');
-  if (!fs.existsSync(indexPath)) {
-    console.error('❌ dist/index.html does not exist.');
+  // Always use the clean source template index.html from workspace root
+  const rootTemplatePath = path.join(__dirname, 'index.html');
+  const distIndexPath = path.join(DIST_DIR, 'index.html');
+  
+  let templateHtml = '';
+  if (fs.existsSync(rootTemplatePath)) {
+    templateHtml = fs.readFileSync(rootTemplatePath, 'utf-8');
+  } else if (fs.existsSync(distIndexPath)) {
+    templateHtml = fs.readFileSync(distIndexPath, 'utf-8');
+  } else {
+    console.error('❌ Root index.html does not exist.');
     process.exit(1);
   }
 
-  const templateHtml = fs.readFileSync(indexPath, 'utf-8');
   let generatedCount = 0;
+  let fileCount = 0;
+  const routeVerificationMap = new Map();
 
-  const processRoute = (route, pageData) => {
+  const processRoute = (route, pageData, expectedKeyword) => {
     const fullHtml = buildFullHtmlPage(templateHtml, pageData);
     
     if (route === '/') {
       writeHtmlFile(path.join(DIST_DIR, 'index.html'), fullHtml);
+      fileCount += 1;
     } else {
       const cleanPath = route.startsWith('/') ? route.slice(1) : route;
       writeHtmlFile(path.join(DIST_DIR, cleanPath, 'index.html'), fullHtml);
       writeHtmlFile(path.join(DIST_DIR, `${cleanPath}.html`), fullHtml);
+      fileCount += 2;
     }
     generatedCount++;
+    routeVerificationMap.set(route, { expectedKeyword: expectedKeyword || pageData.title, title: pageData.title });
     console.log(`  [${generatedCount}] ✅ Pre-rendered HTML for: ${route}`);
   };
 
-  // 1. Service Detail Pages from servicesData
+  // 1. Service Detail Pages from servicesData (Automatic discovery for all present & future services)
   servicesData.forEach(service => {
     const route = `/services/${service.id}`;
     const seoTitle = `${service.title} | ${service.category || 'Services'} | MAGDIO`;
@@ -390,7 +391,7 @@ async function generateAllStaticPages() {
       canonicalUrl: `${BASE_URL}${route}`,
       bodyContent: renderServiceContent(service),
       currentPath: route
-    });
+    }, service.title);
   });
 
   // 2. Service Category Pages
@@ -422,10 +423,10 @@ async function generateAllStaticPages() {
       canonicalUrl: `${BASE_URL}${route}`,
       bodyContent: catContent,
       currentPath: route
-    });
+    }, `${cat.toUpperCase()} Services`);
   });
 
-  // 3. Chennai & Tamil Nadu Landing Pages & Aliases
+  // 3. Regional Landing Pages & Aliases
   const landingRoutesMap = {
     '/digital-marketing-company-in-chennai-magdio': 'digital-marketing',
     '/digital-marketing-company-chennai-magdio': 'digital-marketing',
@@ -499,10 +500,10 @@ async function generateAllStaticPages() {
       canonicalUrl: `${BASE_URL}${route}`,
       bodyContent: content,
       currentPath: route
-    });
+    }, h1Title);
   });
 
-  // Also build core service alias routes (e.g. /services/digital-marketing, /services/seo-services, etc.)
+  // Alias routes
   const aliasToLandingMap = {
     '/services/digital-marketing': 'digital-marketing',
     '/services/seo-services': 'seo-services',
@@ -515,7 +516,16 @@ async function generateAllStaticPages() {
     '/services/meta-ads': 'meta-ads',
     '/services/linkedin-ads': 'linkedin-ads',
     '/services/youtube-ads': 'youtube-ads',
-    '/services/whatsapp-marketing': 'whatsapp-marketing'
+    '/services/whatsapp-marketing': 'whatsapp-marketing',
+    '/digital-marketing': 'digital-marketing',
+    '/seo': 'seo-services',
+    '/geo': 'geo-services',
+    '/social-media': 'social-media',
+    '/google-ads': 'google-ads',
+    '/meta-ads': 'meta-ads',
+    '/performance-marketing': 'performance-marketing',
+    '/linkedin-ads': 'linkedin-ads',
+    '/youtube-ads': 'youtube-ads'
   };
 
   Object.entries(aliasToLandingMap).forEach(([route, key]) => {
@@ -526,10 +536,10 @@ async function generateAllStaticPages() {
       canonicalUrl: `${BASE_URL}${route}`,
       bodyContent: content,
       currentPath: route
-    });
+    }, key.replace(/-/g, ' '));
   });
 
-  // 4. Industry Pages from industriesData
+  // 4. Industry Pages from industriesData (Automatic discovery for present & future industries)
   industriesData.forEach(ind => {
     const route = `/industries/${ind.id}`;
     const indContent = `
@@ -557,10 +567,10 @@ async function generateAllStaticPages() {
       canonicalUrl: `${BASE_URL}${route}`,
       bodyContent: indContent,
       currentPath: route
-    });
+    }, ind.name);
   });
 
-  // 5. Blog Detail Pages
+  // 5. Blog Detail Pages (Automatic discovery for present & future blogs)
   mockBlogs.forEach(blog => {
     const routes = [`/blog/${blog.slug}`, `/blogs/${blog.slug}`];
     const blogContent = `
@@ -581,7 +591,7 @@ async function generateAllStaticPages() {
         canonicalUrl: `${BASE_URL}${r}`,
         bodyContent: blogContent,
         currentPath: r
-      });
+      }, blog.title);
     });
   });
 
@@ -617,10 +627,10 @@ async function generateAllStaticPages() {
       canonicalUrl: `${BASE_URL}${route}`,
       bodyContent: csContent,
       currentPath: route
-    });
+    }, cs.title);
   });
 
-  // 7. Core Static Pages: /, /about, /contact, /portfolio, /services, /mission, /blog, /blogs
+  // 7. Core Static Pages
   const corePages = [
     { route: '/', title: 'Best Digital Marketing Agency in Chennai | MAGDIO', desc: 'MAGDIO — The AI Growth Studio. Boost your online presence with AI-powered digital marketing, SEO, web development, and branding.' },
     { route: '/about', title: 'About Us | MAGDIO — The AI Growth Studio', desc: 'Learn about MAGDIO, a premier AI growth studio in Chennai scaling brands with performance marketing, SEO, and software.' },
@@ -647,10 +657,87 @@ async function generateAllStaticPages() {
       canonicalUrl: `${BASE_URL}${p.route === '/' ? '' : p.route}`,
       bodyContent: pageContent,
       currentPath: p.route
-    });
+    }, p.title);
   });
 
-  console.log(`🎉 Static HTML Pre-rendering Finished! Successfully generated HTML for ${generatedCount} pages.`);
+  console.log(`\n🎉 Static HTML Pre-rendering Finished! Generated pre-rendered HTML for ${generatedCount} routes (${fileCount} files total).`);
+
+  // ── AUTOMATED VALIDATION & CONTENT UNIQUENESS TEST ──
+  console.log('\n🔍 Running Automated Pre-render Verification & Content Uniqueness Test across ALL routes...');
+  let validationFailed = false;
+  const contentHashes = new Map();
+
+  for (const [route, item] of routeVerificationMap.entries()) {
+    const cleanPath = route === '/' ? '' : (route.startsWith('/') ? route.slice(1) : route);
+    const indexPath = route === '/' ? path.join(DIST_DIR, 'index.html') : path.join(DIST_DIR, cleanPath, 'index.html');
+    const flatPath = route === '/' ? path.join(DIST_DIR, 'index.html') : path.join(DIST_DIR, `${cleanPath}.html`);
+
+    const fileToVerify = fs.existsSync(indexPath) ? indexPath : flatPath;
+    if (!fs.existsSync(fileToVerify)) {
+      console.error(`❌ Verification failed: Output HTML file for route "${route}" does NOT exist!`);
+      validationFailed = true;
+      continue;
+    }
+
+    const htmlContent = fs.readFileSync(fileToVerify, 'utf-8');
+    
+    // 1. File size check
+    if (htmlContent.length < 500) {
+      console.error(`❌ Verification failed: HTML file for "${route}" is suspiciously small (${htmlContent.length} bytes).`);
+      validationFailed = true;
+    }
+
+    // 2. Title tag check
+    if (!/<title>[\s\S]+?<\/title>/i.test(htmlContent)) {
+      console.error(`❌ Verification failed: Missing <title> tag for route "${route}".`);
+      validationFailed = true;
+    }
+
+    // 3. H1 tag check
+    if (!/<h1[^>]*>[\s\S]+?<\/h1>/i.test(htmlContent)) {
+      console.error(`❌ Verification failed: Missing <h1> tag for route "${route}".`);
+      validationFailed = true;
+    }
+
+    // 4. Expected Keyword / Page-specific content check
+    const expected = item.expectedKeyword;
+    if (expected && !htmlContent.toLowerCase().includes(expected.toLowerCase())) {
+      console.error(`❌ Verification failed: Page "${route}" does NOT contain expected specific content "${expected}".`);
+      validationFailed = true;
+    }
+
+    // 5. Uniqueness check across different routes
+    const mainMatch = htmlContent.match(/<main[\s\S]*?<\/main>/i);
+    const bodySnippet = mainMatch ? mainMatch[0].trim() : htmlContent;
+
+    if (contentHashes.has(bodySnippet)) {
+      const conflictingRoute = contentHashes.get(bodySnippet);
+      const routeKey1 = landingRoutesMap[route] || aliasToLandingMap[route];
+      const routeKey2 = landingRoutesMap[conflictingRoute] || aliasToLandingMap[conflictingRoute];
+
+      const isKnownAlias = (
+        (routeKey1 && routeKey2 && routeKey1 === routeKey2) ||
+        (route === '/blog' && conflictingRoute === '/blogs') ||
+        (route === '/blogs' && conflictingRoute === '/blog') ||
+        (route.startsWith('/blog/') && conflictingRoute.startsWith('/blogs/')) ||
+        (route.startsWith('/blogs/') && conflictingRoute.startsWith('/blog/'))
+      );
+
+      if (!isKnownAlias) {
+        console.error(`❌ Verification failed: Duplicate page content detected between "${route}" and "${conflictingRoute}"!`);
+        validationFailed = true;
+      }
+    } else {
+      contentHashes.set(bodySnippet, route);
+    }
+  }
+
+  if (validationFailed) {
+    console.error('\n❌ Build Error: Pre-render verification failed for one or more routes.');
+    process.exit(1);
+  }
+
+  console.log(`✅ AUTOMATED VERIFICATION PASSED: All ${generatedCount} routes are verified, contain unique initial HTML content, and pass structural checks!`);
 }
 
 generateAllStaticPages().catch(err => {

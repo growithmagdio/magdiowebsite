@@ -254,7 +254,7 @@ export const servicesData = [
   {
     id: 'google-search-console-setup',
     category: 'Analytics',
-    title: 'Search Console Setup',
+    title: 'Google Search Console Setup',
     subtitle: 'Monitor and maintain your site\'s presence in Google Search results.',
     heroImage: 'https://images.unsplash.com/photo-1572177812156-58036aae439c?auto=format&fit=crop&q=80',
     overview: 'We configure Google Search Console to monitor your organic performance, submit sitemaps, and identify technical indexing issues before they hurt your traffic.',
