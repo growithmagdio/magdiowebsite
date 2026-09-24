@@ -1,15 +1,8 @@
-import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams } from 'react-router-dom';
-
-function BlogIdRedirect() {
-  const { id } = useParams();
-  return <Navigate to={`/blogs/${id}`} replace />;
-}
+import { Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { lazy, Suspense } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
 import useQueryStringGuard from './hooks/useQueryStringGuard';
 
 // Lazy load non-critical visual background & widget overlays
@@ -17,50 +10,18 @@ const PremiumBackground = lazy(() => import('./components/PremiumBackground'));
 const FloatingElements  = lazy(() => import('./components/FloatingElements'));
 const PointerGlow       = lazy(() => import('./components/PointerGlow'));
 
-// Lazy load secondary pages for fast initial page loading times
-const ServicesPage         = lazy(() => import('./pages/ServicesPage'));
-const ServiceTemplate      = lazy(() => import('./pages/ServiceTemplate'));
-const DigitalMarketingPage = lazy(() => import('./pages/DigitalMarketingPage'));
-const IndustryTemplate     = lazy(() => import('./pages/IndustryTemplate'));
-const MissionPage     = lazy(() => import('./pages/MissionPage'));
-const PortfolioPage   = lazy(() => import('./pages/PortfolioPage'));
-const AboutPage       = lazy(() => import('./pages/AboutPage'));
-const BlogPage        = lazy(() => import('./pages/BlogPage'));
-const BlogDetailPage  = lazy(() => import('./pages/BlogDetailPage'));
-const AdminPage       = lazy(() => import('./pages/AdminPage'));
-const ContactPage     = lazy(() => import('./pages/ContactPage'));
-const SeoServicesPage      = lazy(() => import('./pages/SeoServicesPage'));
-const GeoServicesPage      = lazy(() => import('./pages/GeoServicesPage'));
-const SocialMediaMarketingPage = lazy(() => import('./pages/SocialMediaMarketingPage'));
-const GoogleAdsPage = lazy(() => import('./pages/GoogleAdsPage'));
-const PerformanceMarketingPage = lazy(() => import('./pages/PerformanceMarketingPage'));
-const LinkedInAdsPage = lazy(() => import('./pages/LinkedInAdsPage'));
-const YouTubeAdsPage = lazy(() => import('./pages/YouTubeAdsPage'));
-const MetaAdsPage = lazy(() => import('./pages/MetaAdsPage'));
-const WhatsAppMarketingPage = lazy(() => import('./pages/WhatsAppMarketingPage'));
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
-
-// Detailed Case Studies lazy loads
-const HaberLivingCaseStudy = lazy(() => import('./pages/case-studies/HaberLivingCaseStudy'));
-const AutomobileEcommerceCaseStudy = lazy(() => import('./pages/case-studies/AutomobileEcommerceCaseStudy'));
-const DreamzilCaseStudy = lazy(() => import('./pages/case-studies/DreamzilCaseStudy'));
-const OdooERPCaseStudy = lazy(() => import('./pages/case-studies/OdooERPCaseStudy'));
-const BittyClicksCaseStudy = lazy(() => import('./pages/case-studies/BittyClicksCaseStudy'));
-const BadieStudioCaseStudy = lazy(() => import('./pages/case-studies/BadieStudioCaseStudy'));
-const NammaMarktCaseStudy = lazy(() => import('./pages/case-studies/NammaMarktCaseStudy'));
-const SasvithaHomeFinanceCaseStudy = lazy(() => import('./pages/case-studies/SasvithaHomeFinanceCaseStudy'));
-
-
 function ScrollToTop() {
   const { pathname } = useLocation();
   useQueryStringGuard();
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'instant' // Instant scroll resets view without scrolling animations
-    });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'instant'
+      });
+    }
   }, [pathname]);
 
   return null;
@@ -84,7 +45,8 @@ function PageLoader() {
   );
 }
 
-function AnimatedRoutes() {
+export default function App() {
+  const [loadVisuals, setLoadVisuals] = useState(false);
   const location = useLocation();
   const isAdmin = location.pathname === '/admin';
   const activePageTransition = isAdmin
@@ -96,150 +58,8 @@ function AnimatedRoutes() {
       }
     : pageTransition;
 
-  return (
-    <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col">
-      <AnimatePresence mode="wait">
-        <motion.div key={location.pathname} {...activePageTransition} className="flex-grow">
-          <Suspense fallback={<PageLoader />}>
-            <Routes location={location}>
-              <Route path="/"                      element={<HomePage />} />
-              <Route path="/services"              element={<ServicesPage />} />
-              
-              {/* Digital Marketing Services */}
-              {/* Digital Marketing Services */}
-              <Route path="/services/digital-marketing" element={<Navigate to="/digital-marketing-company-in-chennai-magdio" replace />} />
-              <Route path="/digital-marketing" element={<Navigate to="/digital-marketing-company-in-chennai-magdio" replace />} />
-              <Route path="/digital-marketing-company-in-chennai-magdio" element={<DigitalMarketingPage />} />
-              <Route path="/digital-marketing-company-chennai-magdio" element={<DigitalMarketingPage />} />
-              <Route path="/digital-marketing-agency-in-chennai-magdio" element={<DigitalMarketingPage />} />
-              <Route path="/digital-marketing-agency-chennai-magdio" element={<DigitalMarketingPage />} />
-              <Route path="/digital-marketing-company-tamilnadu-magdio" element={<DigitalMarketingPage />} />
-              
-              {/* SEO Services */}
-              <Route path="/services/seo-services" element={<Navigate to="/seo-company-in-chennai-magdio" replace />} />
-              <Route path="/services/seo" element={<Navigate to="/seo-company-in-chennai-magdio" replace />} />
-              <Route path="/seo" element={<Navigate to="/seo-company-in-chennai-magdio" replace />} />
-              <Route path="/seo-company-in-chennai-magdio" element={<SeoServicesPage />} />
-              <Route path="/seo-company-chennai-magdio" element={<SeoServicesPage />} />
-              <Route path="/seo-agency-in-chennai-magdio" element={<SeoServicesPage />} />
-              <Route path="/seo-agency-chennai-magdio" element={<SeoServicesPage />} />
-              <Route path="/seo-services-chennai-magdio" element={<SeoServicesPage />} />
-              <Route path="/seo-services-in-chennai-magdio" element={<SeoServicesPage />} />
-              <Route path="/seo-services-tamilnadu-magdio" element={<SeoServicesPage />} />
-              
-              {/* GEO Services */}
-              <Route path="/services/geo-services" element={<Navigate to="/geo-services-agency-chennai-magdio" replace />} />
-              <Route path="/services/geo" element={<Navigate to="/geo-services-agency-chennai-magdio" replace />} />
-              <Route path="/geo" element={<Navigate to="/geo-services-agency-chennai-magdio" replace />} />
-              <Route path="/geo-services-agency-chennai-magdio" element={<GeoServicesPage />} />
-              <Route path="/geo-services-agency-in-chennai-magdio" element={<GeoServicesPage />} />
-              <Route path="/geo-service-agency-in-chennai-magdio" element={<GeoServicesPage />} />
-              <Route path="/geo-services-company-in-chennai-magdio" element={<GeoServicesPage />} />
-              <Route path="/geo-services-tamilnadu-magdio" element={<GeoServicesPage />} />
-              
-              {/* Social Media Marketing Services */}
-              <Route path="/services/social-media-marketing" element={<Navigate to="/social-media-marketing-agency-in-chennai-magdio" replace />} />
-              <Route path="/services/social-media" element={<Navigate to="/social-media-marketing-agency-in-chennai-magdio" replace />} />
-              <Route path="/social-media" element={<Navigate to="/social-media-marketing-agency-in-chennai-magdio" replace />} />
-              <Route path="/social-media-marketing-agency-in-chennai-magdio" element={<SocialMediaMarketingPage />} />
-              <Route path="/social-media-marketing-agency-chennai-magdio" element={<SocialMediaMarketingPage />} />
-              <Route path="/social-media-marketing-company-in-chennai-magdio" element={<SocialMediaMarketingPage />} />
-              <Route path="/social-media-marketing-tamilnadu-magdio" element={<SocialMediaMarketingPage />} />
-              
-              {/* Google Ads Services */}
-              <Route path="/services/google-ads" element={<Navigate to="/google-ads-agency-chennai-magdio" replace />} />
-              <Route path="/google-ads" element={<Navigate to="/google-ads-agency-chennai-magdio" replace />} />
-              <Route path="/google-ads-agency-chennai-magdio" element={<GoogleAdsPage />} />
-              <Route path="/google-ads-agency-in-chennai-magdio" element={<GoogleAdsPage />} />
-              <Route path="/google-ads-company-in-chennai-magdio" element={<GoogleAdsPage />} />
-              <Route path="/google-ads-company-chennai-magdio" element={<GoogleAdsPage />} />
-              <Route path="/google-ads-tamilnadu-magdio" element={<GoogleAdsPage />} />
-              
-              {/* Performance Marketing Services */}
-              <Route path="/services/performance-marketing" element={<Navigate to="/best-performance-marketing-agency-in-chennai-magdio" replace />} />
-              <Route path="/performance-marketing" element={<Navigate to="/best-performance-marketing-agency-in-chennai-magdio" replace />} />
-              <Route path="/best-performance-marketing-agency-in-chennai-magdio" element={<PerformanceMarketingPage />} />
-              <Route path="/performance-marketing-agency-in-chennai-magdio" element={<PerformanceMarketingPage />} />
-              <Route path="/performance-marketing-agency-chennai-magdio" element={<PerformanceMarketingPage />} />
-              <Route path="/performance-marketing-company-in-chennai-magdio" element={<PerformanceMarketingPage />} />
-              <Route path="/performance-marketing-tamilnadu-magdio" element={<PerformanceMarketingPage />} />
-              
-              {/* Meta Ads Services */}
-              <Route path="/services/meta-ads" element={<Navigate to="/meta-ads-agency-in-chennai-magdio" replace />} />
-              <Route path="/meta-ads" element={<Navigate to="/meta-ads-agency-in-chennai-magdio" replace />} />
-              <Route path="/meta-ads-agency-in-chennai-magdio" element={<MetaAdsPage />} />
-              <Route path="/meta-ads-agency-chennai-magdio" element={<MetaAdsPage />} />
-              <Route path="/meta-ads-company-in-chennai-magdio" element={<MetaAdsPage />} />
-              <Route path="/meta-ads-tamilnadu-magdio" element={<MetaAdsPage />} />
-
-              {/* LinkedIn Ads Services */}
-              <Route path="/services/linkedin-ads" element={<Navigate to="/linkedin-marketing-b2b-marketing-in-chennai-magdio" replace />} />
-              <Route path="/linkedin-ads" element={<Navigate to="/linkedin-marketing-b2b-marketing-in-chennai-magdio" replace />} />
-              <Route path="/linkedin-marketing-b2b-marketing-in-chennai-magdio" element={<LinkedInAdsPage />} />
-              <Route path="/linkedin-marketing-agency-in-chennai-magdio" element={<LinkedInAdsPage />} />
-              <Route path="/linkedin-ads-agency-in-chennai-magdio" element={<LinkedInAdsPage />} />
-              <Route path="/linkedin-ads-agency-chennai-magdio" element={<LinkedInAdsPage />} />
-              <Route path="/linkedin-ads-tamilnadu-magdio" element={<LinkedInAdsPage />} />
-              
-              {/* YouTube Ads Services */}
-              <Route path="/services/youtube-ads" element={<Navigate to="/youtube-marketing-agency-chennai-magdio" replace />} />
-              <Route path="/youtube-ads" element={<Navigate to="/youtube-marketing-agency-chennai-magdio" replace />} />
-              <Route path="/youtube-marketing-agency-chennai-magdio" element={<YouTubeAdsPage />} />
-              <Route path="/youtube-marketing-agency-in-chennai-magdio" element={<YouTubeAdsPage />} />
-              <Route path="/youtube-ads-agency-in-chennai-magdio" element={<YouTubeAdsPage />} />
-              <Route path="/youtube-ads-agency-chennai-magdio" element={<YouTubeAdsPage />} />
-              <Route path="/youtube-ads-tamilnadu-magdio" element={<YouTubeAdsPage />} />
-              
-              {/* WhatsApp Marketing Services */}
-              <Route path="/services/whatsapp-marketing" element={<Navigate to="/whatsapp-marketing-services-in-chennai-magdio" replace />} />
-              <Route path="/whatsapp-marketing-services-in-chennai-magdio" element={<WhatsAppMarketingPage />} />
-              <Route path="/whatsapp-marketing-agency-in-chennai-magdio" element={<WhatsAppMarketingPage />} />
-              <Route path="/whatsapp-marketing-agency-chennai-magdio" element={<WhatsAppMarketingPage />} />
-              <Route path="/whatsapp-marketing-chennai-magdio" element={<WhatsAppMarketingPage />} />
-              <Route path="/whatsapp-marketing-tamilnadu-magdio" element={<WhatsAppMarketingPage />} />
-              {/* Service Category Routes */}
-              <Route path="/services/marketing" element={<ServicesPage category="Marketing" />} />
-              <Route path="/services/development" element={<ServicesPage category="Development" />} />
-              <Route path="/services/branding" element={<ServicesPage category="Branding" />} />
-              <Route path="/services/consulting" element={<ServicesPage category="Consulting" />} />
-              <Route path="/services/analytics" element={<ServicesPage category="Analytics" />} />
-
-              <Route path="/services/:serviceId"   element={<ServiceTemplate />} />
-              <Route path="/industries/:industryId" element={<IndustryTemplate />} />
-              <Route path="/mission"               element={<MissionPage />} />
-              <Route path="/portfolio"             element={<PortfolioPage />} />
-              
-              {/* Case study routes */}
-              <Route path="/portfolio/haber-living-seo-growth" element={<HaberLivingCaseStudy />} />
-              <Route path="/portfolio/automobile-ecommerce-seo-growth" element={<AutomobileEcommerceCaseStudy />} />
-              <Route path="/portfolio/dreamzil-meta-ads-growth" element={<DreamzilCaseStudy />} />
-              <Route path="/portfolio/odoo-erp-lead-generation" element={<OdooERPCaseStudy />} />
-              <Route path="/portfolio/bitty-clicks-seo-case-study" element={<BittyClicksCaseStudy />} />
-              <Route path="/portfolio/badie-studio-seo-case-study" element={<BadieStudioCaseStudy />} />
-              <Route path="/portfolio/namma-markt-seo-case-study" element={<NammaMarktCaseStudy />} />
-              <Route path="/portfolio/sasvitha-home-finance-seo-case-study" element={<SasvithaHomeFinanceCaseStudy />} />
-              
-              <Route path="/about"                 element={<AboutPage />} />
-              <Route path="/blog"                  element={<BlogPage />} />
-              <Route path="/blogs"                 element={<BlogPage />} />
-              <Route path="/blog/:id"              element={<BlogDetailPage />} />
-              <Route path="/blogs/:id"             element={<BlogDetailPage />} />
-              <Route path="/admin"                 element={<AdminPage />} />
-              <Route path="/contact"               element={<ContactPage />} />
-              <Route path="*"                      element={<NotFoundPage />} />
-            </Routes>
-          </Suspense>
-          <Footer />
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  );
-}
-
-export default function App() {
-  const [loadVisuals, setLoadVisuals] = useState(false);
-
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     let timerId;
     let loaded = false;
 
@@ -268,7 +88,7 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
       <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col bg-transparent">
         <Suspense fallback={null}>
@@ -277,8 +97,17 @@ export default function App() {
           {loadVisuals && <FloatingElements />}
         </Suspense>
         <Navbar />
-        <AnimatedRoutes />
+        <div className="overflow-x-hidden w-full relative min-h-screen flex flex-col">
+          <AnimatePresence mode="wait">
+            <motion.div key={location.pathname} {...activePageTransition} className="flex-grow">
+              <Suspense fallback={<PageLoader />}>
+                <Outlet />
+              </Suspense>
+              <Footer />
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
-    </BrowserRouter>
+    </>
   );
 }

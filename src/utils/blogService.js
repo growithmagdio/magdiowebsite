@@ -202,6 +202,10 @@ const withTimeout = (promise, ms = 4000, errorMsg = 'Operation timed out') => {
 
 // Fetch all blogs (Unified Firestore + LocalStorage + Mock Data)
 export const fetchBlogs = async () => {
+  if (typeof window === 'undefined') {
+    return mockBlogs;
+  }
+
   let firestoreBlogs = [];
 
   if (db) {
@@ -234,29 +238,31 @@ export const fetchBlogs = async () => {
 
   // Local Storage Fallback & Unsynced Posts
   let localBlogs = [];
-  try {
-    const localData = localStorage.getItem('magdio_local_blogs');
-    if (localData) {
-      const parsedLocal = JSON.parse(localData);
-      localBlogs = parsedLocal.map(blog => {
-        const rawContent = blog.content || '';
-        const textSnippet = rawContent.replace(/<[^>]*>/g, '').replace(/[\s\n]+/g, ' ').trim();
-        return {
-          ...blog,
-          title: blog.title || 'Untitled Article',
-          excerpt: blog.excerpt || (textSnippet ? textSnippet.slice(0, 160) + '...' : 'Read full article for insights.'),
-          content: rawContent || '<p>Content coming soon...</p>',
-          author: blog.author || 'Admin',
-          category: blog.category || 'Insights',
-          readTime: blog.readTime || '5 min read',
-          date: formatDate(blog.createdAt || blog.date),
-          imageUrl: blog.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
-          slug: blog.slug || generateSlug(blog.title || blog.id)
-        };
-      });
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    try {
+      const localData = localStorage.getItem('magdio_local_blogs');
+      if (localData) {
+        const parsedLocal = JSON.parse(localData);
+        localBlogs = parsedLocal.map(blog => {
+          const rawContent = blog.content || '';
+          const textSnippet = rawContent.replace(/<[^>]*>/g, '').replace(/[\s\n]+/g, ' ').trim();
+          return {
+            ...blog,
+            title: blog.title || 'Untitled Article',
+            excerpt: blog.excerpt || (textSnippet ? textSnippet.slice(0, 160) + '...' : 'Read full article for insights.'),
+            content: rawContent || '<p>Content coming soon...</p>',
+            author: blog.author || 'Admin',
+            category: blog.category || 'Insights',
+            readTime: blog.readTime || '5 min read',
+            date: formatDate(blog.createdAt || blog.date),
+            imageUrl: blog.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
+            slug: blog.slug || generateSlug(blog.title || blog.id)
+          };
+        });
+      }
+    } catch (err) {
+      console.error('Local Storage read error:', err);
     }
-  } catch (err) {
-    console.error('Local Storage read error:', err);
   }
 
   // Combine Firestore, Local Storage, and Mock Blogs into complete pool
@@ -397,28 +403,33 @@ export const createBlogPost = async (blogData) => {
   }
 
   // Local Storage Save (always cache locally for instant local availability)
-  try {
-    const localData = localStorage.getItem('magdio_local_blogs');
-    const localBlogs = localData ? JSON.parse(localData) : [];
-    
-    const newBlog = {
-      ...postToSave,
-      id: firestoreResult ? firestoreResult.id : `local_${Date.now()}`,
-      createdAt: new Date().toISOString(),
-    };
-    
-    localBlogs.unshift(newBlog);
-    localStorage.setItem('magdio_local_blogs', JSON.stringify(localBlogs));
-    notifyBlogUpdate();
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    try {
+      const localData = localStorage.getItem('magdio_local_blogs');
+      const localBlogs = localData ? JSON.parse(localData) : [];
+      
+      const newBlog = {
+        ...postToSave,
+        id: firestoreResult ? firestoreResult.id : `local_${Date.now()}`,
+        createdAt: new Date().toISOString(),
+      };
+      
+      localBlogs.unshift(newBlog);
+      localStorage.setItem('magdio_local_blogs', JSON.stringify(localBlogs));
+      notifyBlogUpdate();
 
-    if (firestoreResult) return firestoreResult;
-    return { id: newBlog.id, storage: 'local', warning: firestoreError };
-  } catch (err) {
-    console.error('Error writing blog to Local Storage:', err);
-    notifyBlogUpdate();
-    if (firestoreResult) return firestoreResult;
-    throw err;
+      if (firestoreResult) return firestoreResult;
+      return { id: newBlog.id, storage: 'local', warning: firestoreError };
+    } catch (err) {
+      console.error('Error writing blog to Local Storage:', err);
+      notifyBlogUpdate();
+      if (firestoreResult) return firestoreResult;
+      throw err;
+    }
   }
+
+  if (firestoreResult) return firestoreResult;
+  return { id: `blog_${Date.now()}`, storage: 'build', warning: firestoreError };
 };
 
 // Update an existing blog post
@@ -447,33 +458,36 @@ export const updateBlogPost = async (id, blogData) => {
   }
 
   // Local Storage Update
-  try {
-    const localData = localStorage.getItem('magdio_local_blogs');
-    const localBlogs = localData ? JSON.parse(localData) : [];
-    
-    const index = localBlogs.findIndex(b => b.id === id);
-    if (index === -1) {
-      localBlogs.push({
-        ...postToSave,
-        id,
-        updatedAt: new Date().toISOString()
-      });
-    } else {
-      localBlogs[index] = {
-        ...localBlogs[index],
-        ...postToSave,
-        updatedAt: new Date().toISOString()
-      };
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    try {
+      const localData = localStorage.getItem('magdio_local_blogs');
+      const localBlogs = localData ? JSON.parse(localData) : [];
+      
+      const index = localBlogs.findIndex(b => b.id === id);
+      if (index === -1) {
+        localBlogs.push({
+          ...postToSave,
+          id,
+          updatedAt: new Date().toISOString()
+        });
+      } else {
+        localBlogs[index] = {
+          ...localBlogs[index],
+          ...postToSave,
+          updatedAt: new Date().toISOString()
+        };
+      }
+      
+      localStorage.setItem('magdio_local_blogs', JSON.stringify(localBlogs));
+      notifyBlogUpdate();
+      return { success: true, storage: 'firestore' };
+    } catch (err) {
+      console.error('Error updating blog in Local Storage:', err);
+      notifyBlogUpdate();
+      throw err;
     }
-    
-    localStorage.setItem('magdio_local_blogs', JSON.stringify(localBlogs));
-    notifyBlogUpdate();
-    return { success: true, storage: 'firestore' };
-  } catch (err) {
-    console.error('Error updating blog in Local Storage:', err);
-    notifyBlogUpdate();
-    throw err;
   }
+  return { success: true };
 };
 
 // Delete a blog post
@@ -488,23 +502,29 @@ export const deleteBlogPost = async (id) => {
   }
 
   // Also clean up from Local Storage if present
-  try {
-    const localData = localStorage.getItem('magdio_local_blogs');
-    const localBlogs = localData ? JSON.parse(localData) : [];
-    const filteredBlogs = localBlogs.filter(b => b.id !== id);
-    localStorage.setItem('magdio_local_blogs', JSON.stringify(filteredBlogs));
-    notifyBlogUpdate();
-    return true;
-  } catch (err) {
-    console.error('Error deleting blog from Local Storage:', err);
-    notifyBlogUpdate();
-    throw err;
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    try {
+      const localData = localStorage.getItem('magdio_local_blogs');
+      const localBlogs = localData ? JSON.parse(localData) : [];
+      const filteredBlogs = localBlogs.filter(b => b.id !== id);
+      localStorage.setItem('magdio_local_blogs', JSON.stringify(filteredBlogs));
+      notifyBlogUpdate();
+      return true;
+    } catch (err) {
+      console.error('Error deleting blog from Local Storage:', err);
+      notifyBlogUpdate();
+      throw err;
+    }
   }
+  return true;
 };
 
 // Sync any unsynced local storage blogs to Firestore
 export const syncLocalBlogsToFirestore = async () => {
   if (!db) return { synced: 0, message: 'Database not connected.' };
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+    return { synced: 0, message: 'Not running in browser environment.' };
+  }
   
   try {
     const localData = localStorage.getItem('magdio_local_blogs');
@@ -557,7 +577,9 @@ export const loginAdmin = async (email, password) => {
   
   if (normalizedEmail === fallbackEmail && password === fallbackPassword) {
     const user = { email: 'growithmagdio@gmail.com', uid: 'local_admin' };
-    localStorage.setItem('magdio_admin_logged', 'true');
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      localStorage.setItem('magdio_admin_logged', 'true');
+    }
     return user;
   }
 
@@ -565,7 +587,9 @@ export const loginAdmin = async (email, password) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       // Store flag in localStorage to maintain session info
-      localStorage.setItem('magdio_admin_logged', 'true');
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        localStorage.setItem('magdio_admin_logged', 'true');
+      }
       return userCredential.user;
     } catch (error) {
       console.error('Firebase authentication failed:', error);
@@ -578,7 +602,9 @@ export const loginAdmin = async (email, password) => {
 
 // Log out admin
 export const logoutAdmin = async () => {
-  localStorage.removeItem('magdio_admin_logged');
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    localStorage.removeItem('magdio_admin_logged');
+  }
   if (auth) {
     try {
       await signOut(auth);
@@ -592,17 +618,19 @@ export const logoutAdmin = async () => {
 // Check if currently authenticated
 export const checkAdminAuth = (callback) => {
   // Check localStorage session flag
-  const isLogged = localStorage.getItem('magdio_admin_logged') === 'true';
+  const isLogged = typeof window !== 'undefined' && typeof localStorage !== 'undefined' && localStorage.getItem('magdio_admin_logged') === 'true';
 
   if (auth) {
     // Listen to Firebase Auth changes
     return onAuthStateChanged(auth, (user) => {
       if (user) {
-        localStorage.setItem('magdio_admin_logged', 'true');
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+          localStorage.setItem('magdio_admin_logged', 'true');
+        }
         callback(user);
       } else {
         // If Firebase Auth returns null, check if local admin session flag is set before revoking access.
-        const isStillLogged = localStorage.getItem('magdio_admin_logged') === 'true';
+        const isStillLogged = typeof window !== 'undefined' && typeof localStorage !== 'undefined' && localStorage.getItem('magdio_admin_logged') === 'true';
         if (isStillLogged) {
           callback({ email: 'growithmagdio@gmail.com', uid: 'local_admin' });
         } else {

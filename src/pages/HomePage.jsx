@@ -1,26 +1,24 @@
-import { lazy, Suspense } from 'react';
 import HeroSection from '../components/home/HeroSection';
+import ServicesSection from '../components/home/ServicesSection';
+import IndustriesSection from '../components/home/IndustriesSection';
+import WhyChooseSection from '../components/home/WhyChooseSection';
+import ClientsSection from '../components/home/ClientsSection';
+import ToolsSection from '../components/home/ToolsSection';
+import ProcessSection from '../components/home/ProcessSection';
+import TestimonialsSection from '../components/home/TestimonialsSection';
+import StatsSection from '../components/home/StatsSection';
+import EnquirySection from '../components/home/EnquirySection';
+import FAQSection from '../components/home/FAQSection';
+import BlogSection from '../components/home/BlogSection';
+import CTABanner from '../components/home/CTABanner';
 import SEO from '../components/SEO';
-
-const ServicesSection = lazy(() => import('../components/home/ServicesSection'));
-const IndustriesSection = lazy(() => import('../components/home/IndustriesSection'));
-const WhyChooseSection = lazy(() => import('../components/home/WhyChooseSection'));
-const ClientsSection = lazy(() => import('../components/home/ClientsSection'));
-const ToolsSection = lazy(() => import('../components/home/ToolsSection'));
-const ProcessSection = lazy(() => import('../components/home/ProcessSection'));
-const TestimonialsSection = lazy(() => import('../components/home/TestimonialsSection'));
-const StatsSection = lazy(() => import('../components/home/StatsSection'));
-const EnquirySection = lazy(() => import('../components/home/EnquirySection'));
-const FAQSection = lazy(() => import('../components/home/FAQSection'));
-const BlogSection = lazy(() => import('../components/home/BlogSection'));
-const CTABanner = lazy(() => import('../components/home/CTABanner'));
 
 export default function HomePage() {
   return (
     <div className="page-bg min-h-screen bg-[#03030b]">
       <SEO 
         title="Best Digital Marketing Agency in Chennai | MAGDIO" 
-        description="Magdio is the best digital marketing agency in Chennai helping brands grow online with result-driven strategies.Explore our services and grow with us today." 
+        description="Magdio is the best digital marketing agency in Chennai helping brands grow online with result-driven strategies. Explore our services and grow with us today." 
         canonicalUrl="https://www.magdio.com/"
         jsonLd={{
           "@context": "https://schema.org",
@@ -37,21 +35,18 @@ export default function HomePage() {
         }}
       />
       <HeroSection />
-      
-      <Suspense fallback={null}>
-        <ServicesSection />
-        <IndustriesSection />
-        <WhyChooseSection />
-        <ClientsSection />
-        <ToolsSection />
-        <ProcessSection />
-        <TestimonialsSection />
-        <StatsSection />
-        <BlogSection />
-        <EnquirySection />
-        <FAQSection />
-        <CTABanner />
-      </Suspense>
+      <ServicesSection />
+      <IndustriesSection />
+      <WhyChooseSection />
+      <ClientsSection />
+      <ToolsSection />
+      <ProcessSection />
+      <TestimonialsSection />
+      <StatsSection />
+      <BlogSection />
+      <EnquirySection />
+      <FAQSection />
+      <CTABanner />
     </div>
   );
 }

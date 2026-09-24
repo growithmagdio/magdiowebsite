@@ -41,7 +41,9 @@ let db = null;
 let auth = null;
 let storage = null;
 
-if (isConfigValid) {
+const isSSR = typeof window === 'undefined';
+
+if (isConfigValid && !isSSR) {
   try {
     app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
     db = getFirestore(app);
@@ -50,6 +52,11 @@ if (isConfigValid) {
   } catch (error) {
     console.error("Firebase initialization failed:", error);
   }
+} else if (isSSR) {
+  // In Node SSR build pass, Firebase is bypassed to keep SSG build instant and clean
+  db = null;
+  auth = null;
+  storage = null;
 } else {
   console.warn("Firebase credentials are empty or invalid. Running in mock-data / offline fallback mode.");
 }

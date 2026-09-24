@@ -1,0 +1,71 @@
+{
+  "src/components/FloatingElements.jsx": {
+    "file": "assets/FloatingElements-Bfhr6a8C.js",
+    "name": "FloatingElements",
+    "src": "src/components/FloatingElements.jsx",
+    "isDynamicEntry": true,
+    "dynamicImports": [
+      "src/main.jsx"
+    ]
+  },
+  "src/components/PointerGlow.jsx": {
+    "file": "assets/PointerGlow-BoPyOBjW.js",
+    "name": "PointerGlow",
+    "src": "src/components/PointerGlow.jsx",
+    "isDynamicEntry": true
+  },
+  "src/components/PremiumBackground.jsx": {
+    "file": "assets/PremiumBackground--tL4cAJt.js",
+    "name": "PremiumBackground",
+    "src": "src/components/PremiumBackground.jsx",
+    "isDynamicEntry": true
+  },
+  "src/main.jsx": {
+    "file": "main.mjs",
+    "name": "main",
+    "src": "src/main.jsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/components/PremiumBackground.jsx",
+      "src/components/FloatingElements.jsx",
+      "src/components/PointerGlow.jsx"
+    ],
+    "assets": [
+      "assets/1-sClnvD2T.webp",
+      "assets/10-Ex1HpaEH.webp",
+      "assets/11-CYtqNHZI.webp",
+      "assets/12-qo92FJtZ.webp",
+      "assets/13-DlzcEVLu.webp",
+      "assets/14-D6brWEMm.webp",
+      "assets/15-BFoX0uzu.webp",
+      "assets/16-p_UprXb7.webp",
+      "assets/17-CZ0kMTXI.webp",
+      "assets/18-DGoymF1k.webp",
+      "assets/19-CIBaodtm.webp",
+      "assets/2-l59zqauu.webp",
+      "assets/20-iWEoDdoX.webp",
+      "assets/21-Cal8DTsf.webp",
+      "assets/22-DYZfXkUX.webp",
+      "assets/3-CTLjhArt.webp",
+      "assets/4-DnknQGfI.webp",
+      "assets/5-DYlgwjbl.webp",
+      "assets/6-rO-YkDB8.webp",
+      "assets/7-Cd53TMFd.webp",
+      "assets/8-DmNYSDiY.webp",
+      "assets/9-SSvc9T6C.webp",
+      "assets/Picture1-DewGQYlY.png",
+      "assets/Picture2-BnCiXL-9.png",
+      "assets/Picture3-Bgytda0o.png",
+      "assets/Picture4png-nNukGihb.png",
+      "assets/Picture5-DfE-gmlj.png",
+      "assets/Picture6-BfRV6G1n.png",
+      "assets/Picture1-BVAIGMYj.png",
+      "assets/Picture2-86WWNF1h.png",
+      "assets/Picture3-BKLj4rwW.png",
+      "assets/Picture4-CAYx1Lxg.png",
+      "assets/Picture5-ChkQAbhX.png",
+      "assets/Picture6-CiToStpS.png",
+      "assets/Picture10-DLFWl0Zn.png"
+    ]
+  }
+}

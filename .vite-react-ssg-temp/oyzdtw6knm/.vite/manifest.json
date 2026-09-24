@@ -1,0 +1,150 @@
+{
+  "src/components/FloatingElements.jsx": {
+    "file": "assets/FloatingElements-Bfhr6a8C.js",
+    "name": "FloatingElements",
+    "src": "src/components/FloatingElements.jsx",
+    "isDynamicEntry": true,
+    "dynamicImports": [
+      "src/main.jsx"
+    ]
+  },
+  "src/components/PointerGlow.jsx": {
+    "file": "assets/PointerGlow-BoPyOBjW.js",
+    "name": "PointerGlow",
+    "src": "src/components/PointerGlow.jsx",
+    "isDynamicEntry": true
+  },
+  "src/components/PremiumBackground.jsx": {
+    "file": "assets/PremiumBackground--tL4cAJt.js",
+    "name": "PremiumBackground",
+    "src": "src/components/PremiumBackground.jsx",
+    "isDynamicEntry": true
+  },
+  "src/components/home/BlogSection.jsx": {
+    "file": "assets/BlogSection-DJ98Ya4k.js",
+    "name": "BlogSection",
+    "src": "src/components/home/BlogSection.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/main.jsx"
+    ]
+  },
+  "src/components/home/CTABanner.jsx": {
+    "file": "assets/CTABanner-DedpXrug.js",
+    "name": "CTABanner",
+    "src": "src/components/home/CTABanner.jsx",
+    "isDynamicEntry": true
+  },
+  "src/components/home/ClientsSection.jsx": {
+    "file": "assets/ClientsSection-Wgs8Juiy.js",
+    "name": "ClientsSection",
+    "src": "src/components/home/ClientsSection.jsx",
+    "isDynamicEntry": true,
+    "assets": [
+      "assets/1-sClnvD2T.webp",
+      "assets/10-Ex1HpaEH.webp",
+      "assets/11-CYtqNHZI.webp",
+      "assets/12-qo92FJtZ.webp",
+      "assets/13-DlzcEVLu.webp",
+      "assets/14-D6brWEMm.webp",
+      "assets/15-BFoX0uzu.webp",
+      "assets/16-p_UprXb7.webp",
+      "assets/17-CZ0kMTXI.webp",
+      "assets/18-DGoymF1k.webp",
+      "assets/19-CIBaodtm.webp",
+      "assets/2-l59zqauu.webp",
+      "assets/20-iWEoDdoX.webp",
+      "assets/21-Cal8DTsf.webp",
+      "assets/22-DYZfXkUX.webp",
+      "assets/3-CTLjhArt.webp",
+      "assets/4-DnknQGfI.webp",
+      "assets/5-DYlgwjbl.webp",
+      "assets/6-rO-YkDB8.webp",
+      "assets/7-Cd53TMFd.webp",
+      "assets/8-DmNYSDiY.webp",
+      "assets/9-SSvc9T6C.webp"
+    ]
+  },
+  "src/components/home/IndustriesSection.jsx": {
+    "file": "assets/IndustriesSection-D1elYeyk.js",
+    "name": "IndustriesSection",
+    "src": "src/components/home/IndustriesSection.jsx",
+    "isDynamicEntry": true
+  },
+  "src/components/home/ProcessSection.jsx": {
+    "file": "assets/ProcessSection-BZh3wPMR.js",
+    "name": "ProcessSection",
+    "src": "src/components/home/ProcessSection.jsx",
+    "isDynamicEntry": true
+  },
+  "src/components/home/ServicesSection.jsx": {
+    "file": "assets/ServicesSection-BpFfVNtU.js",
+    "name": "ServicesSection",
+    "src": "src/components/home/ServicesSection.jsx",
+    "isDynamicEntry": true
+  },
+  "src/components/home/StatsSection.jsx": {
+    "file": "assets/StatsSection-C4FDYpm4.js",
+    "name": "StatsSection",
+    "src": "src/components/home/StatsSection.jsx",
+    "isDynamicEntry": true
+  },
+  "src/components/home/TestimonialsSection.jsx": {
+    "file": "assets/TestimonialsSection-Q6M0tnpW.js",
+    "name": "TestimonialsSection",
+    "src": "src/components/home/TestimonialsSection.jsx",
+    "isDynamicEntry": true
+  },
+  "src/components/home/ToolsSection.jsx": {
+    "file": "assets/ToolsSection-T2GSvwqZ.js",
+    "name": "ToolsSection",
+    "src": "src/components/home/ToolsSection.jsx",
+    "isDynamicEntry": true
+  },
+  "src/components/home/WhyChooseSection.jsx": {
+    "file": "assets/WhyChooseSection-BypOPn71.js",
+    "name": "WhyChooseSection",
+    "src": "src/components/home/WhyChooseSection.jsx",
+    "isDynamicEntry": true
+  },
+  "src/main.jsx": {
+    "file": "main.mjs",
+    "name": "main",
+    "src": "src/main.jsx",
+    "isEntry": true,
+    "imports": [
+      "src/components/home/ClientsSection.jsx"
+    ],
+    "dynamicImports": [
+      "src/components/PremiumBackground.jsx",
+      "src/components/FloatingElements.jsx",
+      "src/components/PointerGlow.jsx",
+      "src/components/home/ServicesSection.jsx",
+      "src/components/home/IndustriesSection.jsx",
+      "src/components/home/WhyChooseSection.jsx",
+      "src/components/home/ClientsSection.jsx",
+      "src/components/home/ToolsSection.jsx",
+      "src/components/home/ProcessSection.jsx",
+      "src/components/home/TestimonialsSection.jsx",
+      "src/components/home/StatsSection.jsx",
+      "src/main.jsx",
+      "src/components/home/BlogSection.jsx",
+      "src/components/home/CTABanner.jsx"
+    ],
+    "assets": [
+      "assets/Picture1-DewGQYlY.png",
+      "assets/Picture2-BnCiXL-9.png",
+      "assets/Picture3-Bgytda0o.png",
+      "assets/Picture4png-nNukGihb.png",
+      "assets/Picture5-DfE-gmlj.png",
+      "assets/Picture6-BfRV6G1n.png",
+      "assets/Picture1-BVAIGMYj.png",
+      "assets/Picture2-86WWNF1h.png",
+      "assets/Picture3-BKLj4rwW.png",
+      "assets/Picture4-CAYx1Lxg.png",
+      "assets/Picture5-ChkQAbhX.png",
+      "assets/Picture6-CiToStpS.png",
+      "assets/Picture10-DLFWl0Zn.png"
+    ]
+  }
+}

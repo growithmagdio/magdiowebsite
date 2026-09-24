@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import { fetchBlogs } from '../utils/blogService';
 import { FaCalendarAlt, FaUser, FaClock } from 'react-icons/fa';
 import SEO from '../components/SEO';
 
 export default function BlogPage() {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const loaderData = useLoaderData();
+  const initialBlogs = loaderData?.blogs || [];
+  const [blogs, setBlogs] = useState(initialBlogs);
+  const [loading, setLoading] = useState(initialBlogs.length === 0);
 
   useEffect(() => {
     let isMounted = true;
 
     const loadBlogs = async () => {
       try {
-        setLoading(true);
+        if (blogs.length === 0) setLoading(true);
         const data = await fetchBlogs();
         if (isMounted) {
           setBlogs(data);
@@ -26,17 +28,23 @@ export default function BlogPage() {
       }
     };
 
-    loadBlogs();
+    if (initialBlogs.length === 0) {
+      loadBlogs();
+    }
 
     const handleUpdate = () => {
       loadBlogs();
     };
 
-    window.addEventListener('magdio_blogs_updated', handleUpdate);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('magdio_blogs_updated', handleUpdate);
+    }
 
     return () => {
       isMounted = false;
-      window.removeEventListener('magdio_blogs_updated', handleUpdate);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('magdio_blogs_updated', handleUpdate);
+      }
     };
   }, []);
 

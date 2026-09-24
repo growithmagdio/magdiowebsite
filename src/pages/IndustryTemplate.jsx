@@ -1,6 +1,7 @@
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { industriesData } from '../data/industriesData';
+import SEO from '../components/SEO';
 import EnquirySection from '../components/home/EnquirySection';
 import FAQSection from '../components/home/FAQSection';
 import { FaCheckCircle, FaArrowRight, FaIndustry } from 'react-icons/fa';
@@ -16,6 +17,11 @@ export default function IndustryTemplate() {
 
   return (
     <div className="page-bg min-h-screen pt-24 pb-0">
+      <SEO 
+        title={`${industry.title} | Magdio Industry Solutions`} 
+        description={industry.subtitle || industry.overview || `Digital transformation and marketing solutions for ${industry.name}.`} 
+        canonicalUrl={`https://www.magdio.com/industries/${industry.id}`}
+      />
       {/* ── HERO SECTION ── */}
       <section className="relative pt-20 pb-32 overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 z-0">

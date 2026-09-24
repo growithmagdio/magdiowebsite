@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node prerender-static.js",
+    "build": "vite-react-ssg build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite-react-ssg preview",
+    "serve": "node server.js"
   },
   "dependencies": {
     "firebase": "^12.13.0",

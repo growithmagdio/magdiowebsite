@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLoaderData } from 'react-router-dom';
 import { motion, useScroll } from 'framer-motion';
 import { FaCalendarAlt, FaUser, FaArrowLeft, FaClock, FaShareAlt, FaLinkedin, FaTwitter, FaFacebook } from 'react-icons/fa';
 import { fetchBlogById } from '../utils/blogService';
 import SEO from '../components/SEO';
 
 export default function BlogDetailPage() {
+  const loaderData = useLoaderData();
   const { id } = useParams();
   const navigate = useNavigate();
-  const [blog, setBlog] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const initialBlog = loaderData?.blog || null;
+  const [blog, setBlog] = useState(initialBlog);
+  const [loading, setLoading] = useState(!initialBlog);
   const [error, setError] = useState(null);
   const [shareTooltip, setShareTooltip] = useState(false);
 
@@ -17,6 +19,10 @@ export default function BlogDetailPage() {
   const { scrollYProgress } = useScroll();
 
   useEffect(() => {
+    if (initialBlog && (initialBlog.slug === id || initialBlog.id === id)) {
+      return;
+    }
+
     const getBlog = async () => {
       try {
         setLoading(true);
@@ -31,14 +37,17 @@ export default function BlogDetailPage() {
     };
 
     getBlog();
-  }, [id]);
+  }, [id, initialBlog]);
 
   const handleShare = (platform) => {
+    if (typeof window === 'undefined') return;
     const url = window.location.href;
     const text = blog ? blog.title : 'Check out this article!';
     
     if (platform === 'copy') {
-      navigator.clipboard.writeText(url);
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url);
+      }
       setShareTooltip(true);
       setTimeout(() => setShareTooltip(false), 2000);
       return;
