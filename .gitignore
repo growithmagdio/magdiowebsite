@@ -29,5 +29,9 @@ dist-ssr
 .env.*.local
 
 
+<<<<<<< HEAD
 # vite-react-ssg build temp output
 .vite-react-ssg-temp
+=======
+.vercel
+>>>>>>> f157467 (update landing page)
