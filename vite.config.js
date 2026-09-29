@@ -130,7 +130,7 @@ function getAllRoutes() {
 export default defineConfig({
   plugins: [react()],
   ssgOptions: {
-    script: 'async',
+    script: 'defer',
     formatting: 'none',
     dirStyle: 'nested',
     mock: true,

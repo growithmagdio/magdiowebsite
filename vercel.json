@@ -12,6 +12,116 @@
       ],
       "destination": "https://www.magdio.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "/services/digital-marketing",
+      "destination": "/digital-marketing-company-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/digital-marketing",
+      "destination": "/digital-marketing-company-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/seo-services",
+      "destination": "/seo-company-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/seo",
+      "destination": "/seo-company-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/seo",
+      "destination": "/seo-company-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/geo-services",
+      "destination": "/geo-services-agency-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/geo",
+      "destination": "/geo-services-agency-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/geo",
+      "destination": "/geo-services-agency-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/social-media-marketing",
+      "destination": "/social-media-marketing-agency-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/social-media",
+      "destination": "/social-media-marketing-agency-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/social-media",
+      "destination": "/social-media-marketing-agency-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/google-ads",
+      "destination": "/google-ads-agency-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/google-ads",
+      "destination": "/google-ads-agency-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/performance-marketing",
+      "destination": "/best-performance-marketing-agency-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/performance-marketing",
+      "destination": "/best-performance-marketing-agency-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/meta-ads",
+      "destination": "/meta-ads-agency-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/meta-ads",
+      "destination": "/meta-ads-agency-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/linkedin-ads",
+      "destination": "/linkedin-marketing-b2b-marketing-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/linkedin-ads",
+      "destination": "/linkedin-marketing-b2b-marketing-in-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/youtube-ads",
+      "destination": "/youtube-marketing-agency-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/youtube-ads",
+      "destination": "/youtube-marketing-agency-chennai-magdio",
+      "permanent": true
+    },
+    {
+      "source": "/services/whatsapp-marketing",
+      "destination": "/whatsapp-marketing-services-in-chennai-magdio",
+      "permanent": true
     }
   ],
   "headers": [

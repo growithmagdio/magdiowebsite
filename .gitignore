@@ -28,3 +28,6 @@ dist-ssr
 .env.local
 .env.*.local
 
+
+# vite-react-ssg build temp output
+.vite-react-ssg-temp

@@ -41,7 +41,7 @@ let db = null;
 let auth = null;
 let storage = null;
 
-const isSSR = typeof window === 'undefined';
+const isSSR = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.SSR) || typeof window === 'undefined';
 
 if (isConfigValid && !isSSR) {
   try {
