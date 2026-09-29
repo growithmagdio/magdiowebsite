@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "magdiowebsite",
+  "compatibility_date": "2026-09-29",
+  // Build the prerendered site before every `wrangler deploy`
+  "build": {
+    "command": "npm run build"
+  },
+  // Static site only: serve the prerendered HTML in dist/
+  "assets": {
+    "directory": "./dist",
+    // /about -> about.html, served directly
+    "html_handling": "auto-trailing-slash",
+    // Unknown URLs -> dist/404.html with a real 404 status
+    "not_found_handling": "404-page"
+  }
+}
