@@ -132,7 +132,7 @@ export default defineConfig({
   ssgOptions: {
     script: 'defer',
     formatting: 'none',
-    dirStyle: 'nested',
+    dirStyle: 'flat',
     mock: true,
     beastiesOptions: false,
     async includedRoutes() {

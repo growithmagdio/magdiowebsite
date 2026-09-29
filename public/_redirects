@@ -1,1 +1,28 @@
-/*    /index.html   200
+# Cloudflare Pages redirects.
+# No catch-all /* rule: Cloudflare applies _redirects even when a real file exists,
+# so "/* /index.html 200" made every URL serve the homepage. Unknown URLs fall back
+# to 404.html (the prerendered Not Found page) with a real 404 status.
+
+# Alias URLs (were client-side <Navigate> only)
+/services/digital-marketing /digital-marketing-company-in-chennai-magdio 301
+/digital-marketing /digital-marketing-company-in-chennai-magdio 301
+/services/seo-services /seo-company-in-chennai-magdio 301
+/services/seo /seo-company-in-chennai-magdio 301
+/seo /seo-company-in-chennai-magdio 301
+/services/geo-services /geo-services-agency-chennai-magdio 301
+/services/geo /geo-services-agency-chennai-magdio 301
+/geo /geo-services-agency-chennai-magdio 301
+/services/social-media-marketing /social-media-marketing-agency-in-chennai-magdio 301
+/services/social-media /social-media-marketing-agency-in-chennai-magdio 301
+/social-media /social-media-marketing-agency-in-chennai-magdio 301
+/services/google-ads /google-ads-agency-chennai-magdio 301
+/google-ads /google-ads-agency-chennai-magdio 301
+/services/performance-marketing /best-performance-marketing-agency-in-chennai-magdio 301
+/performance-marketing /best-performance-marketing-agency-in-chennai-magdio 301
+/services/meta-ads /meta-ads-agency-in-chennai-magdio 301
+/meta-ads /meta-ads-agency-in-chennai-magdio 301
+/services/linkedin-ads /linkedin-marketing-b2b-marketing-in-chennai-magdio 301
+/linkedin-ads /linkedin-marketing-b2b-marketing-in-chennai-magdio 301
+/services/youtube-ads /youtube-marketing-agency-chennai-magdio 301
+/youtube-ads /youtube-marketing-agency-chennai-magdio 301
+/services/whatsapp-marketing /whatsapp-marketing-services-in-chennai-magdio 301

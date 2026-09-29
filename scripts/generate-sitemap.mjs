@@ -1,4 +1,4 @@
-// Runs after the static build. Builds dist/sitemap.xml from the pages that were
+// Runs after the static build (flat output: /about -> about.html). Builds dist/sitemap.xml from the pages that were
 // actually prerendered, so the sitemap (used by Google and the Voiceflow chatbot)
 // only ever lists URLs that return full HTML content.
 import { readdir, stat, writeFile } from 'node:fs/promises';
@@ -16,8 +16,10 @@ async function findPages(dir, route = '') {
     if ((await stat(full)).isDirectory()) {
       if (entry === 'assets' || entry.startsWith('.')) continue;
       pages.push(...(await findPages(full, `${route}/${entry}`)));
-    } else if (entry === 'index.html') {
-      pages.push(route || '/');
+    } else if (entry === 'index.html' && route === '') {
+      pages.push('/');
+    } else if (entry.endsWith('.html') && entry !== 'index.html') {
+      pages.push(`${route}/${entry.slice(0, -5)}`);
     }
   }
   return pages;
